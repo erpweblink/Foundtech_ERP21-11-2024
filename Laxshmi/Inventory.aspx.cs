@@ -285,14 +285,24 @@ public partial class Laxshmi_Inventory : System.Web.UI.Page
 
                 Label TotalRemainingQty = e.Row.FindControl("RemainingQty") as Label;
                 Label RemainingDefectQty = e.Row.FindControl("DefectedQty") as Label;
-             
+                LinkButton lnkDefectout = (LinkButton)e.Row.FindControl("lnkDefectout");
+                LinkButton btnoutward = (LinkButton)e.Row.FindControl("btnoutward");
                 if (Convert.ToDouble(TotalRemainingQty.Text) ==0 && Convert.ToDouble(RemainingDefectQty.Text)==0)
 
                 {
                     e.Row.Visible = false;
                 }
+
+                if(Convert.ToDouble(TotalRemainingQty.Text) <= 0)
+                {
+                    btnoutward.Visible = false;
+                }
+                if (Convert.ToDouble(RemainingDefectQty.Text) <= 0)
+                {
+                    lnkDefectout.Visible = false;
+                }
                 //Label DefectedQty = e.Row.FindControl("DefectedQty") as Label;
-                //LinkButton btnoutward = (LinkButton)e.Row.FindControl("btnoutward");
+                // LinkButton btnoutward = (LinkButton)e.Row.FindControl("btnoutward");
                 //LinkButton btnEdit = (LinkButton)e.Row.FindControl("btnEdit");
                 //// LinkButton btnDelete = (LinkButton)e.Row.FindControl("btnDelete");
 

@@ -313,13 +313,9 @@
                                                             <asp:Label ID="MaterialName" runat="server" Text='<%#Eval("RowMaterial")%>'></asp:Label>
                                                         </ItemTemplate>
                                                     </asp:TemplateField>
-
-                                                    
-
                                                     <asp:TemplateField HeaderText="In Qty" ItemStyle-HorizontalAlign="Center" Visible="false">
-
                                                         <ItemTemplate>
-                                                            <asp:Label ID="InwardQty" runat="server" Text='<%#Eval("TotalInwardQty")%>'></asp:Label>
+                                                            <asp:Label ID="InwardQty" runat="server" Text='<%#Eval("TotalRemainingQty")%>'></asp:Label>
                                                         </ItemTemplate>
                                                     </asp:TemplateField>
 
@@ -363,8 +359,6 @@
                                                     <asp:TemplateField HeaderText="ACTION" ItemStyle-HorizontalAlign="Center" HeaderStyle-Width="120">
                                                         <ItemTemplate>
                                                             <asp:LinkButton runat="server" ID="btnoutward" Height="27px" ToolTip="Create Outward Entry" CausesValidation="false" CommandName="RowOutward" CommandArgument='<%# Container.DataItemIndex %>'><i class="fas fa-shipping-fast"  style="font-size: 24px; color:orangered; "></i></asp:LinkButton>&nbsp;
-
-                                                        <asp:LinkButton ID="btnDefectOut" runat="server" Height="27px" ToolTip="Defect Outward" CausesValidation="false" CommandName="RowDefect" CommandArgument='<%# Container.DataItemIndex %>'><i class="fa-solid fa-arrow-up-from-bracket" style='font-size:24px;color: green;'></i></asp:LinkButton>
 
                                                              <asp:LinkButton runat="server" ID="lnkDefectout" Height="27px" ToolTip="Create Defect Outward Entry" CausesValidation="false" CommandName="RowDefect" CommandArgument='<%# Container.DataItemIndex %>'><i class="fas fa-shipping-fast"  style="font-size: 24px; color:green; "></i></asp:LinkButton>&nbsp;
                                                       <%--  <asp:LinkButton ID="btnEdit" runat="server" Height="27px" ToolTip="Edit Inward record" CausesValidation="false" CommandName="RowEdit" CommandArgument='<%# Container.DataItemIndex %>'><i class='fas fa-edit' style='font-size:24px;color: blue;'></i></asp:LinkButton>--%>
