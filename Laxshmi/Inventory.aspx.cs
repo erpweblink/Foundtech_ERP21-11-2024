@@ -582,12 +582,13 @@ public partial class Laxshmi_Inventory : System.Web.UI.Page
                 Double totaldefect = 0;
                 foreach (GridViewRow grd1 in GVDefects.Rows)
                 {
+
                     string lblQty = (grd1.FindControl("lblQty") as Label).Text;
                     totaldefect += Convert.ToDouble(lblQty);
                 }
                 Double defectqty = Convert.ToDouble(txtDefectqty.Text);
-                //Double defty = Convert.ToDouble(txtdefectedqty.Text) + totaldefect;
-                if (totaldefect <= defectqty)
+                Double defty = Convert.ToDouble(txtdefectedqty.Text) + totaldefect;
+                if (defty <= defectqty)
                 {
 
 
