@@ -339,6 +339,14 @@
                                                 <asp:Label ID="lblGradTotal" runat="server" />
                                             </FooterTemplate>
                                         </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="VehicleNo" HeaderStyle-CssClass="gvhead" ItemStyle-HorizontalAlign="Center">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblVehicleNo" runat="server" Text='<%#Eval("VehicleNo")%>'></asp:Label>
+                                            </ItemTemplate>
+                                            <FooterTemplate>
+                                                <asp:Label ID="lblGradTotal" runat="server" />
+                                            </FooterTemplate>
+                                        </asp:TemplateField>
                                     </Columns>
                                     <FooterStyle Font-Bold="True" ForeColor="Yellow" HorizontalAlign="Center" />
 
