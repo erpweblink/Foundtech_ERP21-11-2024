@@ -184,7 +184,7 @@
                         </div>
                         <div class="col-md-3">
                             <div style="margin-top: 14px;">
-                                <asp:Label ID="Label4" Font-Bold="true" runat="server" Text="Inward Number :"></asp:Label>
+                                <asp:Label ID="Label4" Font-Bold="true" runat="server" Text="Outward Number :"></asp:Label>
                                 <asp:TextBox ID="txtInwardno" CssClass="form-control" placeholder="Search Inward Number " runat="server" OnTextChanged="txtInwardno_TextChanged" Width="100%" AutoPostBack="true"></asp:TextBox>
                                 <asp:AutoCompleteExtender ID="AutoCompleteExtender5" runat="server" CompletionListCssClass="completionList"
                                     CompletionListHighlightedItemCssClass="itemHighlighted" CompletionListItemCssClass="listItem"
@@ -268,7 +268,7 @@
                                                 <asp:Label runat="server" />
                                             </FooterTemplate>
                                         </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Inward No" HeaderStyle-CssClass="gvhead" ItemStyle-HorizontalAlign="Center">
+                                        <asp:TemplateField HeaderText="Outward No" HeaderStyle-CssClass="gvhead" ItemStyle-HorizontalAlign="Center">
                                             <ItemTemplate>
                                                 <asp:Label ID="lblInwardNo" runat="server" Text='<%#Eval("OutwardNo")%>'></asp:Label>
                                             </ItemTemplate>
