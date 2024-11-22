@@ -410,7 +410,7 @@
                                                     ControlToValidate="txtrowmetarial" ValidationGroup="form1" ForeColor="Red" SetFocusOnError="true"></asp:RequiredFieldValidator>
                                                 <asp:AutoCompleteExtender ID="AutoCompleteExtender7" runat="server" CompletionListCssClass="completionList"
                                                     CompletionListHighlightedItemCssClass="itemHighlighted" CompletionListItemCssClass="listItem"
-                                                    CompletionInterval="10" MinimumPrefixLength="1" ServiceMethod="GetRMCList"
+                                                    CompletionInterval="10" MinimumPrefixLength="1" ServiceMethod="GetRowMaterialList"
                                                     TargetControlID="txtrowmetarial">
                                                 </asp:AutoCompleteExtender>
                                             </div>
