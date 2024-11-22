@@ -270,7 +270,7 @@
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Inward No" HeaderStyle-CssClass="gvhead" ItemStyle-HorizontalAlign="Center">
                                             <ItemTemplate>
-                                                <asp:Label ID="lblInwardNo" runat="server" Text='<%#Eval("InwardNo")%>'></asp:Label>
+                                                <asp:Label ID="lblInwardNo" runat="server" Text='<%#Eval("OutwardNo")%>'></asp:Label>
                                             </ItemTemplate>
                                             <FooterTemplate>
                                             </FooterTemplate>
