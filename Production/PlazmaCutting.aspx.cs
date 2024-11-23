@@ -533,7 +533,7 @@ public partial class Production_PlazmaCutting : System.Web.UI.Page
         cmd.ExecuteNonQuery();
         Cls_Main.Conn_Close();
         Cls_Main.Conn_Dispose();
-        ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", "alert('Saved Record Successfully..!!');window.location='Drawing.aspx';", true);
+        ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", "alert('Saved Record Successfully..!!');window.location='PlazmaCutting.aspx';", true);
     }
 
     protected void btncancle_Click(object sender, EventArgs e)

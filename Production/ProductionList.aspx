@@ -400,7 +400,7 @@
                                 <div class="row">
                                     <div class="col-md-12">
 
-                                        <asp:CheckBox ID="Drawing" runat="server" CssClass="form-check-input" />
+                                        <asp:CheckBox ID="Drawing" Checked="true"  runat="server" CssClass="form-check-input" />
                                         <label style="font-weight: bold">Drawing</label>&nbsp;&nbsp;&nbsp;
                                        
                                         <asp:CheckBox ID="PlazmaCutting" runat="server" CssClass="form-check-input" />

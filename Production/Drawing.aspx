@@ -12,6 +12,24 @@
             $("[id*=ddlRMC]").select2();
 
         });
+        function addNewDiv() {
+            // Get the count of file input fields to create unique names
+            var fileCount = $('input[type="file"]').length;
+
+            // Append new file input and remark fields to the container
+            $('#container').append(`
+        <div class="col-md-6 mb-3">
+            <input type="hidden" name="HFfile1" />
+            <label class="form-label LblStyle" style="font-weight: bold;">Drawing Attachment:</label>
+            <input type="file" name="fileUpload_${fileCount}" class="form-control" />
+            <label style="color: red;"></label>
+        </div>
+        <div class="col-md-6 col-12 mb-3">
+            <label class="form-label" style="font-weight: bold;">Drawing Remarks:</label>
+            <textarea class="form-control" name="fileRemarks_${fileCount}" placeholder="Enter Drawing Remark"></textarea>
+        </div>
+                                   `);
+        }
     </script>
     <style>
         span.select2.select2-container.select2-container--default.select2-container--focus {
@@ -227,7 +245,7 @@
 
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
-    <form id="form1" runat="server">
+    <form id="form1" runat="server" enctype="multipart/form-data">
         <asp:ToolkitScriptManager ID="ToolkitScriptManager2" runat="server">
         </asp:ToolkitScriptManager>
         <asp:UpdatePanel ID="UpdatePanel1" runat="server">
@@ -279,7 +297,7 @@
                                                         <asp:Label ID="Total_Price" runat="server" Text='<%#Eval("TotalQuantity")%>'></asp:Label>
                                                     </ItemTemplate>
                                                 </asp:TemplateField>
-                                                <asp:TemplateField HeaderText="In Qty" ItemStyle-HorizontalAlign="Center">
+                                                <%--<asp:TemplateField HeaderText="In Qty" ItemStyle-HorizontalAlign="Center">
                                                     <ItemTemplate>
                                                         <asp:Label ID="InwardQty" runat="server" Text='<%#Eval("TotalQuantity")%>'></asp:Label>
                                                     </ItemTemplate>
@@ -293,7 +311,7 @@
                                                     <ItemTemplate>
                                                         <asp:Label ID="RevertQty" runat="server" Text='<%#Eval("RevertQty")%>'></asp:Label>
                                                     </ItemTemplate>
-                                                </asp:TemplateField>
+                                                </asp:TemplateField>--%>
                                                 <asp:TemplateField HeaderText="Attachment" ItemStyle-HorizontalAlign="Center">
                                                     <ItemTemplate>
                                                         <asp:ImageButton ID="ImageButtonfile2" ImageUrl="../Content1/img/Open-file2.png" runat="server" Width="30px" OnClick="ImageButtonfile2_Click" CommandArgument='<%# Eval("JobNo") %>' ToolTip="Open File" />
@@ -344,29 +362,28 @@
                                                 <asp:Label ID="Label6" runat="server" Font-Bold="true" CssClass="form-label">Total Quantity:</asp:Label>
                                                 <asp:TextBox ID="txttotalqty" CssClass="form-control" ReadOnly="true" runat="server"></asp:TextBox>
                                             </div>
-
-                                            <div class="col-md-6 col-12 mb-3">
-                                                <asp:Label ID="Label16" runat="server" Font-Bold="true" CssClass="form-label">Inward QTY:</asp:Label>
-                                                <asp:TextBox ID="txtinwardqty" CssClass="form-control" ReadOnly="true" runat="server"></asp:TextBox>
-                                            </div>
                                             <div class="col-md-6 col-12 mb-3">
                                                 <asp:Label ID="Label2" runat="server" Font-Bold="true" CssClass="form-label">Outward QTY:</asp:Label>
-                                                <asp:TextBox ID="txtoutwardqty" CssClass="form-control" placeholder="Enter Outward QTY" TextMode="Number" runat="server"></asp:TextBox>
+                                                <asp:TextBox ID="txtoutwardqty" CssClass="form-control" ReadOnly="true"  placeholder="Enter Outward QTY" TextMode="Number" runat="server"></asp:TextBox>
                                             </div>
-                                            <div class="col-md-6 col-12 mb-3">
-                                                <asp:Label ID="Label12" runat="server" Font-Bold="true" CssClass="form-label">Pending QTY:</asp:Label>
-                                                <asp:TextBox ID="txtpending" CssClass="form-control" placeholder="Enter Pending QTY" TextMode="Number" runat="server" Enabled="false"></asp:TextBox>
-                                            </div>
-
-                                            <div class="col-md-6 col-12 mb-3">
-                                                <asp:Label ID="Label3" runat="server" Font-Bold="true" CssClass="form-label">Remarks:</asp:Label>
-                                                <asp:TextBox ID="txtRemarks" CssClass="form-control" placeholder="Enter Remark" TextMode="MultiLine" runat="server"></asp:TextBox>
-                                            </div>
-                                            <div class="col-md-6 mb-3">
+                                            <%--   <div class="col-md-6 mb-3" runat="server" visible="false">
                                                 <asp:HiddenField ID="HFfile1" runat="server" />
                                                 <asp:Label ID="lblCompanyPan" runat="server" Font-Bold="true" CssClass="form-label LblStyle">Drawing Attachment:</asp:Label>
                                                 <asp:FileUpload ID="fileUpload" CssClass="form-control" runat="server" />
                                                 <asp:Label ID="lblPath1" runat="server" Text="" ForeColor="Red"></asp:Label>
+                                            </div>--%>
+
+                                            <div id="container" class="row">
+                                                <!-- Existing divs will go here -->
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <asp:Button ID="btnAdd" runat="server" Text="Add Drawing" OnClientClick="addNewDiv(); return false;" CssClass="btn btn-primary" />
+                                            </div>
+                                            <div class="col-md-6 col-12 mb-3">
+                                            </div>
+                                            <div class="col-md-6 col-12 mb-3">
+                                                <asp:Label ID="Label3" runat="server" Font-Bold="true" CssClass="form-label">Remarks:</asp:Label>
+                                                <asp:TextBox ID="txtRemarks" CssClass="form-control" placeholder="Enter Remark" TextMode="MultiLine" runat="server"></asp:TextBox>
                                             </div>
                                             <div class="col-md-12">
                                                 <div class="col-md-4"></div>

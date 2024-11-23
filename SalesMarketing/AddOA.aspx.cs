@@ -54,7 +54,7 @@ public partial class SalesMarketing_AddOA : System.Web.UI.Page
 
                 ViewState["RowNo"] = 0;
 
-                Dt_Product.Columns.AddRange(new DataColumn[17] { new DataColumn("id"), new DataColumn("Productname"), new DataColumn("Description"), new DataColumn("HSN"), new DataColumn("Quantity"), new DataColumn("Units"), new DataColumn("Rate"), new DataColumn("Total"), new DataColumn("CGSTPer"), new DataColumn("CGSTAmt"), new DataColumn("SGSTPer"), new DataColumn("SGSTAmt"), new DataColumn("IGSTPer"), new DataColumn("IGSTAmt"), new DataColumn("Discountpercentage"), new DataColumn("DiscountAmount"), new DataColumn("Alltotal")});
+                Dt_Product.Columns.AddRange(new DataColumn[18] { new DataColumn("id"), new DataColumn("Productname"), new DataColumn("Description"), new DataColumn("HSN"), new DataColumn("Quantity"), new DataColumn("Units"), new DataColumn("Rate"), new DataColumn("Total"), new DataColumn("CGSTPer"), new DataColumn("CGSTAmt"), new DataColumn("SGSTPer"), new DataColumn("SGSTAmt"), new DataColumn("IGSTPer"), new DataColumn("IGSTAmt"), new DataColumn("Discountpercentage"), new DataColumn("DiscountAmount"), new DataColumn("Alltotal"), new DataColumn("Weight") });
                 ViewState["PurchaseOrderProduct"] = Dt_Product;
 
                 //Edit 
@@ -100,10 +100,10 @@ public partial class SalesMarketing_AddOA : System.Web.UI.Page
             lblfile1.Text = Dt.Rows[0]["fileName"].ToString();
 
             ddlContacts.SelectedItem.Text = Dt.Rows[0]["KindAtt"].ToString();
-
-            if (Dt.Rows[0]["Username1"] != null && Dt.Rows[0]["Username1"] != DBNull.Value)
+            FillddlUsers();
+            if (Dt.Rows[0]["UserCode"] != null && Dt.Rows[0]["UserCode"] != DBNull.Value)
             {
-                ddlUser.SelectedItem.Text = Dt.Rows[0]["Username1"].ToString();
+                ddlUser.SelectedValue = Dt.Rows[0]["UserCode"].ToString();
             }
             DateTime ffff2 = Convert.ToDateTime(Dt.Rows[0]["PoDate"].ToString());
             txtmobileno.Text = Dt.Rows[0]["Mobileno"].ToString();
@@ -141,7 +141,7 @@ public partial class SalesMarketing_AddOA : System.Web.UI.Page
 
             for (int i = 0; i < DTCOMP.Rows.Count; i++)
             {
-                Dt_Product.Rows.Add(count, DTCOMP.Rows[i]["Productname"].ToString(), DTCOMP.Rows[i]["Description"].ToString(), DTCOMP.Rows[i]["HSN"].ToString(), DTCOMP.Rows[i]["Quantity"].ToString(), DTCOMP.Rows[i]["Units"].ToString(), DTCOMP.Rows[i]["Rate"].ToString(), DTCOMP.Rows[i]["Total"].ToString(), DTCOMP.Rows[i]["CGSTPer"].ToString(), DTCOMP.Rows[i]["CGSTAmt"].ToString(), DTCOMP.Rows[i]["SGSTPer"].ToString(), DTCOMP.Rows[i]["SGSTAmt"].ToString(), DTCOMP.Rows[i]["IGSTPer"].ToString(), DTCOMP.Rows[i]["IGSTAmt"].ToString(), DTCOMP.Rows[i]["Discountpercentage"].ToString(), DTCOMP.Rows[i]["DiscountAmount"].ToString(), DTCOMP.Rows[i]["Alltotal"].ToString());
+                Dt_Product.Rows.Add(count, DTCOMP.Rows[i]["Productname"].ToString(), DTCOMP.Rows[i]["Description"].ToString(), DTCOMP.Rows[i]["HSN"].ToString(), DTCOMP.Rows[i]["Quantity"].ToString(), DTCOMP.Rows[i]["Units"].ToString(), DTCOMP.Rows[i]["Rate"].ToString(), DTCOMP.Rows[i]["Total"].ToString(), DTCOMP.Rows[i]["CGSTPer"].ToString(), DTCOMP.Rows[i]["CGSTAmt"].ToString(), DTCOMP.Rows[i]["SGSTPer"].ToString(), DTCOMP.Rows[i]["SGSTAmt"].ToString(), DTCOMP.Rows[i]["IGSTPer"].ToString(), DTCOMP.Rows[i]["IGSTAmt"].ToString(), DTCOMP.Rows[i]["Discountpercentage"].ToString(), DTCOMP.Rows[i]["DiscountAmount"].ToString(), DTCOMP.Rows[i]["Alltotal"].ToString(), DTCOMP.Rows[i]["Weight"].ToString());
                 count = count + 1;
             }
         }
@@ -155,7 +155,7 @@ public partial class SalesMarketing_AddOA : System.Web.UI.Page
     {
         divTotalPart.Visible = true;
         DataTable Dt = (DataTable)ViewState["PurchaseOrderProduct"];
-        Dt.Rows.Add(ViewState["RowNo"], txtProduct.Text, txtdescription.Text.Trim(), txthsnsac.Text.Trim(), txtquantity.Text, txtunit.Text, txtrate.Text, txttotal.Text, txtCGST.Text, txtCGSTamt.Text, txtSGST.Text, txtSGSTamt.Text, txtIGST.Text, txtIGSTamt.Text, txtdiscount.Text, txtdiscountamt.Text, txtgrandtotal.Text);
+        Dt.Rows.Add(ViewState["RowNo"], txtProduct.Text, txtdescription.Text.Trim(), txthsnsac.Text.Trim(), txtquantity.Text, txtunit.Text, txtrate.Text, txttotal.Text, txtCGST.Text, txtCGSTamt.Text, txtSGST.Text, txtSGSTamt.Text, txtIGST.Text, txtIGSTamt.Text, txtdiscount.Text, txtdiscountamt.Text, txtgrandtotal.Text, txtweight.Text);
         ViewState["PurchaseOrderProduct"] = Dt;
     
         txtdescription.Text = string.Empty;
@@ -289,7 +289,15 @@ public partial class SalesMarketing_AddOA : System.Web.UI.Page
 
                         cmd.Parameters.AddWithValue("@GSTNo", txtgstno.Text);
                         cmd.Parameters.AddWithValue("@PANNo", txtpanno.Text);
-                        cmd.Parameters.AddWithValue("@UserName", ddlUser.SelectedValue);
+                        if (ddlUser.SelectedValue == "-- Select User Name--")
+                        {
+                            cmd.Parameters.AddWithValue("@UserName", Session["UserCode"].ToString());
+                        }
+                        else
+                        {
+                            cmd.Parameters.AddWithValue("@UserName", ddlUser.SelectedValue);
+                        }
+                       
                         if (ViewState["attachment"] != null)
                         {
                             byte[] fileContent = (byte[])ViewState["attachment"];
@@ -353,10 +361,11 @@ public partial class SalesMarketing_AddOA : System.Web.UI.Page
                             string lblDiscount = (grd1.FindControl("lblDiscount") as Label).Text;
                             string lblDiscountAmount = (grd1.FindControl("lblDiscountAmount") as Label).Text;
                             string lblAlltotal = (grd1.FindControl("lblAlltotal") as Label).Text;          
+                            string lblWeight = (grd1.FindControl("lblWeight") as Label).Text;          
 
 
                             Cls_Main.Conn_Open();
-                            SqlCommand cmdd = new SqlCommand("INSERT INTO tbl_OrderAcceptanceDtls (Pono,Productname,Description,HSN,Quantity,Units,Rate,CGSTPer,CGSTAmt,SGSTPer,SGSTAmt,IGSTPer,IGSTAmt,Total,Discountpercentage,DiscountAmount,Alltotal,CreatedOn) VALUES(@Pono,@Productname,@Description,@HSN,@Quantity,@Units,@Rate,@CGSTPer,@CGSTAmt,@SGSTPer,@SGSTAmt,@IGSTPer,@IGSTAmt,@Total,@Discountpercentage,@DiscountAmount,@Alltotal,@CreatedOn)", Cls_Main.Conn);
+                            SqlCommand cmdd = new SqlCommand("INSERT INTO tbl_OrderAcceptanceDtls (Pono,Productname,Description,HSN,Quantity,Units,Rate,CGSTPer,CGSTAmt,SGSTPer,SGSTAmt,IGSTPer,IGSTAmt,Total,Discountpercentage,DiscountAmount,Alltotal,Weight,CreatedOn) VALUES(@Pono,@Productname,@Description,@HSN,@Quantity,@Units,@Rate,@CGSTPer,@CGSTAmt,@SGSTPer,@SGSTAmt,@IGSTPer,@IGSTAmt,@Total,@Discountpercentage,@DiscountAmount,@Alltotal,@lblWeight,@CreatedOn)", Cls_Main.Conn);
                             cmdd.Parameters.AddWithValue("@Pono", txtpono.Text);
                             cmdd.Parameters.AddWithValue("@Productname", lblproduct);
                             cmdd.Parameters.AddWithValue("@Description", lblDescription);
@@ -374,6 +383,7 @@ public partial class SalesMarketing_AddOA : System.Web.UI.Page
                             cmdd.Parameters.AddWithValue("@Discountpercentage", lblDiscount);
                             cmdd.Parameters.AddWithValue("@DiscountAmount", lblDiscountAmount);
                             cmdd.Parameters.AddWithValue("@Alltotal", lblAlltotal);                   
+                            cmdd.Parameters.AddWithValue("@lblWeight", lblWeight);                   
                             cmdd.Parameters.AddWithValue("@CreatedBy", Session["UserCode"].ToString());
                             cmdd.Parameters.AddWithValue("@CreatedOn", DateTime.Now);
                             cmdd.ExecuteNonQuery();
@@ -408,7 +418,14 @@ public partial class SalesMarketing_AddOA : System.Web.UI.Page
                         cmd.Parameters.AddWithValue("@Total_Price", txt_grandTotal.Text);
                         cmd.Parameters.AddWithValue("@Totalinword", lbl_total_amt_Value.Text);
                         cmd.Parameters.AddWithValue("@Paymentterm", txtpaymentterm.Text);
-                        cmd.Parameters.AddWithValue("@UserName", ddlUser.SelectedValue);
+                        if (ddlUser.SelectedValue == "-- Select User Name--")
+                        {
+                            cmd.Parameters.AddWithValue("@UserName", Session["UserCode"].ToString());
+                        }
+                        else
+                        {
+                            cmd.Parameters.AddWithValue("@UserName", ddlUser.SelectedValue);
+                        }
                         cmd.Parameters.AddWithValue("@IsDeleted", '0');
                         if (ViewState["attachment"] != null)
                         {
@@ -460,11 +477,12 @@ public partial class SalesMarketing_AddOA : System.Web.UI.Page
                             string lblDiscount = (grd1.FindControl("lblDiscount") as Label).Text;
                             string lblDiscountAmount = (grd1.FindControl("lblDiscountAmount") as Label).Text;
                             string lblAlltotal = (grd1.FindControl("lblAlltotal") as Label).Text;
-                    
+                            string lblWeight = (grd1.FindControl("lblWeight") as Label).Text;
+
 
 
                             Cls_Main.Conn_Open();
-                            SqlCommand cmdd = new SqlCommand("INSERT INTO tbl_OrderAcceptanceDtls (Pono,Productname,Description,HSN,Quantity,Units,Rate,CGSTPer,CGSTAmt,SGSTPer,SGSTAmt,IGSTPer,IGSTAmt,Total,Discountpercentage,DiscountAmount,Alltotal,CreatedOn) VALUES(@Pono,@Productname,@Description,@HSN,@Quantity,@Units,@Rate,@CGSTPer,@CGSTAmt,@SGSTPer,@SGSTAmt,@IGSTPer,@IGSTAmt,@Total,@Discountpercentage,@DiscountAmount,@Alltotal,@CreatedOn)", Cls_Main.Conn);
+                            SqlCommand cmdd = new SqlCommand("INSERT INTO tbl_OrderAcceptanceDtls (Pono,Productname,Description,HSN,Quantity,Units,Rate,CGSTPer,CGSTAmt,SGSTPer,SGSTAmt,IGSTPer,IGSTAmt,Total,Discountpercentage,DiscountAmount,Alltotal,Weight,CreatedOn) VALUES(@Pono,@Productname,@Description,@HSN,@Quantity,@Units,@Rate,@CGSTPer,@CGSTAmt,@SGSTPer,@SGSTAmt,@IGSTPer,@IGSTAmt,@Total,@Discountpercentage,@DiscountAmount,@Alltotal,@lblWeight,@CreatedOn)", Cls_Main.Conn);
                             cmdd.Parameters.AddWithValue("@Pono", txtpono.Text);
                             cmdd.Parameters.AddWithValue("@Productname", lblproduct);
                             cmdd.Parameters.AddWithValue("@Description", lblDescription);
@@ -482,6 +500,7 @@ public partial class SalesMarketing_AddOA : System.Web.UI.Page
                             cmdd.Parameters.AddWithValue("@Discountpercentage", lblDiscount);
                             cmdd.Parameters.AddWithValue("@DiscountAmount", lblDiscountAmount);
                             cmdd.Parameters.AddWithValue("@Alltotal", lblAlltotal);                    
+                            cmdd.Parameters.AddWithValue("@lblWeight", lblWeight);                    
                             cmdd.Parameters.AddWithValue("@CreatedBy", Session["UserCode"].ToString());
                             cmdd.Parameters.AddWithValue("@CreatedOn", DateTime.Now);
                             cmdd.ExecuteNonQuery();
@@ -782,6 +801,7 @@ public partial class SalesMarketing_AddOA : System.Web.UI.Page
         string Discount = ((TextBox)row.FindControl("txtDiscount")).Text;
         string DiscountAmt = ((TextBox)row.FindControl("txtDiscountAmount")).Text;
         string AllTotal = ((TextBox)row.FindControl("txtAlltotal")).Text;
+        string Weight = ((TextBox)row.FindControl("Weight")).Text;
     
         DataTable Dt = ViewState["PurchaseOrderProduct"] as DataTable;
         Dt.Rows[row.RowIndex]["Productname"] = Product;
@@ -800,6 +820,7 @@ public partial class SalesMarketing_AddOA : System.Web.UI.Page
         Dt.Rows[row.RowIndex]["Discountpercentage"] = Discount;
         Dt.Rows[row.RowIndex]["DiscountAmount"] = DiscountAmt;
         Dt.Rows[row.RowIndex]["Alltotal"] = AllTotal;   
+        Dt.Rows[row.RowIndex]["Weight"] = Weight;   
         Dt.AcceptChanges();
         ViewState["PurchaseOrderProduct"] = Dt;
         dgvMachineDetails.EditIndex = -1;
@@ -826,6 +847,7 @@ public partial class SalesMarketing_AddOA : System.Web.UI.Page
         string IGSTAmt = ((TextBox)row.FindControl("txtIGST")).Text;
         string Discount = ((TextBox)row.FindControl("txtDiscount")).Text;
         string AllTotal = ((TextBox)row.FindControl("txtAlltotal")).Text;
+        string Weight = ((TextBox)row.FindControl("Weight")).Text;
 
         DataTable Dt = ViewState["PurchaseOrderProduct"] as DataTable;
         Dt.Rows[row.RowIndex]["Productname"] = Product;
@@ -843,6 +865,7 @@ public partial class SalesMarketing_AddOA : System.Web.UI.Page
         Dt.Rows[row.RowIndex]["IGSTAmt"] = IGSTAmt;
         Dt.Rows[row.RowIndex]["Discountpercentage"] = Discount;
         Dt.Rows[row.RowIndex]["Alltotal"] = AllTotal;
+        Dt.Rows[row.RowIndex]["Weight"] = Weight;
         Dt.AcceptChanges();
         ViewState["PurchaseOrderProduct"] = Dt;
         dgvMachineDetails.EditIndex = -1;

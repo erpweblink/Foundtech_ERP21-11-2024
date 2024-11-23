@@ -106,34 +106,34 @@ public partial class Production_Drawing : System.Web.UI.Page
             int rowIndex = Convert.ToInt32(e.CommandArgument);
             GridViewRow row = GVPurchase.Rows[rowIndex];
             string Total_Price = ((Label)row.FindControl("Total_Price")).Text;
-            string OutwardQty = ((Label)row.FindControl("OutwardQty")).Text;
+          //  string OutwardQty = ((Label)row.FindControl("OutwardQty")).Text;
             string CustomerName = ((Label)row.FindControl("CustomerName")).Text;
             string JobNo = ((Label)row.FindControl("jobno")).Text;
            
            
             txtcustomername.Text = CustomerName;
-            txtinwardqty.Text = Total_Price;
+            //txtinwardqty.Text = Total_Price;
             txttotalqty.Text = Total_Price;
-            txtoutwardqty.Text = OutwardQty;
-            int A, B;
+            txtoutwardqty.Text = Total_Price;
+            //int A, B;
 
-            // Try to parse inward quantity; default to 0 if parsing fails
-            if (!int.TryParse(txtinwardqty.Text, out A))
-            {
-                A = 0;
-            }
+            //// Try to parse inward quantity; default to 0 if parsing fails
+            //if (!int.TryParse(txtinwardqty.Text, out A))
+            //{
+            //    A = 0;
+            //}
 
-            // Try to parse outward quantity; default to 0 if parsing fails
-            if (!int.TryParse(txtoutwardqty.Text, out B))
-            {
-                B = 0;
-            }
+            //// Try to parse outward quantity; default to 0 if parsing fails
+            //if (!int.TryParse(txtoutwardqty.Text, out B))
+            //{
+            //    B = 0;
+            //}
 
-            // Calculate the pending quantity and convert to string for the Text property
-            txtpending.Text = (A - B).ToString();
+            //// Calculate the pending quantity and convert to string for the Text property
+            //txtpending.Text = (A - B).ToString();
         
 
-            txtpending.Text = (A - B).ToString();
+            //txtpending.Text = (A - B).ToString();
             txtjobno.Text = JobNo;
             this.ModalPopupHistory.Show();
         }
@@ -231,33 +231,56 @@ public partial class Production_Drawing : System.Web.UI.Page
     {
         try
         {
-            //Recvied From First Stage start//////////////
             Cls_Main.Conn_Open();
-            SqlCommand cmdselect1 = new SqlCommand("select InwardQTY from  tbl_ProductionDTLS  WHERE StageNumber=@StageNumber AND JobNo=@JobNo", Cls_Main.Conn);
-            cmdselect1.Parameters.AddWithValue("@StageNumber", "1");
-            cmdselect1.Parameters.AddWithValue("@JobNo", txtjobno.Text);
-            Object Onwardqty = cmdselect1.ExecuteScalar();
+
+            // Loop through the Request.Files to process the uploaded files
+            for (int i = 0; i < Request.Files.Count; i++)
+            {
+                HttpPostedFile file = Request.Files[i];
+                if (file != null && file.ContentLength > 0)
+                {
+                    // Get the file name and save path
+                    string fileName = Path.GetFileName(file.FileName);
+                    string savePath = Server.MapPath("~/Drawings/" + fileName);
+
+                    // Save the file
+                    file.SaveAs(savePath);
+
+                    // Get the corresponding remark for this file
+                    string remark = string.Empty;
+                    string remarkKey = string.Format("fileRemarks_{0}", i); // Generate the key for the remark
+                    if (Request.Form.AllKeys.Contains(remarkKey))
+                    {
+                        remark = Request.Form[remarkKey];
+                    }
+
+                    // Insert file details and remark into the database
+                    string insertQuery = "INSERT INTO tbl_DrawingDetails (JobNo, FileName, Remark,CreatedBy,CreatedOn) VALUES (@JobNo, @FileName, @Remark,@CreatedBy,@CreatedOn)";
+                    using (SqlCommand cmd = new SqlCommand(insertQuery, Cls_Main.Conn))
+                    {
+                        // Add parameters to prevent SQL injection
+                        cmd.Parameters.AddWithValue("@JobNo", txtjobno.Text.Trim());  // Ensure JobNo is correctly set
+                        cmd.Parameters.AddWithValue("@FileName", fileName);
+                        cmd.Parameters.AddWithValue("@Remark", remark);
+                        cmd.Parameters.AddWithValue("@CreatedBy", Session["UserCode"].ToString());
+                        cmd.Parameters.AddWithValue("@CreatedOn", DateTime.Now);
+                        // Execute the insert query
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+            }
+
+            // Close the connection (if not managed by Cls_Main)
             Cls_Main.Conn_Close();
-            ////END /////////
+
             Cls_Main.Conn_Open();
-            SqlCommand Cmd = new SqlCommand("UPDATE [tbl_ProductionDTLS] SET OutwardQTY=@OutwardQTY,OutwardBy=@OutwardBy,OutwardDate=@OutwardDate,Remark=@Remark,InwardQTY=@InwardQTY,filePath=@filePath,Status=@Status WHERE StageNumber=@StageNumber AND JobNo=@JobNo", Cls_Main.Conn);
+            SqlCommand Cmd = new SqlCommand("UPDATE [tbl_ProductionDTLS] SET OutwardQTY=@OutwardQTY,OutwardBy=@OutwardBy,OutwardDate=@OutwardDate,Remark=@Remark,InwardQTY=@InwardQTY,Status=@Status WHERE StageNumber=@StageNumber AND JobNo=@JobNo", Cls_Main.Conn);
             Cmd.Parameters.AddWithValue("@StageNumber", 0);
-            Cmd.Parameters.AddWithValue("@JobNo", txtjobno.Text);
-            if (fileUpload.HasFile)
-            {
-                string filename = Path.GetFileName(fileUpload.FileName);
-                string[] pdffilename = filename.Split('.');
-                string pdffilename1 = pdffilename[0];
-                string filenameExt = pdffilename[1];
-                string time1 = DateTime.Now.ToString("ddmmyyyyttmmss");
-                fileUpload.SaveAs(Server.MapPath("~/Drawings/") + pdffilename1 + time1 + "." + filenameExt);
-                Cmd.Parameters.AddWithValue("@filePath", pdffilename1 + time1 + "." + filenameExt);
-            }
-            else
-            {
-                Cmd.Parameters.AddWithValue("@filePath", DBNull.Value);
-            }
-            if (txtinwardqty.Text == txtoutwardqty.Text)
+            Cmd.Parameters.AddWithValue("@JobNo", txtjobno.Text);   
+            Cmd.Parameters.AddWithValue("@InwardQTY", txttotalqty.Text);
+            Cmd.Parameters.AddWithValue("@OutwardQTY", txtoutwardqty.Text);       
+            Cmd.Parameters.AddWithValue("@Remark", txtRemarks.Text);
+            if (txttotalqty.Text == txtoutwardqty.Text)
             {
                 Cmd.Parameters.AddWithValue("@Status", 2);
             }
@@ -265,22 +288,6 @@ public partial class Production_Drawing : System.Web.UI.Page
             {
                 Cmd.Parameters.AddWithValue("@Status", 1);
             }
-
-             /////Add Quantity Start //////////
-            int E = Convert.ToInt32(Onwardqty);
-            int D;
-            if (!int.TryParse(txtoutwardqty.Text, out D))
-            {
-                D = 0; 
-            }
-           
-            var F = D + E;
-            /////Add Quantity END //////////
-
-            Cmd.Parameters.AddWithValue("@InwardQTY", txtinwardqty.Text);
-            //Cmd.Parameters.AddWithValue("@OutwardQTY", txtoutwardqty.Text);
-            Cmd.Parameters.AddWithValue("@OutwardQTY", F);
-            Cmd.Parameters.AddWithValue("@Remark", txtRemarks.Text);
             Cmd.Parameters.AddWithValue("@OutwardBy", Session["UserCode"].ToString());
             Cmd.Parameters.AddWithValue("@OutwardDate", DateTime.Now);
             Cmd.ExecuteNonQuery();
@@ -290,34 +297,13 @@ public partial class Production_Drawing : System.Web.UI.Page
             if (Dt.Rows.Count > 0)
             {
                 int StageNumber = Convert.ToInt32(Dt.Rows[0]["StageNumber"].ToString());
-              
-                ////////Inward From first Stage//////////////////////
-                Cls_Main.Conn_Open();
-                SqlCommand cmdselect = new SqlCommand("select InwardQTY from  tbl_ProductionDTLS  WHERE StageNumber=@StageNumber AND JobNo=@JobNo", Cls_Main.Conn);
-                cmdselect.Parameters.AddWithValue("@StageNumber", StageNumber);
-                cmdselect.Parameters.AddWithValue("@JobNo", txtjobno.Text);
-                Object Inwardqty = cmdselect.ExecuteScalar();
-                Cls_Main.Conn_Close();
-                ////////////END//////////////////
 
                 Cls_Main.Conn_Open();
                 SqlCommand Cmd1 = new SqlCommand("UPDATE [tbl_ProductionDTLS] SET InwardQTY=@InwardQTY,InwardBy=@InwardBy,InwardDate=@InwardDate,Status=@Status WHERE StageNumber=@StageNumber AND JobNo=@JobNo", Cls_Main.Conn);
                 Cmd1.Parameters.AddWithValue("@StageNumber", StageNumber);
                 Cmd1.Parameters.AddWithValue("@JobNo", txtjobno.Text);
-                Cmd1.Parameters.AddWithValue("@Status", 1);
-                //////// adding Both Quntity/////////
-                int A = Convert.ToInt32( Inwardqty);
-                int B;
-                if (!int.TryParse(txtoutwardqty.Text, out B))
-                {
-                    B = 0; 
-                }
-
-                // Now you can safely add A and B
-                var C = A + B;
-                /////////////////END/////////////
-                //Cmd1.Parameters.AddWithValue("@InwardQTY", txtoutwardqty.Text);
-                Cmd1.Parameters.AddWithValue("@InwardQTY", C);
+                Cmd1.Parameters.AddWithValue("@Status", 1);            
+                Cmd1.Parameters.AddWithValue("@InwardQTY", txttotalqty.Text);
                 Cmd1.Parameters.AddWithValue("@InwardBy", Session["UserCode"].ToString());
                 Cmd1.Parameters.AddWithValue("@InwardDate", DateTime.Now);
                 Cmd1.ExecuteNonQuery();
@@ -326,19 +312,6 @@ public partial class Production_Drawing : System.Web.UI.Page
             ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", "alert('Saved Record Successfully And Send to the Next..!!');window.location='Drawing.aspx';", true);
             FillGrid();
 
-
-            if(txtpending.Text== txtoutwardqty.Text)
-            {
-                //////////////////////////////
-                Cls_Main.Conn_Open();
-                SqlCommand Cmd2 = new SqlCommand("UPDATE [tbl_ProductionDTLS] SET  RevertQty= @RevertQty WHERE StageNumber=@StageNumber AND JobNo=@JobNo", Cls_Main.Conn);
-                Cmd2.Parameters.AddWithValue("@StageNumber", 0);
-                Cmd2.Parameters.AddWithValue("@JobNo", txtjobno.Text);
-                Cmd2.Parameters.AddWithValue("@RevertQty", 0);
-                Cmd2.ExecuteNonQuery();
-                Cls_Main.Conn_Close();
-                //////////////////////////////
-            }
         }
         catch
         {

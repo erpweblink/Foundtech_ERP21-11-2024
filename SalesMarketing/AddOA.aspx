@@ -16,6 +16,13 @@
         });
     </script>
     <style>
+        .spncls {
+            color: #f20707 !important;
+            font-size: 13px !important;
+            font-weight: bold;
+            text-align: left;
+        }
+
         .spancls {
             color: #5d5656 !important;
             font-size: 13px !important;
@@ -151,7 +158,7 @@
                                     <div class="col-md-6 col-12 mb-3">
                                         <asp:Label ID="Label2" runat="server" Font-Bold="true" CssClass="form-label"><span class="spncls">*</span>Kindd Att  :</asp:Label>
 
-                                        <asp:DropDownList runat="server" ID="ddlContacts"  ValidationGroup="1"  CssClass="form-control">
+                                        <asp:DropDownList runat="server" ID="ddlContacts" ValidationGroup="1" CssClass="form-control">
                                         </asp:DropDownList>
                                         <asp:RequiredFieldValidator ID="RequiredFieldValidator1" InitialValue="-- Select Kindd Att --" runat="server" ErrorMessage="Please Add Contact person" ControlToValidate="ddlContacts" ForeColor="Red"></asp:RequiredFieldValidator>
 
@@ -161,7 +168,7 @@
                                     <div class="col-md-6 col-12 mb-3">
                                         <asp:Label ID="Label19" runat="server" Font-Bold="true" CssClass="form-label">User Name:</asp:Label>
 
-                                        <asp:DropDownList runat="server" ID="ddlUser"  ValidationGroup="1"  CssClass="form-control">
+                                        <asp:DropDownList runat="server" ID="ddlUser" ValidationGroup="1" CssClass="form-control">
                                         </asp:DropDownList>
 
                                     </div>
@@ -276,58 +283,58 @@
                                         <div class="table-responsive">
                                             <table class="table table-bordered table-bordered-bd-warning mt-4" border="1" style="width: 100%; border: 1px solid #0c7d38;">
                                                 <thead>
-                                                    <tr class="gvhead" style="text-align:center">
+                                                    <tr class="gvhead" style="text-align: center">
                                                         <td>Product</td>
                                                         <td>Description</td>
-                                                        <td >HSN / SAC</td>
+                                                        <td>HSN / SAC</td>
                                                         <td>Quantity</td>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
                                                     <tr>
                                                         <td>
-                                                           <asp:TextBox ID="txtProduct" CssClass="form-control" placeholder="Enter Product"  runat="server"></asp:TextBox>
+                                                            <asp:TextBox ID="txtProduct" CssClass="form-control" placeholder="Enter Product" runat="server"></asp:TextBox>
                                                         </td>
                                                         <td>
                                                             <asp:TextBox ID="txtdescription" Width="230px" TextMode="MultiLine" CssClass="form-control" runat="server"></asp:TextBox>
                                                         </td>
-                                                        <td >
-                                                            <asp:TextBox ID="txthsnsac" Width="190px"  CssClass="form-control" Text="NULL"  runat="server"></asp:TextBox>
+                                                        <td>
+                                                            <asp:TextBox ID="txthsnsac" Width="190px" CssClass="form-control" Text="NULL" runat="server"></asp:TextBox>
                                                         </td>
                                                         <td>
-                                                            <asp:TextBox ID="txtquantity" Width="190px" CssClass="form-control" Text="0"  OnTextChanged="txtquantity_TextChanged" AutoPostBack="true" runat="server"></asp:TextBox>
+                                                            <asp:TextBox ID="txtquantity" Width="190px" CssClass="form-control" Text="0" OnTextChanged="txtquantity_TextChanged" AutoPostBack="true" runat="server"></asp:TextBox>
                                                         </td>
 
 
                                                     </tr>
                                                 </tbody>
                                                 <thead>
-                                                    <tr class="gvhead"   style="text-align:center">
-                                                       
+                                                    <tr class="gvhead" style="text-align: center">
+
                                                         <td>Rate</td>
                                                         <td colspan="2">CGST</td>
-                                                         <td>Unit</td>
+                                                        <td>Unit</td>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
                                                     <tr>
                                                         <td>
-                                                            <asp:TextBox ID="txtrate" Width="190px" AutoPostBack="true" Text="0"  OnTextChanged="txtrate_TextChanged" CssClass="form-control" runat="server"></asp:TextBox>
+                                                            <asp:TextBox ID="txtrate" Width="190px" AutoPostBack="true" Text="0" OnTextChanged="txtrate_TextChanged" CssClass="form-control" runat="server"></asp:TextBox>
                                                         </td>
                                                         <td>
-                                                            <asp:TextBox ID="txtCGST" placeholder="%" Width="100px" Text="0"  OnTextChanged="txtCGST_TextChanged" AutoPostBack="true" CssClass="form-control" runat="server"></asp:TextBox>
+                                                            <asp:TextBox ID="txtCGST" placeholder="%" Width="100px" Text="0" OnTextChanged="txtCGST_TextChanged" AutoPostBack="true" CssClass="form-control" runat="server"></asp:TextBox>
                                                         </td>
                                                         <td>
-                                                            <asp:TextBox ID="txtCGSTamt" Width="100px" ReadOnly="true" Text="0"  CssClass="form-control" runat="server"></asp:TextBox>
+                                                            <asp:TextBox ID="txtCGSTamt" Width="100px" ReadOnly="true" Text="0" CssClass="form-control" runat="server"></asp:TextBox>
                                                         </td>
 
                                                         <td>
-                                                            <asp:TextBox ID="txtunit" Width="190px" CssClass="form-control" Text="Null"  runat="server"></asp:TextBox>
+                                                            <asp:TextBox ID="txtunit" Width="190px" CssClass="form-control" Text="Null" runat="server"></asp:TextBox>
                                                         </td>
                                                     </tr>
                                                 </tbody>
                                                 <thead>
-                                                    <tr class="gvhead" style="text-align:center">
+                                                    <tr class="gvhead" style="text-align: center">
                                                         <td colspan="2">SGST</td>
                                                         <td colspan="2">IGST</td>
 
@@ -336,27 +343,27 @@
                                                 <tbody>
                                                     <tr>
                                                         <td>
-                                                            <asp:TextBox ID="txtSGST" placeholder="%" Width="100px" Text="0"  OnTextChanged="txtSGST_TextChanged" AutoPostBack="true" CssClass="form-control" runat="server"></asp:TextBox>
+                                                            <asp:TextBox ID="txtSGST" placeholder="%" Width="100px" Text="0" OnTextChanged="txtSGST_TextChanged" AutoPostBack="true" CssClass="form-control" runat="server"></asp:TextBox>
                                                         </td>
                                                         <td>
-                                                            <asp:TextBox ID="txtSGSTamt" Width="100px" ReadOnly="true" Text="0"  CssClass="form-control" runat="server"></asp:TextBox>
+                                                            <asp:TextBox ID="txtSGSTamt" Width="100px" ReadOnly="true" Text="0" CssClass="form-control" runat="server"></asp:TextBox>
                                                         </td>
                                                         <td>
-                                                            <asp:TextBox ID="txtIGST" OnTextChanged="txtIGST_TextChanged" Text="0"  AutoPostBack="true" placeholder="%" Width="100px" CssClass="form-control" runat="server"></asp:TextBox>
+                                                            <asp:TextBox ID="txtIGST" OnTextChanged="txtIGST_TextChanged" Text="0" AutoPostBack="true" placeholder="%" Width="100px" CssClass="form-control" runat="server"></asp:TextBox>
                                                         </td>
                                                         <td>
-                                                            <asp:TextBox ID="txtIGSTamt" Width="100px" Text="0"  CssClass="form-control" runat="server"></asp:TextBox>
+                                                            <asp:TextBox ID="txtIGSTamt" Width="100px" Text="0" CssClass="form-control" runat="server"></asp:TextBox>
                                                         </td>
 
                                                     </tr>
                                                 </tbody>
 
                                                 <thead>
-                                                    <tr class="gvhead"  style="text-align:center">
+                                                    <tr class="gvhead" style="text-align: center">
                                                         <td>Total </td>
                                                         <td>Discount(%)</td>
                                                         <td>Grand Total</td>
-                                                        <td>Action</td>
+                                                        <td>Weight (Kg)</td>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -364,21 +371,35 @@
 
 
                                                         <td>
-                                                            <asp:TextBox ID="txttotal" Width="100" CssClass="form-control" Text="0"  runat="server"></asp:TextBox>
+                                                            <asp:TextBox ID="txttotal" Width="100" CssClass="form-control" Text="0" runat="server"></asp:TextBox>
                                                         </td>
                                                         <td>
-                                                            <asp:TextBox ID="txtdiscount" OnTextChanged="txtdiscount_TextChanged" Text="0"  Width="80px" AutoPostBack="true" CssClass="form-control" runat="server"></asp:TextBox>
-                                                            <asp:TextBox ID="txtdiscountamt" Visible="false" Width="80px" Text="0"  AutoPostBack="true" CssClass="form-control" runat="server"></asp:TextBox>
+                                                            <asp:TextBox ID="txtdiscount" OnTextChanged="txtdiscount_TextChanged" Text="0" Width="80px" AutoPostBack="true" CssClass="form-control" runat="server"></asp:TextBox>
+                                                            <asp:TextBox ID="txtdiscountamt" Visible="false" Width="80px" Text="0" AutoPostBack="true" CssClass="form-control" runat="server"></asp:TextBox>
                                                         </td>
                                                         <td>
                                                             <asp:TextBox ID="txtgrandtotal" Width="150px" Text="0" CssClass="form-control" runat="server"></asp:TextBox>
                                                         </td>
                                                         <td>
-                                                            <asp:Button ID="btnAddMore" CausesValidation="false" OnClick="btnAddMore_Click" CssClass="btn btn-primary btn-sm btncss" runat="server" Text="Add More" />
+                                                            <asp:TextBox ID="txtweight" Width="100" CssClass="form-control" Text="0" runat="server"></asp:TextBox>
                                                         </td>
+
                                                     </tr>
                                                 </tbody>
+                                                <thead>
+                                                    <tr class="gvhead" style="text-align: center">
 
+                                                        <td>Action</td>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td>
+                                                            <asp:Button ID="btnAddMore" CausesValidation="false" OnClick="btnAddMore_Click" CssClass="btn btn-primary btn-sm btncss" runat="server" Text="Add More" />
+                                                        </td>
+
+                                                    </tr>
+                                                </tbody>
                                             </table>
                                         </div>
 
@@ -523,7 +544,14 @@
                                                             <asp:Label ID="lblAlltotal" runat="Server" Text='<%# Eval("Alltotal") %>' />
                                                         </ItemTemplate>
                                                     </asp:TemplateField>
-
+                                                    <asp:TemplateField HeaderText="Weight" ItemStyle-Width="120" HeaderStyle-CssClass="gvhead">
+                                                        <EditItemTemplate>
+                                                            <asp:TextBox Text='<%# Eval("Weight") %>' CssClass="form-control" ID="Weight" Width="100px" runat="server"></asp:TextBox>
+                                                        </EditItemTemplate>
+                                                        <ItemTemplate>
+                                                            <asp:Label ID="lblWeight" runat="Server" Text='<%# Eval("Weight") %>' />
+                                                        </ItemTemplate>
+                                                    </asp:TemplateField>
                                                     <asp:TemplateField HeaderText="Action" ItemStyle-Width="120" HeaderStyle-CssClass="gvhead">
                                                         <ItemTemplate>
                                                             <%--<asp:LinkButton ID="btn_edit" runat="server" Height="27px" CausesValidation="false" CommandName="RowEdit" CommandArgument='<%#Eval("ID")%>'><i class='fas fa-edit' style='font-size:24px;color: #212529;'></i></asp:LinkButton>--%>
@@ -556,12 +584,12 @@
                                             <div class="col-md-6">
                                                 <br />
                                                 <center>
-                                        <div class="col-md-12">
-                                            <asp:Label ID="lbl_total_amt" runat="server" class="control-label col-sm-6">Total Amount (In Words) :<span class="spncls"></span></asp:Label><br />
-                                            <asp:Label ID="lbl_total_amt_Value" ForeColor="red" class="control-label col-sm-6 font-weight-bold" runat="server" Text=""></asp:Label>
-                                             <asp:HiddenField ID="hfTotal" runat="server" />
-                                        </div>
-                                            </center>
+                                                    <div class="col-md-12">
+                                                        <asp:Label ID="lbl_total_amt" runat="server" class="control-label col-sm-6">Total Amount (In Words) :<span class="spncls"></span></asp:Label><br />
+                                                        <asp:Label ID="lbl_total_amt_Value" ForeColor="red" class="control-label col-sm-6 font-weight-bold" runat="server" Text=""></asp:Label>
+                                                        <asp:HiddenField ID="hfTotal" runat="server" />
+                                                    </div>
+                                                </center>
                                             </div>
                                             <div class="col-md-6" style="text-align: right">
                                                 <div class="row">

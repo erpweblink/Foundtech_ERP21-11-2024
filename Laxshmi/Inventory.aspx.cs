@@ -560,15 +560,45 @@ public partial class Laxshmi_Inventory : System.Web.UI.Page
 
     protected void lnkbtnadd_Click(object sender, EventArgs e)
     {
+        if (txtDefectqty.Text != "" && txtdefectedqty.Text != "")
+        {
 
-        ViewState["RowNo"] = (int)ViewState["RowNo"] + 1;
-        DataTable Dt = (DataTable)ViewState["Details"];
-        Dt.Rows.Add(ViewState["RowNo"], ddlDefectsType.SelectedItem.Text.Trim(), txtdefectedqty.Text.Trim());
-        ViewState["Details"] = Dt;
-        txtdefectedqty.Text = string.Empty;
-        GVDefects.DataSource = (DataTable)ViewState["Details"];
-        GVDefects.DataBind();
-        this.ModalPopupHistory.Show();
+
+            Double totaldefect = 0;
+            foreach (GridViewRow grd1 in GVDefects.Rows)
+            {
+
+                string lblQty = (grd1.FindControl("lblQty") as Label).Text;
+                totaldefect += Convert.ToDouble(lblQty);
+            }
+            Double defectqty = Convert.ToDouble(txtDefectqty.Text);
+            Double defty = Convert.ToDouble(txtdefectedqty.Text) + totaldefect;
+            if (defty <= defectqty)
+            {
+                ViewState["RowNo"] = (int)ViewState["RowNo"] + 1;
+                DataTable Dt = (DataTable)ViewState["Details"];
+                Dt.Rows.Add(ViewState["RowNo"], ddlDefectsType.SelectedItem.Text.Trim(), txtdefectedqty.Text.Trim());
+                ViewState["Details"] = Dt;
+                txtdefectedqty.Text = string.Empty;
+                GVDefects.DataSource = (DataTable)ViewState["Details"];
+                GVDefects.DataBind();
+                this.ModalPopupHistory.Show();
+
+            }
+            else
+            {
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", "alert('Please add quantity not match total defect quantity..!!');", true);
+                txtdefectedqty.Text = "";
+            }
+
+            this.ModalPopupHistory.Show();
+        }
+        else
+        {
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", "alert('Please add total defect count..!!');", true);
+            this.ModalPopupHistory.Show();
+        }
+     
     }
 
     protected void txtdefectedqty_TextChanged(object sender, EventArgs e)
