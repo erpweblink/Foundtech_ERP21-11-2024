@@ -95,15 +95,14 @@ public partial class Production_PlazmaCutting : System.Web.UI.Page
         }
         if (e.CommandName == "Rowwarehouse")
         {
-            if (e.CommandName == "Rowwarehouse")
-            {
-                DivWarehouse.Visible = true;
-                divtable.Visible = false;
-                int rowIndex = Convert.ToInt32(e.CommandArgument);
-                GridViewRow row = GVPurchase.Rows[rowIndex];
-                hdnJobid.Value = ((Label)row.FindControl("jobno")).Text;
-                GetRequestdata(hdnJobid.Value);
-            }
+
+            DivWarehouse.Visible = true;
+            divtable.Visible = false;
+            int rowIndex = Convert.ToInt32(e.CommandArgument);
+            GridViewRow row = GVPurchase.Rows[rowIndex];
+            hdnJobid.Value = ((Label)row.FindControl("jobno")).Text;
+            GetRequestdata(hdnJobid.Value);
+
         }
         if (e.CommandName == "Edit")
         {
@@ -155,7 +154,24 @@ public partial class Production_PlazmaCutting : System.Web.UI.Page
             ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", "alert('Send to back Successfully..!!')", true);
             FillGrid();
         }
+        if (e.CommandName == "DrawingFiles")
+        {
+            int rowIndex = Convert.ToInt32(e.CommandArgument);
+            GridViewRow row = GVPurchase.Rows[rowIndex];
+            string JobNo = ((Label)row.FindControl("jobno")).Text;
+            DataTable Dt = Cls_Main.Read_Table("SELECT * FROM tbl_DrawingDetails AS PD where JobNo='" + JobNo + "'");
+            if (Dt.Rows.Count > 0)
+            {
+                rptImages.DataSource = Dt;
+                rptImages.DataBind();
+                this.ModalPopupExtender1.Show();
+            }
+            else
+            {
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", "alert('Data not found..!!')", true);
+            }
 
+        }
     }
 
     protected void GVPurchase_PageIndexChanging(object sender, GridViewPageEventArgs e)
@@ -221,7 +237,7 @@ public partial class Production_PlazmaCutting : System.Web.UI.Page
         {
             using (SqlCommand cmd = new SqlCommand())
             {
-                string CmdText = "select filePath from tbl_ProductionDTLS where JobNo='" + id + "' AND StageNumber='0'";
+                string CmdText = "select FileName from tbl_DrawingDetails where ID='" + id + "'";
 
                 SqlDataAdapter ad = new SqlDataAdapter(CmdText, con);
                 DataTable dt = new DataTable();
@@ -229,9 +245,9 @@ public partial class Production_PlazmaCutting : System.Web.UI.Page
                 if (dt.Rows.Count > 0)
                 {
                     //Response.Write(dt.Rows[0]["Path"].ToString());
-                    if (!string.IsNullOrEmpty(dt.Rows[0]["filePath"].ToString()))
+                    if (!string.IsNullOrEmpty(dt.Rows[0]["FileName"].ToString()))
                     {
-                        Response.Redirect("~/Drawings/" + dt.Rows[0]["filePath"].ToString());
+                        Response.Redirect("~/Drawings/" + dt.Rows[0]["FileName"].ToString());
                     }
                     else
                     {
@@ -445,7 +461,6 @@ public partial class Production_PlazmaCutting : System.Web.UI.Page
         }
     }
 
-
     public void GetRemarks()
     {
         Cls_Main.Conn_Open();
@@ -523,6 +538,9 @@ public partial class Production_PlazmaCutting : System.Web.UI.Page
         cmd.Parameters.AddWithValue("@Description", txtDescription.Text);
         cmd.Parameters.AddWithValue("@Createdby", Session["UserCode"].ToString());
         cmd.Parameters.AddWithValue("@NeedQty", txtneedqty.Text);
+        cmd.Parameters.AddWithValue("@Thickness", txtThickness.Text);
+        cmd.Parameters.AddWithValue("@Width", txtwidth.Text);
+        cmd.Parameters.AddWithValue("@Length", txtlength.Text);
         cmd.Parameters.AddWithValue("@NeedSize", txtsize.Text);
         cmd.Parameters.AddWithValue("@AvailableQty", txtAvilableqty.Text);
         cmd.Parameters.AddWithValue("@AvailableSize", txtAvailablesize.Text);

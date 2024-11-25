@@ -29,6 +29,13 @@
     <script src="../JS/jquery.min.js"></script>
 
     <style>
+        .spncls {
+            color: #f20707 !important;
+            font-size: 13px !important;
+            font-weight: bold;
+            text-align: left;
+        }
+
         .spancls {
             color: #5d5656 !important;
             font-size: 13px !important;
@@ -209,7 +216,6 @@
     <form id="form1" runat="server">
         <asp:ToolkitScriptManager ID="ToolkitScriptManager2" runat="server">
         </asp:ToolkitScriptManager>
-
         <asp:UpdatePanel ID="UpdatePanel1" runat="server">
             <ContentTemplate>
                 <div class="container-fluid px-4">
@@ -224,83 +230,86 @@
                     </div>
                     <hr />
                     <div>
-                         <div id="divtable" runat="server">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="table-responsive">
-                                    <div class="table">
-                                        <br />
+                        <div id="divtable" runat="server">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <div class="table">
+                                            <br />
 
-                                        <asp:GridView ID="GVPurchase" runat="server" CellPadding="4" DataKeyNames="ID,JobNo,Remark,OutwardQTY" PageSize="10" AllowPaging="true" Width="100%" OnRowDataBound="GVPurchase_RowDataBound" OnRowEditing="GVPurchase_RowEditing"
-                                            OnRowCommand="GVPurchase_RowCommand" OnPageIndexChanging="GVPurchase_PageIndexChanging" CssClass="display table table-striped table-hover dataTable" AutoGenerateColumns="false">
-                                            <Columns>
-                                                <asp:TemplateField HeaderText="Sr.No." ItemStyle-HorizontalAlign="Center">
-                                                    <ItemTemplate>
-                                                        <asp:Label ID="lblsno" runat="server" Text='<%# Container.DataItemIndex+1 %>'></asp:Label>
-                                                    </ItemTemplate>
-                                                </asp:TemplateField>
-                                                <asp:TemplateField HeaderText="Job No.">
-                                                    <ItemTemplate>
-                                                        <asp:Label ID="jobno" runat="server" Text='<%#Eval("JobNo")%>'></asp:Label>
-                                                    </ItemTemplate>
-                                                </asp:TemplateField>
-                                                <asp:TemplateField HeaderText="Customer Name">
-                                                    <ItemTemplate>
-                                                        <asp:Label ID="CustomerName" runat="server" Text='<%#Eval("CustomerName")%>'></asp:Label>
-                                                    </ItemTemplate>
-                                                </asp:TemplateField>
-                                                <asp:TemplateField HeaderText="Delivery Date">
-                                                    <ItemTemplate>
-                                                        <asp:Label ID="Deliverydate" runat="server" Text='<%# Eval("Deliverydate", "{0:dd-MM-yyyy}") %>'></asp:Label>
-                                                    </ItemTemplate>
-                                                </asp:TemplateField>
-                                                <asp:TemplateField HeaderText="Total Quantity">
-                                                    <ItemTemplate>
-                                                        <asp:Label ID="Total_Price" runat="server" Text='<%#Eval("TotalQuantity")%>'></asp:Label>
-                                                    </ItemTemplate>
-                                                </asp:TemplateField>
+                                            <asp:GridView ID="GVPurchase" runat="server" CellPadding="4" DataKeyNames="ID,JobNo,Remark,OutwardQTY" PageSize="10" AllowPaging="true" Width="100%" OnRowDataBound="GVPurchase_RowDataBound" OnRowEditing="GVPurchase_RowEditing"
+                                                OnRowCommand="GVPurchase_RowCommand" OnPageIndexChanging="GVPurchase_PageIndexChanging" CssClass="display table table-striped table-hover dataTable" AutoGenerateColumns="false">
+                                                <Columns>
+                                                    <asp:TemplateField HeaderText="Sr.No." ItemStyle-HorizontalAlign="Center">
+                                                        <ItemTemplate>
+                                                            <asp:Label ID="lblsno" runat="server" Text='<%# Container.DataItemIndex+1 %>'></asp:Label>
+                                                        </ItemTemplate>
+                                                    </asp:TemplateField>
+                                                    <asp:TemplateField HeaderText="Job No.">
+                                                        <ItemTemplate>
+                                                            <asp:Label ID="jobno" runat="server" Text='<%#Eval("JobNo")%>'></asp:Label>
+                                                        </ItemTemplate>
+                                                    </asp:TemplateField>
+                                                    <asp:TemplateField HeaderText="Customer Name">
+                                                        <ItemTemplate>
+                                                            <asp:Label ID="CustomerName" runat="server" Text='<%#Eval("CustomerName")%>'></asp:Label>
+                                                        </ItemTemplate>
+                                                    </asp:TemplateField>
+                                                    <asp:TemplateField HeaderText="Product Name" ItemStyle-HorizontalAlign="Center">
+                                                        <ItemTemplate>
+                                                            <asp:Label ID="Productname" runat="server" Text='<%#Eval("RowMaterial")%>' Enabled="false"></asp:Label>
+                                                        </ItemTemplate>
+                                                    </asp:TemplateField>
+                                                    <asp:TemplateField HeaderText="Delivery Date">
+                                                        <ItemTemplate>
+                                                            <asp:Label ID="Deliverydate" runat="server" Text='<%# Eval("Deliverydate", "{0:dd-MM-yyyy}") %>'></asp:Label>
+                                                        </ItemTemplate>
+                                                    </asp:TemplateField>
+                                                    <asp:TemplateField HeaderText="Total Quantity">
+                                                        <ItemTemplate>
+                                                            <asp:Label ID="Total_Price" runat="server" Text='<%#Eval("TotalQuantity")%>'></asp:Label>
+                                                        </ItemTemplate>
+                                                    </asp:TemplateField>
 
-                                                <asp:TemplateField HeaderText="In Qty" ItemStyle-HorizontalAlign="Center">
-                                                    <ItemTemplate>
-                                                        <asp:Label ID="InwardQty" runat="server" Text='<%#Eval("InwardQTY")%>'></asp:Label>
-                                                    </ItemTemplate>
-                                                </asp:TemplateField>
-                                                <asp:TemplateField HeaderText="Out Qty" ItemStyle-HorizontalAlign="Center">
-                                                    <ItemTemplate>
-                                                        <asp:Label ID="OutwardQty" runat="server" Text='<%#Eval("OutwardQTY")%>'></asp:Label>
-                                                    </ItemTemplate>
-                                                </asp:TemplateField>
-                                                <asp:TemplateField HeaderText="Revert Qty" ItemStyle-HorizontalAlign="Center">
-                                                    <ItemTemplate>
-                                                        <asp:Label ID="RevertQty" runat="server" Text='<%#Eval("RevertQty")%>'></asp:Label>
-                                                    </ItemTemplate>
-                                                </asp:TemplateField>
-                                                <asp:TemplateField HeaderText="Attachment" ItemStyle-HorizontalAlign="Center">
-                                                    <ItemTemplate>
-                                                        <asp:ImageButton ID="ImageButtonfile2" ImageUrl="../Content1/img/Open-file2.png" runat="server" Width="30px" OnClick="ImageButtonfile2_Click" CommandArgument='<%# Eval("JobNo") %>' ToolTip="Open File" />
-                                                    </ItemTemplate>
-                                                </asp:TemplateField>
-                                                <asp:TemplateField HeaderText="Status" ItemStyle-HorizontalAlign="Center">
-                                                    <ItemTemplate>
-                                                        <asp:Label ID="Status" runat="server" Text='<%#Eval("Status")%>'></asp:Label>
-                                                    </ItemTemplate>
-                                                </asp:TemplateField>
-                                                <asp:TemplateField HeaderText="ACTION" HeaderStyle-Width="120">
-                                                    <ItemTemplate>
-                                                        <asp:LinkButton runat="server" ID="btnEdit" ToolTip="Add Quantity and Send" CausesValidation="false" CommandName="Edit" CommandArgument='<%# Container.DataItemIndex %>'><i class="fas fa-plus-square"  style="font-size: 26px; color:blue; "></i></i></asp:LinkButton>&nbsp;
+                                                    <asp:TemplateField HeaderText="In Qty" ItemStyle-HorizontalAlign="Center">
+                                                        <ItemTemplate>
+                                                            <asp:Label ID="InwardQty" runat="server" Text='<%#Eval("InwardQTY")%>'></asp:Label>
+                                                        </ItemTemplate>
+                                                    </asp:TemplateField>
+                                                    <asp:TemplateField HeaderText="Out Qty" ItemStyle-HorizontalAlign="Center">
+                                                        <ItemTemplate>
+                                                            <asp:Label ID="OutwardQty" runat="server" Text='<%#Eval("OutwardQTY")%>'></asp:Label>
+                                                        </ItemTemplate>
+                                                    </asp:TemplateField>
+                                                    <asp:TemplateField HeaderText="Revert Qty" ItemStyle-HorizontalAlign="Center">
+                                                        <ItemTemplate>
+                                                            <asp:Label ID="RevertQty" runat="server" Text='<%#Eval("RevertQty")%>'></asp:Label>
+                                                        </ItemTemplate>
+                                                    </asp:TemplateField>
+                                                    <asp:TemplateField HeaderText="Drawings" ItemStyle-HorizontalAlign="Center">
+                                                        <ItemTemplate>
+                                                            <asp:LinkButton runat="server" ID="btndrawings" ToolTip="Show drawings" CausesValidation="false" CommandName="DrawingFiles" CommandArgument='<%# Container.DataItemIndex %>'><i class="fas fa-folder-open"  style="font-size: 26px; color:black; "></i></i></asp:LinkButton>
+                                                        </ItemTemplate>
+                                                    </asp:TemplateField>
+                                                    <asp:TemplateField HeaderText="Status" ItemStyle-HorizontalAlign="Center">
+                                                        <ItemTemplate>
+                                                            <asp:Label ID="Status" runat="server" Text='<%#Eval("Status")%>'></asp:Label>
+                                                        </ItemTemplate>
+                                                    </asp:TemplateField>
+                                                    <asp:TemplateField HeaderText="ACTION" HeaderStyle-Width="120">
+                                                        <ItemTemplate>
+                                                            <asp:LinkButton runat="server" ID="btnEdit" ToolTip="Add Quantity and Send" CausesValidation="false" CommandName="Edit" CommandArgument='<%# Container.DataItemIndex %>'><i class="fas fa-plus-square"  style="font-size: 26px; color:blue; "></i></i></asp:LinkButton>&nbsp;
                                                         <asp:LinkButton ID="btnwarrehouse" runat="server" Height="27px" ToolTip="Metarial Request to Store" CausesValidation="false" CommandName="Rowwarehouse" CommandArgument='<%# Container.DataItemIndex %>'><i class='fas fa-cart-plus' style='font-size:24px;color: #212529;'></i></asp:LinkButton>
-                                                    </ItemTemplate>
-                                                </asp:TemplateField>
-                                            </Columns>
-                                        </asp:GridView>
+                                                        </ItemTemplate>
+                                                    </asp:TemplateField>
+                                                </Columns>
+                                            </asp:GridView>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                             </div>
                     </div>
-
-
                     <asp:Button ID="btnhist" runat="server" Style="display: none" />
                     <asp:ModalPopupExtender ID="ModalPopupHistory" runat="server" TargetControlID="btnhist"
                         PopupControlID="PopupHistoryDetail" OkControlID="Closepophistory" />
@@ -373,86 +382,48 @@
                         </div>
                     </asp:Panel>
 
-                 <%--   <asp:Button ID="Button1" runat="server" Style="display: none" />
+                    <asp:Button ID="Button1" runat="server" Style="display: none" />
                     <asp:ModalPopupExtender ID="ModalPopupExtender1" runat="server" TargetControlID="Button1"
                         PopupControlID="PopupHistoryDetail1" OkControlID="Closepophistory1" />
 
-                    <asp:Panel ID="PopupHistoryDetail1" runat="server" CssClass="modelprofile1" Style="display: none">
+                    <asp:Panel ID="PopupHistoryDetail1" runat="server" CssClass="modelprofile1">
                         <div class="row container">
-                            <div class="col-md-4"></div>
-                            <div class="col-md-8">
+                            <div class="col-md-3"></div>
+                            <div class="col-md-6">
                                 <div class="profilemodel2">
                                     <div class="headingcls">
-                                        <h4 class="modal-title">Warehouse Material Request Page
-                                    <button type="button" id="Closepophistory1" class="btnclose" style="display: inline-block;" data-dismiss="modal">Close</button></h4>
+                                        <h4 class="modal-title">Drawing Files
+                                    <button type="button" id="Closepophistory1" class="btnclose" style="display: inline-block;" data-dismiss="modal">Close</button>
+                                        </h4>
                                     </div>
-
                                     <br />
                                     <div class="body" style="margin-right: 10px; margin-left: 10px; padding-right: 1px; padding-left: 1px;">
                                         <div class="row">
-                                            <div class="col-md-6 col-12 mb-3">
-                                                <asp:Label ID="Label1" runat="server" Font-Bold="true" CssClass="form-label">Stock/RM:</asp:Label>
 
-                                                <asp:TextBox ID="txtRM" CssClass="form-control" runat="server"></asp:TextBox>
-                                            </div>
-                                            <div class="col-md-6 col-12 mb-3" runat="server" visible="false">
-                                                <asp:Label ID="Label7" runat="server" Font-Bold="true" CssClass="form-label">Available Quantity:</asp:Label>
-
-                                                <asp:TextBox ID="txtAvilableqty" CssClass="form-control" ReadOnly="true" runat="server"></asp:TextBox>
-                                            </div>
-
-                                            <div class="col-md-6 col-12 mb-3" runat="server" visible="false">
-                                                <asp:Label ID="Label8" runat="server" Font-Bold="true" CssClass="form-label">Size:</asp:Label>
-
-                                                <asp:TextBox ID="txtsize" CssClass="form-control" runat="server"></asp:TextBox>
-                                            </div>
-
-                                            <div class="col-md-6 col-12 mb-3">
-                                                <asp:Label ID="Label11" runat="server" Font-Bold="true" CssClass="form-label">Need Size:</asp:Label>
-
-                                                <asp:TextBox ID="txtneedsize" CssClass="form-control" runat="server"></asp:TextBox>
-                                                <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ValidationGroup="1" ErrorMessage="Please Enter Need Size" ControlToValidate="txtsize" ForeColor="Red"></asp:RequiredFieldValidator>
-                                            </div>
-
-                                            <div class="col-md-6 col-12 mb-3">
-                                                <asp:Label ID="Label14" runat="server" Font-Bold="true" CssClass="form-label">Size weight:</asp:Label>
-
-                                                <asp:TextBox ID="Txtweight" CssClass="form-control" TextMode="Number" runat="server"></asp:TextBox>
-                                                <asp:RequiredFieldValidator ID="RequiredFieldValidator4" runat="server" ValidationGroup="1" ErrorMessage="Please Enter Weight" ControlToValidate="Txtweight" ForeColor="Red"></asp:RequiredFieldValidator>
-                                            </div>
-
-
-
-                                            <div class="col-md-6 col-12 mb-3">
-                                                <asp:Label ID="Label10" runat="server" Font-Bold="true" CssClass="form-label">Need QTY:</asp:Label>
-
-                                                <asp:TextBox ID="txtneedqty" CssClass="form-control" TextMode="Number" runat="server"></asp:TextBox>
-                                            </div>
-
-
-
-                                            <div class="col-md-6 col-12 mb-3">
-                                                <asp:Label ID="Label9" runat="server" Font-Bold="true" CssClass="form-label">Description:</asp:Label>
-
-                                                <asp:TextBox ID="txtDescription" CssClass="form-control" TextMode="MultiLine" runat="server"></asp:TextBox>
-                                            </div>
-
-                                            <div class="col-md-12">
-                                                <div class="col-md-3" style="margin-top: 18px">
-                                                    <asp:Button ID="Button2" OnClick="btnsave_Click" ToolTip="Save" CssClass="form-control btn btn-outline-primary m-2" runat="server" Text="Save" />
-                                                </div>
-                                            </div>
+                                            <asp:Repeater ID="rptImages" runat="server">
+                                                <ItemTemplate>
+                                                    <div class="col-md-6 col-12 mb-3">
+                                                        <div class="image-item">
+                                                            <!-- Display the image -->
+                                                            <asp:ImageButton ID="ImageButtonfile2" ImageUrl="../Content1/img/Open-file2.png" runat="server" Width="30px" OnClick="ImageButtonfile2_Click" CommandArgument='<%# Eval("ID") %>' ToolTip="Open File" />
+                                                            <asp:Label ID="Label14" runat="server" Font-Bold="true" Text="Drawing Name : " CssClass="form-label"></asp:Label>
+                                                            <asp:Label ID="Label4" runat="server" Font-Bold="true" Text='<%# Eval("Remark") %>' CssClass="form-label"></asp:Label>
+                                                        </div>
+                                                    </div>
+                                                </ItemTemplate>
+                                            </asp:Repeater>
 
                                         </div>
                                     </div>
 
                                 </div>
                             </div>
+                            <div class="col-md-3"></div>
                         </div>
-                    </asp:Panel>--%>
+                    </asp:Panel>
 
 
-                      <div class="row container" id="DivWarehouse" runat="server" visible="false">
+                    <div class="row container" id="DivWarehouse" runat="server" visible="false">
                         <div class="col-md-12">
                             <div class="profilemodel2">
                                 <div class="headingcls">
@@ -463,8 +434,8 @@
                                 <div class="body" style="margin-right: 10px; margin-left: 10px; padding-right: 1px; padding-left: 1px;">
                                     <div class="row">
                                         <div class="col-md-6 col-12 mb-3">
-                                            <asp:Label ID="Label1" runat="server" Font-Bold="true" CssClass="form-label">Stock/RM:</asp:Label>
-                                            <asp:TextBox ID="txtRMC" CssClass="form-control" placeholder="Search Company" runat="server" Width="100%"></asp:TextBox>
+                                            <asp:Label ID="Label1" runat="server" Font-Bold="true" CssClass="form-label"><span class="spncls">*</span>Stock/RM:</asp:Label>
+                                            <asp:TextBox ID="txtRMC" CssClass="form-control" placeholder="Search Stock/RM" runat="server" Width="100%"></asp:TextBox>
                                             <asp:RequiredFieldValidator ID="RequiredFieldValidator3" runat="server" ValidationGroup="1" ErrorMessage="Please Enter Stock/RM" ControlToValidate="txtRMC" ForeColor="Red"></asp:RequiredFieldValidator>
                                             <asp:AutoCompleteExtender ID="AutoCompleteExtender2" runat="server" CompletionListCssClass="completionList"
                                                 CompletionListHighlightedItemCssClass="itemHighlighted" CompletionListItemCssClass="listItem"
@@ -473,7 +444,7 @@
                                             </asp:AutoCompleteExtender>
                                         </div>
                                         <div class="col-md-6 col-12 mb-3" runat="server" visible="false">
-                                            <asp:Label ID="Label11" runat="server" Font-Bold="true" CssClass="form-label"> Available Size:</asp:Label>
+                                            <asp:Label ID="Label11" runat="server" Font-Bold="true" CssClass="form-label"> <span class="spncls">*</span>Available Size:</asp:Label>
                                             <asp:TextBox ID="txtAvailablesize" CssClass="form-control" Font-Bold="true" AutoPostBack="true" OnTextChanged="txtAvailablesize_TextChanged" runat="server"></asp:TextBox>
                                             <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ValidationGroup="1" ErrorMessage="Please Enter Available Size" ControlToValidate="txtAvailablesize" ForeColor="Red"></asp:RequiredFieldValidator>
                                             <asp:AutoCompleteExtender ID="AutoCompleteExtender1" runat="server" CompletionListCssClass="completionList"
@@ -483,41 +454,58 @@
                                             </asp:AutoCompleteExtender>
                                         </div>
                                         <div class="col-md-6 col-12 mb-3" runat="server" visible="false">
-                                            <asp:Label ID="Label7" runat="server" Font-Bold="true" CssClass="form-label">Available Quantity:</asp:Label>
+                                            <asp:Label ID="Label7" runat="server" Font-Bold="true" CssClass="form-label"><span class="spncls">*</span>Available Quantity:</asp:Label>
 
-                                            <asp:TextBox ID="txtAvilableqty" CssClass="form-control" Font-Bold="true" ReadOnly="true" runat="server"></asp:TextBox>
+                                            <asp:TextBox ID="txtAvilableqty" CssClass="form-control" Font-Bold="true" placeholder="Available Quantity" ReadOnly="true" runat="server"></asp:TextBox>
                                         </div>
                                         <div class="col-md-6 col-12 mb-3">
-                                            <asp:Label ID="Label8" runat="server" Font-Bold="true" CssClass="form-label">Need Size:</asp:Label>
+                                            <asp:Label ID="Label8" runat="server" Font-Bold="true" CssClass="form-label"><span class="spncls">*</span>Need Size:</asp:Label>
 
-                                            <asp:TextBox ID="txtsize" CssClass="form-control" runat="server"></asp:TextBox>
+                                            <asp:TextBox ID="txtsize" CssClass="form-control"  placeholder="Need Size" runat="server"></asp:TextBox>
                                             <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ValidationGroup="1" ErrorMessage="Please Enter Need Size" ControlToValidate="txtsize" ForeColor="Red"></asp:RequiredFieldValidator>
                                         </div>
-
                                         <div class="col-md-6 col-12 mb-3">
-                                            <asp:Label ID="Label10" runat="server" Font-Bold="true" CssClass="form-label">Need QTY:</asp:Label>
+                                            <asp:Label ID="Label15" runat="server" Font-Bold="true" CssClass="form-label"><span class="spncls">*</span>Thickness:</asp:Label>
 
-                                            <asp:TextBox ID="txtneedqty" CssClass="form-control" TextMode="Number" runat="server"></asp:TextBox>
+                                            <asp:TextBox ID="txtThickness" TextMode="Number"  placeholder="Thickness" CssClass="form-control" runat="server"></asp:TextBox>
+                                            <asp:RequiredFieldValidator ID="RequiredFieldValidator6" runat="server" ValidationGroup="1" ErrorMessage="Please Enter Thickness" ControlToValidate="txtThickness" ForeColor="Red"></asp:RequiredFieldValidator>
+                                        </div>
+                                        <div class="col-md-6 col-12 mb-3">
+                                            <asp:Label ID="Label17" runat="server" Font-Bold="true" CssClass="form-label"><span class="spncls">*</span>Width:</asp:Label>
+
+                                            <asp:TextBox ID="txtwidth" CssClass="form-control" placeholder="Width"  TextMode="Number" runat="server"></asp:TextBox>
+                                            <asp:RequiredFieldValidator ID="RequiredFieldValidator7" runat="server" ValidationGroup="1" ErrorMessage="Please Enter width" ControlToValidate="txtwidth" ForeColor="Red"></asp:RequiredFieldValidator>
+                                        </div>
+                                        <div class="col-md-6 col-12 mb-3">
+                                            <asp:Label ID="Label18" runat="server" Font-Bold="true" CssClass="form-label"><span class="spncls">*</span>Length:</asp:Label>
+
+                                            <asp:TextBox ID="txtlength" CssClass="form-control" placeholder="Length"  TextMode="Number" runat="server"></asp:TextBox>
+                                            <asp:RequiredFieldValidator ID="RequiredFieldValidator8" runat="server" ValidationGroup="1" ErrorMessage="Please Enter length" ControlToValidate="txtlength" ForeColor="Red"></asp:RequiredFieldValidator>
+                                        </div>
+                                        <div class="col-md-6 col-12 mb-3">
+                                            <asp:Label ID="Label10" runat="server" Font-Bold="true" CssClass="form-label"><span class="spncls">*</span>Need QTY:</asp:Label>
+
+                                            <asp:TextBox ID="txtneedqty" CssClass="form-control" placeholder="Need QTY"  TextMode="Number" runat="server"></asp:TextBox>
                                             <asp:RequiredFieldValidator ID="RequiredFieldValidator5" runat="server" ValidationGroup="1" ErrorMessage="Please Enter Need QTY" ControlToValidate="txtneedqty" ForeColor="Red"></asp:RequiredFieldValidator>
                                         </div>
 
                                         <div class="col-md-6 col-12 mb-3">
-                                            <asp:Label ID="Label13" runat="server" Font-Bold="true" CssClass="form-label">Size weight:</asp:Label>
+                                            <asp:Label ID="Label13" runat="server" Font-Bold="true" CssClass="form-label"><span class="spncls">*</span>Weight:</asp:Label>
 
-                                            <asp:TextBox ID="Txtweight" CssClass="form-control" TextMode="Number" runat="server"></asp:TextBox>
+                                            <asp:TextBox ID="Txtweight" CssClass="form-control" placeholder="Weight"  TextMode="Number" runat="server"></asp:TextBox>
                                             <asp:RequiredFieldValidator ID="RequiredFieldValidator4" runat="server" ValidationGroup="1" ErrorMessage="Please Enter Weight" ControlToValidate="Txtweight" ForeColor="Red"></asp:RequiredFieldValidator>
                                         </div>
 
                                         <div class="col-md-6 col-12 mb-3">
                                             <asp:Label ID="Label9" runat="server" Font-Bold="true" CssClass="form-label">Description:</asp:Label>
 
-                                            <asp:TextBox ID="txtDescription" CssClass="form-control" TextMode="MultiLine" runat="server"></asp:TextBox>
+                                            <asp:TextBox ID="txtDescription" CssClass="form-control" placeholder="Description"  TextMode="MultiLine" runat="server"></asp:TextBox>
                                         </div>
                                         <asp:HiddenField ID="hdnJobid" runat="server" />
                                         <div class="col-md-12">
 
                                             <div class="col-md-12" style="margin-top: 18px; text-align: center">
-                                                <asp:LinkButton runat="server" ID="btnWarehousedata" ValidationGroup="1" class="btn btn-success" OnClick="btnWarehousedata_Click" >
+                                                <asp:LinkButton runat="server" ID="btnWarehousedata" ValidationGroup="1" class="btn btn-success" OnClick="btnWarehousedata_Click">
                                                         <span class="btn-label">
                                                             <i class="fa fa-check"></i>
                                                         </span>
@@ -584,7 +572,6 @@
                             </div>
                         </div>
                     </div>
-
             </ContentTemplate>
 
         </asp:UpdatePanel>

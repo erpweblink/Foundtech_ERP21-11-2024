@@ -287,6 +287,11 @@
                                                         <asp:Label ID="CustomerName" runat="server" Text='<%#Eval("CustomerName")%>'></asp:Label>
                                                     </ItemTemplate>
                                                 </asp:TemplateField>
+                                                <asp:TemplateField HeaderText="Product Name" ItemStyle-HorizontalAlign="Center">
+                                                    <ItemTemplate>
+                                                        <asp:Label ID="Productname" runat="server" Text='<%#Eval("RowMaterial")%>' Enabled="false"></asp:Label>
+                                                    </ItemTemplate>
+                                                </asp:TemplateField>
                                                 <asp:TemplateField HeaderText="Delivery Date">
                                                     <ItemTemplate>
                                                         <asp:Label ID="Deliverydate" runat="server" Text='<%# Eval("Deliverydate", "{0:dd-MM-yyyy}") %>'></asp:Label>
@@ -296,32 +301,12 @@
                                                     <ItemTemplate>
                                                         <asp:Label ID="Total_Price" runat="server" Text='<%#Eval("TotalQuantity")%>'></asp:Label>
                                                     </ItemTemplate>
-                                                </asp:TemplateField>
-                                                <%--<asp:TemplateField HeaderText="In Qty" ItemStyle-HorizontalAlign="Center">
-                                                    <ItemTemplate>
-                                                        <asp:Label ID="InwardQty" runat="server" Text='<%#Eval("TotalQuantity")%>'></asp:Label>
-                                                    </ItemTemplate>
-                                                </asp:TemplateField>
-                                                <asp:TemplateField HeaderText="Out Qty" ItemStyle-HorizontalAlign="Center">
-                                                    <ItemTemplate>
-                                                        <asp:Label ID="OutwardQty" runat="server" Text='<%#Eval("OutwardQTY")%>' Enabled="false"></asp:Label>
-                                                    </ItemTemplate>
-                                                </asp:TemplateField>
-                                                <asp:TemplateField HeaderText="Revert Qty" ItemStyle-HorizontalAlign="Center">
-                                                    <ItemTemplate>
-                                                        <asp:Label ID="RevertQty" runat="server" Text='<%#Eval("RevertQty")%>'></asp:Label>
-                                                    </ItemTemplate>
-                                                </asp:TemplateField>--%>
-                                                <asp:TemplateField HeaderText="Attachment" ItemStyle-HorizontalAlign="Center">
-                                                    <ItemTemplate>
-                                                        <asp:ImageButton ID="ImageButtonfile2" ImageUrl="../Content1/img/Open-file2.png" runat="server" Width="30px" OnClick="ImageButtonfile2_Click" CommandArgument='<%# Eval("JobNo") %>' ToolTip="Open File" />
-                                                    </ItemTemplate>
-                                                </asp:TemplateField>
+                                                </asp:TemplateField>                                            
                                                 <asp:TemplateField HeaderText="ACTION" ItemStyle-HorizontalAlign="Center" HeaderStyle-Width="120">
                                                     <ItemTemplate>
                                                         <%--  <asp:LinkButton runat="server" ID="btnpdfview" ToolTip="View Order Acceptance PDF" CommandName="RowView" CommandArgument='<%# Eval("Pono") %>'><i class="fas fa-file-pdf"  style="font-size: 26px; color:red; "></i></i></asp:LinkButton>--%>
                                                         <asp:LinkButton runat="server" ID="btnEdit" ToolTip="Add Quantity and Send" CausesValidation="false" CommandName="Edit" CommandArgument='<%# Container.DataItemIndex %>'><i class="fas fa-plus-square"  style="font-size: 26px; color:blue; "></i></i></asp:LinkButton>&nbsp;
-                                                        <asp:LinkButton ID="btnwarrehouse" runat="server" Height="27px" ToolTip="Metarial Request to Store" CausesValidation="false" CommandName="Rowwarehouse" CommandArgument='<%# Container.DataItemIndex %>'><i class='fas fa-store' style='font-size:24px;color: orangered;'></i></asp:LinkButton>
+                                                      <%--  <asp:LinkButton ID="btnwarrehouse" runat="server" Height="27px" ToolTip="Metarial Request to Store" CausesValidation="false" CommandName="Rowwarehouse" CommandArgument='<%# Container.DataItemIndex %>'><i class='fas fa-store' style='font-size:24px;color: orangered;'></i></asp:LinkButton>--%>
                                                         <%-- <asp:LinkButton runat="server" ID="btnSendtopro" ToolTip="Send to Next Process" CommandName="SendtoNext" CommandArgument='<%# Container.DataItemIndex %>'><i class="fa fa-arrow-circle-right"  style="font-size: 26px; color:green; "></i></i></asp:LinkButton>--%>
                                                     </ItemTemplate>
                                                 </asp:TemplateField>
@@ -359,12 +344,16 @@
                                                 <asp:TextBox ID="txtcustomername" CssClass="form-control" ReadOnly="true" runat="server"></asp:TextBox>
                                             </div>
                                             <div class="col-md-6 col-12 mb-3">
+                                                <asp:Label ID="Label12" runat="server" Font-Bold="true" CssClass="form-label">Product Name:</asp:Label>
+                                                <asp:TextBox ID="txtProductname" CssClass="form-control" ReadOnly="true" runat="server"></asp:TextBox>
+                                            </div>
+                                            <div class="col-md-6 col-12 mb-3">
                                                 <asp:Label ID="Label6" runat="server" Font-Bold="true" CssClass="form-label">Total Quantity:</asp:Label>
                                                 <asp:TextBox ID="txttotalqty" CssClass="form-control" ReadOnly="true" runat="server"></asp:TextBox>
                                             </div>
                                             <div class="col-md-6 col-12 mb-3">
                                                 <asp:Label ID="Label2" runat="server" Font-Bold="true" CssClass="form-label">Outward QTY:</asp:Label>
-                                                <asp:TextBox ID="txtoutwardqty" CssClass="form-control" ReadOnly="true"  placeholder="Enter Outward QTY" TextMode="Number" runat="server"></asp:TextBox>
+                                                <asp:TextBox ID="txtoutwardqty" CssClass="form-control" ReadOnly="true" placeholder="Enter Outward QTY" TextMode="Number" runat="server"></asp:TextBox>
                                             </div>
                                             <%--   <div class="col-md-6 mb-3" runat="server" visible="false">
                                                 <asp:HiddenField ID="HFfile1" runat="server" />

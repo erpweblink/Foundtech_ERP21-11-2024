@@ -43,9 +43,10 @@ public partial class Store_StoreList : System.Web.UI.Page
             var inwardNo = GVPurchase.DataKeys[rowIndex]["InwardNo"].ToString();
             var ID = GVPurchase.DataKeys[rowIndex]["ID"].ToString();
             string RowMaterial = ((Label)row.FindControl("RowMaterial")).Text;
-            string NeedSize = ((Label)row.FindControl("NeedSize")).Text;
-            string Weight = ((Label)row.FindControl("Weight")).Text;
-            GetAvailableDetals(RowMaterial, NeedSize, Weight);
+            string Thickness = ((Label)row.FindControl("Thickness")).Text;
+            string Width = ((Label)row.FindControl("Width")).Text;
+            string Length = ((Label)row.FindControl("Length")).Text;  
+            GetAvailableDetals(RowMaterial, Thickness, Width, Length);           
             HDnInward.Value = Convert.ToString(inwardNo);
             HddnID.Value = Convert.ToString(ID);
             this.ModalPopupHistory.Show();
@@ -113,7 +114,7 @@ public partial class Store_StoreList : System.Web.UI.Page
 
     }
 
-    public void GetAvailableDetals(string RowMaterial, string NeedSize, string Weight)
+    public void GetAvailableDetals(string RowMaterial, string Thickness, string Width, string Length)
     {
         try
         {
@@ -121,8 +122,9 @@ public partial class Store_StoreList : System.Web.UI.Page
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Parameters.AddWithValue("@Mode", "GetAvialbleDeatils");
             cmd.Parameters.AddWithValue("@RowMaterial", RowMaterial);
-            cmd.Parameters.AddWithValue("@Size", NeedSize);
-            cmd.Parameters.AddWithValue("@Weight", Weight);
+            cmd.Parameters.AddWithValue("@Thickness", Thickness);
+            cmd.Parameters.AddWithValue("@Width", Width);
+            cmd.Parameters.AddWithValue("@Length", Length);
             SqlDataAdapter sda = new SqlDataAdapter(cmd);
             DataTable dt = new DataTable();
             sda.Fill(dt);

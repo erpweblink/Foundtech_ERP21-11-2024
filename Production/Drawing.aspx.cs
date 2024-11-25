@@ -1,4 +1,5 @@
 ﻿
+using DocumentFormat.OpenXml.Bibliography;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -106,13 +107,13 @@ public partial class Production_Drawing : System.Web.UI.Page
             int rowIndex = Convert.ToInt32(e.CommandArgument);
             GridViewRow row = GVPurchase.Rows[rowIndex];
             string Total_Price = ((Label)row.FindControl("Total_Price")).Text;
-          //  string OutwardQty = ((Label)row.FindControl("OutwardQty")).Text;
+            string Productname = ((Label)row.FindControl("Productname")).Text;
             string CustomerName = ((Label)row.FindControl("CustomerName")).Text;
             string JobNo = ((Label)row.FindControl("jobno")).Text;
-           
-           
+
+
             txtcustomername.Text = CustomerName;
-            //txtinwardqty.Text = Total_Price;
+            txtProductname.Text = Productname;
             txttotalqty.Text = Total_Price;
             txtoutwardqty.Text = Total_Price;
             //int A, B;
@@ -131,7 +132,7 @@ public partial class Production_Drawing : System.Web.UI.Page
 
             //// Calculate the pending quantity and convert to string for the Text property
             //txtpending.Text = (A - B).ToString();
-        
+
 
             //txtpending.Text = (A - B).ToString();
             txtjobno.Text = JobNo;
@@ -255,12 +256,13 @@ public partial class Production_Drawing : System.Web.UI.Page
                     }
 
                     // Insert file details and remark into the database
-                    string insertQuery = "INSERT INTO tbl_DrawingDetails (JobNo, FileName, Remark,CreatedBy,CreatedOn) VALUES (@JobNo, @FileName, @Remark,@CreatedBy,@CreatedOn)";
+                    string insertQuery = "INSERT INTO tbl_DrawingDetails (JobNo, FileName,FilePath, Remark,CreatedBy,CreatedOn) VALUES (@JobNo, @FileName,@FilePath, @Remark,@CreatedBy,@CreatedOn)";
                     using (SqlCommand cmd = new SqlCommand(insertQuery, Cls_Main.Conn))
                     {
                         // Add parameters to prevent SQL injection
                         cmd.Parameters.AddWithValue("@JobNo", txtjobno.Text.Trim());  // Ensure JobNo is correctly set
                         cmd.Parameters.AddWithValue("@FileName", fileName);
+                        cmd.Parameters.AddWithValue("@FilePath", savePath);
                         cmd.Parameters.AddWithValue("@Remark", remark);
                         cmd.Parameters.AddWithValue("@CreatedBy", Session["UserCode"].ToString());
                         cmd.Parameters.AddWithValue("@CreatedOn", DateTime.Now);
@@ -276,9 +278,9 @@ public partial class Production_Drawing : System.Web.UI.Page
             Cls_Main.Conn_Open();
             SqlCommand Cmd = new SqlCommand("UPDATE [tbl_ProductionDTLS] SET OutwardQTY=@OutwardQTY,OutwardBy=@OutwardBy,OutwardDate=@OutwardDate,Remark=@Remark,InwardQTY=@InwardQTY,Status=@Status WHERE StageNumber=@StageNumber AND JobNo=@JobNo", Cls_Main.Conn);
             Cmd.Parameters.AddWithValue("@StageNumber", 0);
-            Cmd.Parameters.AddWithValue("@JobNo", txtjobno.Text);   
+            Cmd.Parameters.AddWithValue("@JobNo", txtjobno.Text);
             Cmd.Parameters.AddWithValue("@InwardQTY", txttotalqty.Text);
-            Cmd.Parameters.AddWithValue("@OutwardQTY", txtoutwardqty.Text);       
+            Cmd.Parameters.AddWithValue("@OutwardQTY", txtoutwardqty.Text);
             Cmd.Parameters.AddWithValue("@Remark", txtRemarks.Text);
             if (txttotalqty.Text == txtoutwardqty.Text)
             {
@@ -302,7 +304,7 @@ public partial class Production_Drawing : System.Web.UI.Page
                 SqlCommand Cmd1 = new SqlCommand("UPDATE [tbl_ProductionDTLS] SET InwardQTY=@InwardQTY,InwardBy=@InwardBy,InwardDate=@InwardDate,Status=@Status WHERE StageNumber=@StageNumber AND JobNo=@JobNo", Cls_Main.Conn);
                 Cmd1.Parameters.AddWithValue("@StageNumber", StageNumber);
                 Cmd1.Parameters.AddWithValue("@JobNo", txtjobno.Text);
-                Cmd1.Parameters.AddWithValue("@Status", 1);            
+                Cmd1.Parameters.AddWithValue("@Status", 1);
                 Cmd1.Parameters.AddWithValue("@InwardQTY", txttotalqty.Text);
                 Cmd1.Parameters.AddWithValue("@InwardBy", Session["UserCode"].ToString());
                 Cmd1.Parameters.AddWithValue("@InwardDate", DateTime.Now);
@@ -498,11 +500,11 @@ public partial class Production_Drawing : System.Web.UI.Page
             Cmd.ExecuteNonQuery();
             Cls_Main.Conn_Close();
             ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", "alert('Request Deleted Successfully..!!')", true);
-       
+
         }
     }
 
-  
+
 }
 
 

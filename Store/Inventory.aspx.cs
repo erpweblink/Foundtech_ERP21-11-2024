@@ -94,6 +94,9 @@ public partial class Store_Inventory : System.Web.UI.Page
             int rowIndex = Convert.ToInt32(e.CommandArgument);
             GridViewRow row = GVPurchase.Rows[rowIndex];
             txtrowmetarial.Text = ((Label)row.FindControl("MaterialName")).Text;
+            txtThickness.Text = ((Label)row.FindControl("Thickness")).Text;
+            txtwidth.Text = ((Label)row.FindControl("Width")).Text;
+            txtlength.Text = ((Label)row.FindControl("Length")).Text;
 
             txtTotalQty.Text = ((Label)row.FindControl("InwardQty")).Text;
 
@@ -225,8 +228,8 @@ public partial class Store_Inventory : System.Web.UI.Page
             cmd.Parameters.AddWithValue("@Mode", "UpdateInwarddata");
             Double Total = Convert.ToDouble(txtTotalQty.Text) + Convert.ToDouble(txtinwardqantity.Text);
             cmd.Parameters.AddWithValue("@InwardNo", hdnid.Value);
-            cmd.Parameters.AddWithValue("@InwardQty", Convert.ToString(Total));
-            cmd.Parameters.AddWithValue("@Size", txtSize.Text);
+            cmd.Parameters.AddWithValue("@InwardQty", Convert.ToString(Total));        
+            cmd.Parameters.AddWithValue("@Length", txtlength.Text);
             cmd.Parameters.AddWithValue("@Weight", txtWeight.Text);
         }
         else
@@ -234,6 +237,9 @@ public partial class Store_Inventory : System.Web.UI.Page
             cmd.Parameters.AddWithValue("@Mode", "InseartInwarddata");
             cmd.Parameters.AddWithValue("@InwardQty", txtinwardqantity.Text);
             cmd.Parameters.AddWithValue("@Size", txtSize.Text);
+            cmd.Parameters.AddWithValue("@Thickness", txtThickness.Text);
+            cmd.Parameters.AddWithValue("@Width", txtwidth.Text);
+            cmd.Parameters.AddWithValue("@Length", txtlength.Text);
             cmd.Parameters.AddWithValue("@RowMaterial", txtrowmetarial.Text);
             cmd.Parameters.AddWithValue("@InwardNo", DBNull.Value);
             cmd.Parameters.AddWithValue("@Weight", txtWeight.Text);
@@ -388,20 +394,62 @@ public partial class Store_Inventory : System.Web.UI.Page
     protected void txtSize_TextChanged(object sender, EventArgs e)
     {
 
-        DataTable dtpt = Cls_Main.Read_Table("select * from tbl_InwardData WHERE RowMaterial='" + txtrowmetarial.Text.Trim() + "' AND Size='" + txtSize.Text.Trim() + "' AND IsDeleted=0");
-        if (dtpt.Rows.Count > 0)
+        //DataTable dtpt = Cls_Main.Read_Table("select * from tbl_InwardData WHERE RowMaterial='" + txtrowmetarial.Text.Trim() + "' AND Size='" + txtSize.Text.Trim() + "' AND IsDeleted=0");
+        //if (dtpt.Rows.Count > 0)
+        //{
+        //    txtTotalQty.Text = dtpt.Rows[0]["InwardQty"].ToString();
+        //    hdnid.Value = dtpt.Rows[0]["InwardNo"].ToString();
+        //    btnsavedata.Text = "Update";
+        //    ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", "alert('Already available this size row material please update quantity..!!');", true);
+        //}
+        //else
+        //{
+        //    txtTotalQty.Text = "";
+        //    hdnid.Value = "";
+        //    btnsavedata.Text = "Save";
+        //}
+    }
+    public void Getdata()
+    {
+        try
         {
-            txtTotalQty.Text = dtpt.Rows[0]["InwardQty"].ToString();
-            hdnid.Value = dtpt.Rows[0]["InwardNo"].ToString();
-            btnsavedata.Text = "Update";
-            ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", "alert('Already available this size row material please update quantity..!!');", true);
+            DataTable dtpt = Cls_Main.Read_Table("select * from tbl_InwardData WHERE RowMaterial='" + txtrowmetarial.Text.Trim() + "' AND Thickness='" + txtThickness.Text.Trim() + "' AND Width='" + txtwidth.Text.Trim() + "' AND Length='" + txtlength.Text.Trim() + "' AND IsDeleted=0");
+            if (dtpt.Rows.Count > 0)
+            {
+                txtTotalQty.Text = dtpt.Rows[0]["InwardQty"].ToString();
+                hdnid.Value = dtpt.Rows[0]["InwardNo"].ToString();
+                btnsavedata.Text = "Update";
+            }
+            else
+            {
+                txtTotalQty.Text = "";
+                hdnid.Value = "";
+                btnsavedata.Text = "Save";
+            }
         }
-        else
-        {
-            txtTotalQty.Text = "";
-            hdnid.Value = "";
-            btnsavedata.Text = "Save";
-        }
+        catch { }
+    }
+
+
+    protected void txtrowmetarial_TextChanged(object sender, EventArgs e)
+    {
+        Getdata();
+
+    }
+
+    protected void txtThickness_TextChanged(object sender, EventArgs e)
+    {
+        Getdata();
+    }
+
+    protected void txtwidth_TextChanged(object sender, EventArgs e)
+    {
+        Getdata();
+    }
+
+    protected void txtlength_TextChanged(object sender, EventArgs e)
+    {
+        Getdata();
     }
 }
 
