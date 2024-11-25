@@ -144,6 +144,24 @@ public partial class Production_Dispatch : System.Web.UI.Page
             ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", "alert('Send to back Successfully..!!')", true);
             FillGrid();
         }
+        if (e.CommandName == "DrawingFiles")
+        {
+            int rowIndex = Convert.ToInt32(e.CommandArgument);
+            GridViewRow row = GVPurchase.Rows[rowIndex];
+            string JobNo = ((Label)row.FindControl("jobno")).Text;
+            DataTable Dt = Cls_Main.Read_Table("SELECT * FROM tbl_DrawingDetails AS PD where JobNo='" + JobNo + "'");
+            if (Dt.Rows.Count > 0)
+            {
+                rptImages.DataSource = Dt;
+                rptImages.DataBind();
+                this.ModalPopupExtender2.Show();
+            }
+            else
+            {
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", "alert('Data not found..!!')", true);
+            }
+
+        }
     }
 
     protected void GVPurchase_PageIndexChanging(object sender, GridViewPageEventArgs e)
@@ -210,7 +228,7 @@ public partial class Production_Dispatch : System.Web.UI.Page
         {
             using (SqlCommand cmd = new SqlCommand())
             {
-                string CmdText = "select filePath from tbl_ProductionDTLS where JobNo='" + id + "' AND StageNumber='0'";
+                string CmdText = "select FileName from tbl_DrawingDetails where ID='" + id + "'";
 
                 SqlDataAdapter ad = new SqlDataAdapter(CmdText, con);
                 DataTable dt = new DataTable();
@@ -218,9 +236,9 @@ public partial class Production_Dispatch : System.Web.UI.Page
                 if (dt.Rows.Count > 0)
                 {
                     //Response.Write(dt.Rows[0]["Path"].ToString());
-                    if (!string.IsNullOrEmpty(dt.Rows[0]["filePath"].ToString()))
+                    if (!string.IsNullOrEmpty(dt.Rows[0]["FileName"].ToString()))
                     {
-                        Response.Redirect("~/Drawings/" + dt.Rows[0]["filePath"].ToString());
+                        Response.Redirect("~/Drawings/" + dt.Rows[0]["FileName"].ToString());
                     }
                     else
                     {
@@ -264,13 +282,13 @@ public partial class Production_Dispatch : System.Web.UI.Page
                     Cmd.ExecuteNonQuery();
                     Cls_Main.Conn_Close();
 
-                  
+
                     if (txtinwardqty.Text == txtoutwardqty.Text)
-                    {                     
+                    {
                         Cls_Main.Conn_Open();
-                        SqlCommand Cmd1 = new SqlCommand("UPDATE [tbl_ProductionHDR] SET Status=@Status WHERE  JobNo=@JobNo", Cls_Main.Conn);                        
+                        SqlCommand Cmd1 = new SqlCommand("UPDATE [tbl_ProductionHDR] SET Status=@Status WHERE  JobNo=@JobNo", Cls_Main.Conn);
                         Cmd1.Parameters.AddWithValue("@JobNo", txtjobno.Text);
-                        Cmd1.Parameters.AddWithValue("@Status", 2);                       
+                        Cmd1.Parameters.AddWithValue("@Status", 2);
                         Cmd1.ExecuteNonQuery();
                         Cls_Main.Conn_Close();
                     }

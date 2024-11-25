@@ -269,14 +269,14 @@
                                                         <asp:Label ID="OutwardQty" runat="server" Text='<%#Eval("OutwardQTY")%>'></asp:Label>
                                                     </ItemTemplate>
                                                 </asp:TemplateField>
-                                                  <asp:TemplateField HeaderText="Revert Qty" ItemStyle-HorizontalAlign="Center">
+                                                <asp:TemplateField HeaderText="Revert Qty" ItemStyle-HorizontalAlign="Center">
                                                     <ItemTemplate>
                                                         <asp:Label ID="RevertQty" runat="server" Text='<%#Eval("RevertQty")%>'></asp:Label>
                                                     </ItemTemplate>
                                                 </asp:TemplateField>
-                                                <asp:TemplateField HeaderText="Attachment" ItemStyle-HorizontalAlign="Center">
+                                                <asp:TemplateField HeaderText="Drawings" ItemStyle-HorizontalAlign="Center">
                                                     <ItemTemplate>
-                                                        <asp:ImageButton ID="ImageButtonfile2" ImageUrl="../Content1/img/Open-file2.png" runat="server" Width="30px" OnClick="ImageButtonfile2_Click" CommandArgument='<%# Eval("JobNo") %>' ToolTip="Open File" />
+                                                        <asp:LinkButton runat="server" ID="btndrawings" ToolTip="Show drawings" CausesValidation="false" CommandName="DrawingFiles" CommandArgument='<%# Container.DataItemIndex %>'><i class="fas fa-folder-open"  style="font-size: 26px; color:black; "></i></i></asp:LinkButton>
                                                     </ItemTemplate>
                                                 </asp:TemplateField>
                                                 <asp:TemplateField HeaderText="Status" ItemStyle-HorizontalAlign="Center">
@@ -287,7 +287,7 @@
                                                 <asp:TemplateField HeaderText="ACTION" HeaderStyle-Width="120">
                                                     <ItemTemplate>
                                                         <asp:LinkButton runat="server" ID="btnEdit" ToolTip="Add Quantity and Send" CausesValidation="false" CommandName="Edit" CommandArgument='<%# Container.DataItemIndex %>'><i class="fas fa-plus-square"  style="font-size: 26px; color:blue; "></i></i></asp:LinkButton>&nbsp;
-                                                        <asp:LinkButton ID="btnwarrehouse" runat="server" Height="27px" ToolTip="Metarial Request to Store" CausesValidation="false" CommandName="Rowwarehouse" CommandArgument='<%# Container.DataItemIndex %>'><i class='fas fa-cart-plus' style='font-size:24px;color: #212529;'></i></asp:LinkButton>
+                                                     <%--   <asp:LinkButton ID="btnwarrehouse" runat="server" Height="27px" ToolTip="Metarial Request to Store" CausesValidation="false" CommandName="Rowwarehouse" CommandArgument='<%# Container.DataItemIndex %>'><i class='fas fa-cart-plus' style='font-size:24px;color: #212529;'></i></asp:LinkButton>--%>
                                                     </ItemTemplate>
                                                 </asp:TemplateField>
                                             </Columns>
@@ -333,16 +333,17 @@
                                                 <asp:Label ID="Label16" runat="server" Font-Bold="true" CssClass="form-label">Inward QTY:</asp:Label>
                                                 <asp:TextBox ID="txtinwardqty" CssClass="form-control" ReadOnly="true" runat="server"></asp:TextBox>
                                             </div>
+
+                                            <div class="col-md-6 col-12 mb-3">
+                                                <asp:Label ID="Label12" runat="server" Font-Bold="true" CssClass="form-label">Pending QTY:</asp:Label>
+                                                <asp:TextBox ID="txtpending" CssClass="form-control" placeholder="Enter Pending QTY" TextMode="Number" runat="server"></asp:TextBox>
+                                            </div>
                                             <div class="col-md-6 col-12 mb-3">
                                                 <asp:Label ID="Label2" runat="server" Font-Bold="true" CssClass="form-label">Outward QTY:</asp:Label>
                                                 <asp:TextBox ID="txtoutwardqty" CssClass="form-control" placeholder="Enter Outward QTY" TextMode="Number" runat="server"></asp:TextBox>
                                             </div>
 
 
-                                            <div class="col-md-6 col-12 mb-3">
-                                                <asp:Label ID="Label12" runat="server" Font-Bold="true" CssClass="form-label">Pending QTY:</asp:Label>
-                                                <asp:TextBox ID="txtpending" CssClass="form-control" placeholder="Enter Pending QTY" TextMode="Number" runat="server"></asp:TextBox>
-                                            </div>
                                             <div class="col-md-6 col-12 mb-3">
                                                 <asp:Label ID="Label3" runat="server" Font-Bold="true" CssClass="form-label">Remarks:</asp:Label>
                                                 <asp:TextBox ID="txtRemarks" CssClass="form-control" placeholder="Enter Remark" TextMode="MultiLine" runat="server"></asp:TextBox>
@@ -356,7 +357,7 @@
                                                         </span>
                                                        Save & Back
                                                 </asp:LinkButton>
-                                                <asp:LinkButton runat="server" ID="btnSendtopro" class="btn btn-success" OnClick="btnsave_Click" Visible="false">
+                                                <asp:LinkButton runat="server" ID="btnSendtopro" class="btn btn-success" OnClick="btnsave_Click">
                                                         <span class="btn-label">
                                                             <i class="fa fa-check"></i>
                                                         </span>
@@ -365,70 +366,110 @@
                                             </div>
 
                                         </div>
-                                </div>
+                                    </div>
 
+                                </div>
                             </div>
+                            <div class="col-md-1"></div>
                         </div>
-                        <div class="col-md-1"></div>
-                </div>
-                </asp:Panel>
+                    </asp:Panel>
 
                     <asp:Button ID="Button1" runat="server" Style="display: none" />
-                <asp:ModalPopupExtender ID="ModalPopupExtender1" runat="server" TargetControlID="Button1"
-                    PopupControlID="PopupHistoryDetail1" OkControlID="Closepophistory1" />
+                    <asp:ModalPopupExtender ID="ModalPopupExtender1" runat="server" TargetControlID="Button1"
+                        PopupControlID="PopupHistoryDetail1" OkControlID="Closepophistory1" />
 
-                <asp:Panel ID="PopupHistoryDetail1" runat="server" CssClass="modelprofile1" Style="display: none">
-                    <div class="row container">
-                        <div class="col-md-4"></div>
-                        <div class="col-md-8">
-                            <div class="profilemodel2">
-                                <div class="headingcls">
-                                    <h4 class="modal-title">Warehouse Material Request Page
+                    <asp:Panel ID="PopupHistoryDetail1" runat="server" CssClass="modelprofile1" Style="display: none">
+                        <div class="row container">
+                            <div class="col-md-4"></div>
+                            <div class="col-md-8">
+                                <div class="profilemodel2">
+                                    <div class="headingcls">
+                                        <h4 class="modal-title">Warehouse Material Request Page
                                     <button type="button" id="Closepophistory1" class="btnclose" style="display: inline-block;" data-dismiss="modal">Close</button></h4>
-                                </div>
-
-                                <br />
-                                <div class="body" style="margin-right: 10px; margin-left: 10px; padding-right: 1px; padding-left: 1px;">
-                                    <div class="row">
-                                        <div class="col-md-6 col-12 mb-3">
-                                            <asp:Label ID="Label1" runat="server" Font-Bold="true" CssClass="form-label">Stock/RM:</asp:Label>
-
-                                            <asp:TextBox ID="txtRM" CssClass="form-control" runat="server"></asp:TextBox>
-                                        </div>
-                                        <div class="col-md-6 col-12 mb-3">
-                                            <asp:Label ID="Label7" runat="server" Font-Bold="true" CssClass="form-label">Available Quantity:</asp:Label>
-
-                                            <asp:TextBox ID="txtAvilableqty" CssClass="form-control" ReadOnly="true" runat="server"></asp:TextBox>
-                                        </div>
-                                        <div class="col-md-6 col-12 mb-3">
-                                            <asp:Label ID="Label8" runat="server" Font-Bold="true" CssClass="form-label">Size:</asp:Label>
-
-                                            <asp:TextBox ID="txtsize" CssClass="form-control" runat="server"></asp:TextBox>
-                                        </div>
-
-                                        <div class="col-md-6 col-12 mb-3">
-                                            <asp:Label ID="Label9" runat="server" Font-Bold="true" CssClass="form-label">Description:</asp:Label>
-
-                                            <asp:TextBox ID="txtDescription" CssClass="form-control" TextMode="MultiLine" runat="server"></asp:TextBox>
-                                        </div>
-                                        <div class="col-md-6 col-12 mb-3">
-                                            <asp:Label ID="Label10" runat="server" Font-Bold="true" CssClass="form-label">Need QTY:</asp:Label>
-
-                                            <asp:TextBox ID="txtneedqty" CssClass="form-control" TextMode="Number" runat="server"></asp:TextBox>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="col-md-3" style="margin-top: 18px">
-                                                <asp:Button ID="Button2" OnClick="btnsave_Click" ToolTip="Save" CssClass="form-control btn btn-outline-primary m-2" runat="server" Text="Save" />
-                                            </div>
-                                        </div>
-
                                     </div>
-                                </div>
 
+                                    <br />
+                                    <div class="body" style="margin-right: 10px; margin-left: 10px; padding-right: 1px; padding-left: 1px;">
+                                        <div class="row">
+                                            <div class="col-md-6 col-12 mb-3">
+                                                <asp:Label ID="Label1" runat="server" Font-Bold="true" CssClass="form-label">Stock/RM:</asp:Label>
+
+                                                <asp:TextBox ID="txtRM" CssClass="form-control" runat="server"></asp:TextBox>
+                                            </div>
+                                            <div class="col-md-6 col-12 mb-3">
+                                                <asp:Label ID="Label7" runat="server" Font-Bold="true" CssClass="form-label">Available Quantity:</asp:Label>
+
+                                                <asp:TextBox ID="txtAvilableqty" CssClass="form-control" ReadOnly="true" runat="server"></asp:TextBox>
+                                            </div>
+                                            <div class="col-md-6 col-12 mb-3">
+                                                <asp:Label ID="Label8" runat="server" Font-Bold="true" CssClass="form-label">Size:</asp:Label>
+
+                                                <asp:TextBox ID="txtsize" CssClass="form-control" runat="server"></asp:TextBox>
+                                            </div>
+
+                                            <div class="col-md-6 col-12 mb-3">
+                                                <asp:Label ID="Label9" runat="server" Font-Bold="true" CssClass="form-label">Description:</asp:Label>
+
+                                                <asp:TextBox ID="txtDescription" CssClass="form-control" TextMode="MultiLine" runat="server"></asp:TextBox>
+                                            </div>
+                                            <div class="col-md-6 col-12 mb-3">
+                                                <asp:Label ID="Label10" runat="server" Font-Bold="true" CssClass="form-label">Need QTY:</asp:Label>
+
+                                                <asp:TextBox ID="txtneedqty" CssClass="form-control" TextMode="Number" runat="server"></asp:TextBox>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="col-md-3" style="margin-top: 18px">
+                                                    <asp:Button ID="Button2" OnClick="btnsave_Click" ToolTip="Save" CssClass="form-control btn btn-outline-primary m-2" runat="server" Text="Save" />
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </asp:Panel>
+                    </asp:Panel>
+
+                    <asp:Button ID="Button3" runat="server" Style="display: none" />
+                    <asp:ModalPopupExtender ID="ModalPopupExtender2" runat="server" TargetControlID="Button3"
+                        PopupControlID="Panel1" OkControlID="Closepophistory2" />
+
+                    <asp:Panel ID="Panel1" runat="server" CssClass="modelprofile1">
+                        <div class="row container">
+                            <div class="col-md-3"></div>
+                            <div class="col-md-6">
+                                <div class="profilemodel2">
+                                    <div class="headingcls">
+                                        <h4 class="modal-title">Drawing Files
+                 <button type="button" id="Closepophistory2" class="btnclose" style="display: inline-block;" data-dismiss="modal">Close</button>
+                                        </h4>
+                                    </div>
+                                    <br />
+                                    <div class="body" style="margin-right: 10px; margin-left: 10px; padding-right: 1px; padding-left: 1px;">
+                                        <div class="row">
+
+                                            <asp:Repeater ID="rptImages" runat="server">
+                                                <ItemTemplate>
+                                                    <div class="col-md-6 col-12 mb-3">
+                                                        <div class="image-item">
+                                                            <!-- Display the image -->
+                                                            <asp:ImageButton ID="ImageButtonfile2" ImageUrl="../Content1/img/Open-file2.png" runat="server" Width="30px" OnClick="ImageButtonfile2_Click" CommandArgument='<%# Eval("ID") %>' ToolTip="Open File" />
+                                                            <asp:Label ID="Label14" runat="server" Font-Bold="true" Text="Drawing Name : " CssClass="form-label"></asp:Label>
+                                                            <asp:Label ID="Label4" runat="server" Font-Bold="true" Text='<%# Eval("Remark") %>' CssClass="form-label"></asp:Label>
+                                                        </div>
+                                                    </div>
+                                                </ItemTemplate>
+                                            </asp:Repeater>
+
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="col-md-3"></div>
+                        </div>
+                    </asp:Panel>
             </ContentTemplate>
         </asp:UpdatePanel>
     </form>

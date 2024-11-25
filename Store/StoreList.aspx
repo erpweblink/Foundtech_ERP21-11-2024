@@ -267,12 +267,7 @@
                                                     <ItemTemplate>
                                                         <asp:Label ID="NeedQty" runat="server" Text='<%#Eval("NeedQty")%>'></asp:Label>
                                                     </ItemTemplate>
-                                                </asp:TemplateField>
-                                                <asp:TemplateField HeaderText="Need Size">
-                                                    <ItemTemplate>
-                                                        <asp:Label ID="NeedSize" runat="server" Text='<%#Eval("NeedSize")%>'></asp:Label>
-                                                    </ItemTemplate>
-                                                </asp:TemplateField>
+                                                </asp:TemplateField>                                           
                                                 <asp:TemplateField HeaderText="Need Weight">
                                                     <ItemTemplate>
                                                         <asp:Label ID="Weight" runat="server" Text='<%#Eval("Weight")%>'></asp:Label>

@@ -276,9 +276,9 @@
                                                         </ItemTemplate>
                                                     </asp:TemplateField>
 
-                                                    <asp:TemplateField HeaderText="Attachment" ItemStyle-HorizontalAlign="Center">
+                                                    <asp:TemplateField HeaderText="Drawings" ItemStyle-HorizontalAlign="Center">
                                                         <ItemTemplate>
-                                                            <asp:ImageButton ID="ImageButtonfile2" ImageUrl="../Content1/img/Open-file2.png" runat="server" Width="30px" OnClick="ImageButtonfile2_Click" CommandArgument='<%# Eval("JobNo") %>' ToolTip="Open File" />
+                                                            <asp:LinkButton runat="server" ID="btndrawings" ToolTip="Show drawings" CausesValidation="false" CommandName="DrawingFiles" CommandArgument='<%# Container.DataItemIndex %>'><i class="fas fa-folder-open"  style="font-size: 26px; color:black; "></i></i></asp:LinkButton>
                                                         </ItemTemplate>
                                                     </asp:TemplateField>
                                                     <asp:TemplateField HeaderText="Status" ItemStyle-HorizontalAlign="Center">
@@ -289,7 +289,7 @@
                                                     <asp:TemplateField HeaderText="ACTION" HeaderStyle-Width="120">
                                                         <ItemTemplate>
                                                             <asp:LinkButton runat="server" ID="btnEdit" ToolTip="Add Quantity and Send" CausesValidation="false" CommandName="Edit" CommandArgument='<%# Container.DataItemIndex %>'><i class="fas fa-plus-square"  style="font-size: 26px; color:blue; "></i></i></asp:LinkButton>&nbsp;
-                                                        <asp:LinkButton ID="btnwarrehouse" runat="server" Height="27px" ToolTip="Metarial Request to Store" CausesValidation="false" CommandName="Rowwarehouse" CommandArgument='<%# Container.DataItemIndex %>'><i class='fas fa-cart-plus' style='font-size:24px;color: #212529;'></i></asp:LinkButton>
+                                                       <%-- <asp:LinkButton ID="btnwarrehouse" runat="server" Height="27px" ToolTip="Metarial Request to Store" CausesValidation="false" CommandName="Rowwarehouse" CommandArgument='<%# Container.DataItemIndex %>'><i class='fas fa-cart-plus' style='font-size:24px;color: #212529;'></i></asp:LinkButton>--%>
                                                         </ItemTemplate>
                                                     </asp:TemplateField>
                                                 </Columns>
@@ -376,6 +376,45 @@
                         </div>
                     </asp:Panel>
 
+                    <asp:Button ID="Button1" runat="server" Style="display: none" />
+                    <asp:ModalPopupExtender ID="ModalPopupExtender1" runat="server" TargetControlID="Button1"
+                        PopupControlID="PopupHistoryDetail1" OkControlID="Closepophistory1" />
+
+                    <asp:Panel ID="PopupHistoryDetail1" runat="server" CssClass="modelprofile1">
+                        <div class="row container">
+                            <div class="col-md-3"></div>
+                            <div class="col-md-6">
+                                <div class="profilemodel2">
+                                    <div class="headingcls">
+                                        <h4 class="modal-title">Drawing Files
+                     <button type="button" id="Closepophistory1" class="btnclose" style="display: inline-block;" data-dismiss="modal">Close</button>
+                                        </h4>
+                                    </div>
+                                    <br />
+                                    <div class="body" style="margin-right: 10px; margin-left: 10px; padding-right: 1px; padding-left: 1px;">
+                                        <div class="row">
+
+                                            <asp:Repeater ID="rptImages" runat="server">
+                                                <ItemTemplate>
+                                                    <div class="col-md-6 col-12 mb-3">
+                                                        <div class="image-item">
+                                                            <!-- Display the image -->
+                                                            <asp:ImageButton ID="ImageButtonfile2" ImageUrl="../Content1/img/Open-file2.png" runat="server" Width="30px" OnClick="ImageButtonfile2_Click" CommandArgument='<%# Eval("ID") %>' ToolTip="Open File" />
+                                                            <asp:Label ID="Label14" runat="server" Font-Bold="true" Text="Drawing Name : " CssClass="form-label"></asp:Label>
+                                                            <asp:Label ID="Label4" runat="server" Font-Bold="true" Text='<%# Eval("Remark") %>' CssClass="form-label"></asp:Label>
+                                                        </div>
+                                                    </div>
+                                                </ItemTemplate>
+                                            </asp:Repeater>
+
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="col-md-3"></div>
+                        </div>
+                    </asp:Panel>
                     <%--    <asp:Button ID="Button1" runat="server" Style="display: none" />
                     <asp:ModalPopupExtender ID="ModalPopupExtender1" runat="server" TargetControlID="Button1"
                         PopupControlID="PopupHistoryDetail1" OkControlID="Closepophistory1" />

@@ -541,7 +541,7 @@ public partial class Production_PlazmaCutting : System.Web.UI.Page
         cmd.Parameters.AddWithValue("@Thickness", txtThickness.Text);
         cmd.Parameters.AddWithValue("@Width", txtwidth.Text);
         cmd.Parameters.AddWithValue("@Length", txtlength.Text);
-        cmd.Parameters.AddWithValue("@NeedSize", txtsize.Text);
+        cmd.Parameters.AddWithValue("@NeedSize", DBNull.Value);
         cmd.Parameters.AddWithValue("@AvailableQty", txtAvilableqty.Text);
         cmd.Parameters.AddWithValue("@AvailableSize", txtAvailablesize.Text);
         cmd.Parameters.AddWithValue("@RowMaterial", txtRMC.Text);
@@ -632,6 +632,65 @@ public partial class Production_PlazmaCutting : System.Web.UI.Page
         }
     }
 
+
+    protected void txtThickness_TextChanged(object sender, EventArgs e)
+    {
+        Getdata();
+    }
+
+    protected void txtwidth_TextChanged(object sender, EventArgs e)
+    {
+        Getdata();
+    }
+
+    protected void txtlength_TextChanged(object sender, EventArgs e)
+    {
+        Getdata();
+    }
+
+    protected void txtneedqty_TextChanged(object sender, EventArgs e)
+    {
+        Getdata();
+    }
+
+    public void Getdata()
+    {
+        try
+        {
+            DataTable dtpt = Cls_Main.Read_Table("select SUM(CAST(InwardQty AS FLOAT)) AS Quantity from tbl_InwardData WHERE RowMaterial='" + txtRMC.Text.Trim() + "' AND Thickness='" + txtThickness.Text.Trim() + "' AND Width='" + txtwidth.Text.Trim() + "' AND Length='" + txtlength.Text.Trim() + "' AND IsDeleted=0");
+            if (dtpt.Rows.Count > 0)
+            {
+                txtAvilableqty.Text = dtpt.Rows[0]["Quantity"] != DBNull.Value ? dtpt.Rows[0]["Quantity"].ToString() : "0";
+              
+            }
+            else
+            {
+             
+            }
+            if (txtThickness.Text != "" && txtwidth.Text != "" && txtlength.Text != "")
+            {
+                double thickness = Convert.ToDouble(txtThickness.Text);
+                double width = Convert.ToDouble(txtwidth.Text);
+                double length = Convert.ToDouble(txtlength.Text);
+                double Quantity = string.IsNullOrEmpty(txtneedqty.Text) ? 0 : Convert.ToDouble(txtneedqty.Text);
+
+                // Ensure inputs are non-negative
+                if (thickness <= 0 || width <= 0 || length <= 0)
+                {
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", "alert('Please enter positive values for thickness, width, and length...!!');", true);
+
+                }
+
+                // Calculate weight in kilograms
+                double weight = length / 1000 * width / 1000 * thickness * 7.85;
+                double totalweight = weight * Quantity;
+                // Display the calculated weight
+                Txtweight.Text = totalweight.ToString();
+            }
+
+        }
+        catch { }
+    }
 }
 
 

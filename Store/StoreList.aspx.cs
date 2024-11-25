@@ -46,7 +46,9 @@ public partial class Store_StoreList : System.Web.UI.Page
             string Thickness = ((Label)row.FindControl("Thickness")).Text;
             string Width = ((Label)row.FindControl("Width")).Text;
             string Length = ((Label)row.FindControl("Length")).Text;  
-            GetAvailableDetals(RowMaterial, Thickness, Width, Length);           
+            string Weight = ((Label)row.FindControl("Weight")).Text;  
+            string NeedQty = ((Label)row.FindControl("NeedQty")).Text;  
+            GetAvailableDetals(RowMaterial, Thickness, Width, Length, NeedQty, Weight);           
             HDnInward.Value = Convert.ToString(inwardNo);
             HddnID.Value = Convert.ToString(ID);
             this.ModalPopupHistory.Show();
@@ -114,7 +116,7 @@ public partial class Store_StoreList : System.Web.UI.Page
 
     }
 
-    public void GetAvailableDetals(string RowMaterial, string Thickness, string Width, string Length)
+    public void GetAvailableDetals(string RowMaterial, string Thickness, string Width, string Length, string NeedQty, string Weight)
     {
         try
         {
@@ -131,13 +133,16 @@ public partial class Store_StoreList : System.Web.UI.Page
             if (dt.Rows.Count > 0) // Check if there are any rows in the DataTable
             {
                 txtavailableQty.Text = dt.Rows[0]["AvilableQty"].ToString();
+                txtThickness.Text = Thickness;
+                txtwidth.Text = Width;
+                txtlength.Text = Length;
+                txtApprovQuantity.Text = NeedQty;
+                Txtweight.Text = Weight;
             }
             else
             {
                 txtavailableQty.Text = "Not Available";
-                txtavailableQty.ForeColor = Color.Red;
-                txtApprovQuantity.Enabled = false;
-                dvbuttion.Visible = false;
+                txtavailableQty.ForeColor = Color.Red;              
             }
 
 

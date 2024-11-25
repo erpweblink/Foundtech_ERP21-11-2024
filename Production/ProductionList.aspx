@@ -296,7 +296,7 @@
                             <%--<div class="table-responsive text-center">--%>
                             <div class="table ">
                                 <br />
-                                <asp:GridView ID="GVPurchase" runat="server" CellPadding="4" DataKeyNames="id,JobNo" PageSize="10" AllowPaging="true" Width="100%" OnRowDataBound="GVPurchase_RowDataBound"
+                                <asp:GridView ID="GVPurchase" runat="server" CellPadding="4" DataKeyNames="id,JobNo" Width="100%" OnRowDataBound="GVPurchase_RowDataBound"
                                     OnRowCommand="GVPurchase_RowCommand" OnPageIndexChanging="GVPurchase_PageIndexChanging" CssClass="display table table-striped table-hover" AutoGenerateColumns="false">
                                     <Columns>
                                         <asp:TemplateField HeaderStyle-Width="20" HeaderText=" " HeaderStyle-CssClass="gvhead">

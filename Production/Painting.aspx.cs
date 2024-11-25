@@ -168,6 +168,24 @@ public partial class Production_Painting : System.Web.UI.Page
             ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", "alert('Send to Next Successfully..!!')", true);
             FillGrid();
         }
+        if (e.CommandName == "DrawingFiles")
+        {
+            int rowIndex = Convert.ToInt32(e.CommandArgument);
+            GridViewRow row = GVPurchase.Rows[rowIndex];
+            string JobNo = ((Label)row.FindControl("jobno")).Text;
+            DataTable Dt = Cls_Main.Read_Table("SELECT * FROM tbl_DrawingDetails AS PD where JobNo='" + JobNo + "'");
+            if (Dt.Rows.Count > 0)
+            {
+                rptImages.DataSource = Dt;
+                rptImages.DataBind();
+                this.ModalPopupExtender1.Show();
+            }
+            else
+            {
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", "alert('Data not found..!!')", true);
+            }
+
+        }
     }
 
     protected void GVPurchase_PageIndexChanging(object sender, GridViewPageEventArgs e)
@@ -234,7 +252,7 @@ public partial class Production_Painting : System.Web.UI.Page
         {
             using (SqlCommand cmd = new SqlCommand())
             {
-                string CmdText = "select filePath from tbl_ProductionDTLS where JobNo='" + id + "' AND StageNumber='0'";
+                string CmdText = "select FileName from tbl_DrawingDetails where ID='" + id + "'";
 
                 SqlDataAdapter ad = new SqlDataAdapter(CmdText, con);
                 DataTable dt = new DataTable();
@@ -242,9 +260,9 @@ public partial class Production_Painting : System.Web.UI.Page
                 if (dt.Rows.Count > 0)
                 {
                     //Response.Write(dt.Rows[0]["Path"].ToString());
-                    if (!string.IsNullOrEmpty(dt.Rows[0]["filePath"].ToString()))
+                    if (!string.IsNullOrEmpty(dt.Rows[0]["FileName"].ToString()))
                     {
-                        Response.Redirect("~/Drawings/" + dt.Rows[0]["filePath"].ToString());
+                        Response.Redirect("~/Drawings/" + dt.Rows[0]["FileName"].ToString());
                     }
                     else
                     {
@@ -259,7 +277,6 @@ public partial class Production_Painting : System.Web.UI.Page
             }
         }
     }
-
     protected void btnsave_Click(object sender, EventArgs e)
     {
         try
@@ -267,7 +284,7 @@ public partial class Production_Painting : System.Web.UI.Page
             if (txtoutwardqty.Text != null && txtoutwardqty.Text != "")
             {
                 if (Convert.ToDouble(txtinwardqty.Text) + 1 > Convert.ToDouble(txtoutwardqty.Text))
-                { 
+                {
                     //Recvied From First Stage start//////////////
                     Cls_Main.Conn_Open();
                     SqlCommand cmdselect1 = new SqlCommand("select InwardQTY from  tbl_ProductionDTLS  WHERE StageNumber=@StageNumber AND JobNo=@JobNo", Cls_Main.Conn);
