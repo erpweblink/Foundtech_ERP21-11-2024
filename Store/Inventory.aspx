@@ -302,11 +302,6 @@
                                                             <asp:Label ID="InwardQty" runat="server" Text='<%#Eval("InwardQty")%>'></asp:Label>
                                                         </ItemTemplate>
                                                     </asp:TemplateField>
-                                                    <asp:TemplateField HeaderText="Size">
-                                                        <ItemTemplate>
-                                                            <asp:Label ID="Size" runat="server" Text='<%#Eval("Size")%>'></asp:Label>
-                                                        </ItemTemplate>
-                                                    </asp:TemplateField>
                                                     <asp:TemplateField HeaderText="Thickness">
                                                         <ItemTemplate>
                                                             <asp:Label ID="Thickness" runat="server" Text='<%#Eval("Thickness")%>'></asp:Label>
@@ -320,6 +315,16 @@
                                                     <asp:TemplateField HeaderText="Length">
                                                         <ItemTemplate>
                                                             <asp:Label ID="Length" runat="server" Text='<%#Eval("Length")%>'></asp:Label>
+                                                        </ItemTemplate>
+                                                    </asp:TemplateField>
+                                                    <asp:TemplateField HeaderText="Weight (Kg)">
+                                                        <ItemTemplate>
+                                                            <asp:Label ID="Weight" runat="server" Text='<%#Eval("Weight")%>'></asp:Label>
+                                                        </ItemTemplate>
+                                                    </asp:TemplateField>
+                                                    <asp:TemplateField HeaderText="Size" Visible="false">
+                                                        <ItemTemplate>
+                                                            <asp:Label ID="Size" runat="server" Text='<%#Eval("Size")%>'></asp:Label>
                                                         </ItemTemplate>
                                                     </asp:TemplateField>
                                                     <asp:TemplateField HeaderText="ACTION" ItemStyle-HorizontalAlign="Center" HeaderStyle-Width="120">
@@ -398,7 +403,7 @@
                                                     </div>
                                                     <div class="col-md-6 col-12 mb-3">
                                                         <asp:Label ID="Label9" runat="server" Font-Bold="true" CssClass="form-label">Inward QTY:</asp:Label>
-                                                        <asp:TextBox ID="txtinwardqantity" CssClass="form-control" TextMode="Number" placeholder="Enter Inward Qantity" runat="server"></asp:TextBox>
+                                                        <asp:TextBox ID="txtinwardqantity" CssClass="form-control" AutoPostBack="true" OnTextChanged="txtinwardqantity_TextChanged" TextMode="Number" placeholder="Enter Inward Qantity" runat="server"></asp:TextBox>
                                                         <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" Display="Dynamic" ErrorMessage="Please Enter Inward Qantity"
                                                             ControlToValidate="txtinwardqantity" ValidationGroup="form1" ForeColor="Red" SetFocusOnError="true"></asp:RequiredFieldValidator>
 
@@ -409,8 +414,8 @@
                                                     </div>
 
                                                     <div class="col-md-6 col-12 mb-3">
-                                                        <asp:Label ID="Label2" runat="server" Font-Bold="true" CssClass="form-label"><span class="spncls">*</span>Weight:</asp:Label>
-                                                        <asp:TextBox ID="txtWeight" CssClass="form-control" placeholder="Enter Weight" runat="server"></asp:TextBox>
+                                                        <asp:Label ID="Label2" runat="server" Font-Bold="true" CssClass="form-label"><span class="spncls">*</span>Weight (Kg):</asp:Label>
+                                                        <asp:TextBox ID="txtWeight" CssClass="form-control" ReadOnly="true" placeholder="Enter Weight" runat="server"></asp:TextBox>
                                                         <asp:RequiredFieldValidator ID="RequiredFieldValidator3" runat="server" Display="Dynamic" ErrorMessage="Please Weight"
                                                             ControlToValidate="txtWeight" ValidationGroup="form1" ForeColor="Red" SetFocusOnError="true"></asp:RequiredFieldValidator>
 

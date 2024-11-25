@@ -13,6 +13,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 
 
+
 public partial class Store_Inventory : System.Web.UI.Page
 {
     SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["constr"].ConnectionString);
@@ -88,8 +89,7 @@ public partial class Store_Inventory : System.Web.UI.Page
         if (e.CommandName == "RowEdit")
         {
             divinwardform.Visible = true;
-            divtabl.Visible = false;
-            txtSize.Enabled = false;
+            divtabl.Visible = false;                  
             txtrowmetarial.Enabled = false;
             int rowIndex = Convert.ToInt32(e.CommandArgument);
             GridViewRow row = GVPurchase.Rows[rowIndex];
@@ -99,6 +99,8 @@ public partial class Store_Inventory : System.Web.UI.Page
             txtlength.Text = ((Label)row.FindControl("Length")).Text;
 
             txtTotalQty.Text = ((Label)row.FindControl("InwardQty")).Text;
+            txtinwardqantity.Text = ((Label)row.FindControl("InwardQty")).Text;
+            txtWeight.Text = ((Label)row.FindControl("Weight")).Text;
 
             txtSize.Text = ((Label)row.FindControl("Size")).Text;
             hdnid.Value = ((Label)row.FindControl("Inwardno")).Text;
@@ -228,7 +230,7 @@ public partial class Store_Inventory : System.Web.UI.Page
             cmd.Parameters.AddWithValue("@Mode", "UpdateInwarddata");
             Double Total = Convert.ToDouble(txtTotalQty.Text) + Convert.ToDouble(txtinwardqantity.Text);
             cmd.Parameters.AddWithValue("@InwardNo", hdnid.Value);
-            cmd.Parameters.AddWithValue("@InwardQty", Convert.ToString(Total));        
+            cmd.Parameters.AddWithValue("@InwardQty", txtinwardqantity.Text);        
             cmd.Parameters.AddWithValue("@Length", txtlength.Text);
             cmd.Parameters.AddWithValue("@Weight", txtWeight.Text);
         }
@@ -413,19 +415,45 @@ public partial class Store_Inventory : System.Web.UI.Page
     {
         try
         {
-            DataTable dtpt = Cls_Main.Read_Table("select * from tbl_InwardData WHERE RowMaterial='" + txtrowmetarial.Text.Trim() + "' AND Thickness='" + txtThickness.Text.Trim() + "' AND Width='" + txtwidth.Text.Trim() + "' AND Length='" + txtlength.Text.Trim() + "' AND IsDeleted=0");
-            if (dtpt.Rows.Count > 0)
+            //DataTable dtpt = Cls_Main.Read_Table("select * from tbl_InwardData WHERE RowMaterial='" + txtrowmetarial.Text.Trim() + "' AND Thickness='" + txtThickness.Text.Trim() + "' AND Width='" + txtwidth.Text.Trim() + "' AND Length='" + txtlength.Text.Trim() + "' AND IsDeleted=0");
+            //if (dtpt.Rows.Count > 0)
+            //{
+               
+            //    hdnid.Value = dtpt.Rows[0]["InwardNo"].ToString();
+            //    txtWeight.Text = dtpt.Rows[0]["Weight"].ToString();
+            //    txtTotalQty.Text = dtpt.Rows[0]["Quantity"] != DBNull.Value ? dtpt.Rows[0]["Quantity"].ToString(): "0";
+            //    txtinwardqantity.Text = dtpt.Rows[0]["InwardQty"].ToString();
+            //    Double Total = Convert.ToDouble(txtTotalQty.Text) + Convert.ToDouble(txtinwardqantity.Text);
+            //    txtTotalQty.Text = Total.ToString();
+            //    btnsavedata.Text = "Update";
+            //}
+            //else
+            //{
+            //    txtTotalQty.Text = "";
+            //    hdnid.Value = "";
+            //    btnsavedata.Text = "Save";
+            //}
+            if(txtThickness.Text!="" && txtwidth.Text!="" && txtlength.Text!="" )
             {
-                txtTotalQty.Text = dtpt.Rows[0]["InwardQty"].ToString();
-                hdnid.Value = dtpt.Rows[0]["InwardNo"].ToString();
-                btnsavedata.Text = "Update";
+                double thickness = Convert.ToDouble(txtThickness.Text);
+                double width = Convert.ToDouble(txtwidth.Text);
+                double length = Convert.ToDouble(txtlength.Text);
+                double Quantity = string.IsNullOrEmpty(txtinwardqantity.Text)? 0 : Convert.ToDouble(txtinwardqantity.Text);
+
+                // Ensure inputs are non-negative
+                if (thickness <= 0 || width <= 0 || length <= 0)
+                {
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", "alert('Please enter positive values for thickness, width, and length...!!');", true);
+                    
+                }
+
+                // Calculate weight in kilograms
+                double weight = length/1000*width/1000*thickness * 7.85;
+                double totalweight = weight * Quantity;
+                // Display the calculated weight
+                txtWeight.Text = totalweight.ToString();
             }
-            else
-            {
-                txtTotalQty.Text = "";
-                hdnid.Value = "";
-                btnsavedata.Text = "Save";
-            }
+
         }
         catch { }
     }
@@ -450,6 +478,30 @@ public partial class Store_Inventory : System.Web.UI.Page
     protected void txtlength_TextChanged(object sender, EventArgs e)
     {
         Getdata();
+    }
+
+    protected void txtinwardqantity_TextChanged(object sender, EventArgs e)
+    {
+        if (txtThickness.Text != "" && txtwidth.Text != "" && txtlength.Text != "" && txtinwardqantity.Text != "")
+        {
+            double thickness = Convert.ToDouble(txtThickness.Text);
+            double width = Convert.ToDouble(txtwidth.Text);
+            double length = Convert.ToDouble(txtlength.Text);
+            double Quantity = Convert.ToDouble(txtinwardqantity.Text);
+
+            // Ensure inputs are non-negative
+            if (thickness <= 0 || width <= 0 || length <= 0)
+            {
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", "alert('Please enter positive values for thickness, width, and length...!!');", true);
+
+            }
+
+            // Calculate weight in kilograms
+            double weight = length / 1000 * width / 1000 * thickness * 7.85;
+            double totalweight = weight * Quantity;
+            // Display the calculated weight
+            txtWeight.Text = totalweight.ToString();
+        }
     }
 }
 
