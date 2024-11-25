@@ -10,7 +10,7 @@
     <meta
         content="width=device-width, initial-scale=1.0, shrink-to-fit=no"
         name="viewport" />
-  
+
 
     <!-- Fonts and icons -->
     <script src="../Content/assets/js/plugin/webfont/webfont.min.js"></script>
@@ -111,7 +111,7 @@
                                             <span class="sub-item">Supplier Master</span>
                                         </a>
                                     </li>
-                                       <li id="transportmastereID" runat="server">
+                                    <li id="transportmastereID" runat="server">
                                         <a href="../Masters/TransporterList.aspx">
                                             <span class="sub-item">Transport Master</span>
                                         </a>
@@ -232,6 +232,11 @@
                             </a>
                             <div class="collapse" id="forms">
                                 <ul class="nav nav-collapse">
+                                    <li>
+                                        <a href="../Store/InwardEntry.aspx">
+                                            <span class="sub-item">Inward Entry</span>
+                                        </a>
+                                    </li>
                                     <li>
                                         <a href="../Store/Inventory.aspx">
                                             <span class="sub-item">Inventory List</span>
@@ -392,7 +397,7 @@
     <script src="../Content/assets/js/kaiadmin.min.js"></script>
 
     <!-- Kaiadmin DEMO methods, don't include it in your project! -->
-<%--    <script src="../Content/assets/js/setting-demo.js"></script>
+    <%--    <script src="../Content/assets/js/setting-demo.js"></script>
     <script src="../Content/assets/js/demo.js"></script>--%>
     <script>
         $("#lineChart").sparkline([102, 109, 120, 99, 110, 105, 115], {

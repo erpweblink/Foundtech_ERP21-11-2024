@@ -25,7 +25,7 @@ public partial class Store_StoreList : System.Web.UI.Page
         {
             if (!IsPostBack)
             {
-                GetstoreList();
+                GetstoreList();          
             }
         }
 
@@ -207,6 +207,8 @@ public partial class Store_StoreList : System.Web.UI.Page
             var result = cmd1.ExecuteScalar();
             Cls_Main.Conn_Close();
             Cls_Main.Conn_Dispose();
+
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", "alert('Reject Request Successfully..!!');window.location='StoreList.aspx';", true);
         }
         catch (Exception ex)
         {

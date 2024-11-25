@@ -37,7 +37,7 @@ public partial class Production_PlazmaCutting : System.Web.UI.Page
     private void FillGrid()
     {
 
-        DataTable Dt = Cls_Main.Read_Table("SELECT * FROM tbl_ProductionDTLS AS PD INNER JOIN tbl_ProductionHDR AS PH ON PH.JobNo=PD.JobNo where PD.Stage='PlazmaCutting' AND CONVERT(bigint,ISNULL(InwardQTY,0))>=CONVERT(bigint,ISNULL(OutwardQTY,0)) AND PD.Status<2");
+        DataTable Dt = Cls_Main.Read_Table("SELECT * FROM tbl_ProductionDTLS AS PD INNER JOIN tbl_ProductionHDR AS PH ON PH.JobNo=PD.JobNo where PD.Stage='PlazmaCutting' AND CONVERT(bigint,ISNULL(InwardQTY,0))>=CONVERT(bigint,ISNULL(OutwardQTY,0)) AND PD.Status<2 ORDER BY PD.ID DESC");
         GVPurchase.DataSource = Dt;
         GVPurchase.DataBind();
 
