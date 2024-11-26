@@ -45,6 +45,14 @@ public partial class Laxshmi_DefectReport : System.Web.UI.Page
             {
                 cmd.Parameters.AddWithValue("@CompanyName", txtCustomerName.Text);
             }
+            if (txtRowMaterial.Text == null || txtRowMaterial.Text == "")
+            {
+                cmd.Parameters.AddWithValue("@RowMaterial", DBNull.Value);
+            }
+            else
+            {
+                cmd.Parameters.AddWithValue("@RowMaterial", txtRowMaterial.Text);
+            }
             if (txtDelivery.Text == null || txtDelivery.Text == "")
             {
                 cmd.Parameters.AddWithValue("@DeliveryNo", DBNull.Value);
@@ -125,6 +133,14 @@ public partial class Laxshmi_DefectReport : System.Web.UI.Page
                     {
                         cmd.Parameters.AddWithValue("@CompanyName", txtCustomerName.Text);
                     }
+                    if (txtRowMaterial.Text == null || txtRowMaterial.Text == "")
+                    {
+                        cmd.Parameters.AddWithValue("@RowMaterial", DBNull.Value);
+                    }
+                    else
+                    {
+                        cmd.Parameters.AddWithValue("@RowMaterial", txtRowMaterial.Text);
+                    }
                     if (txtDelivery.Text == null || txtDelivery.Text == "")
                     {
                         cmd.Parameters.AddWithValue("@DeliveryNo", DBNull.Value);
@@ -133,7 +149,7 @@ public partial class Laxshmi_DefectReport : System.Web.UI.Page
                     {
                         cmd.Parameters.AddWithValue("@DeliveryNo", txtDelivery.Text);
                     }
-                   
+
                     if (txtfromdate.Text == null || txtfromdate.Text == "" && txttodate.Text == null || txttodate.Text == "")
                     {
                         cmd.Parameters.AddWithValue("@FromDate", DBNull.Value);
@@ -321,5 +337,45 @@ public partial class Laxshmi_DefectReport : System.Web.UI.Page
     }
 
 
+    //Search Row Material methods
+    [System.Web.Script.Services.ScriptMethod()]
+    [System.Web.Services.WebMethod]
+    public static List<string> GetRowMaterialList(string prefixText, int count)
+    {
+        return AutoFillRowMaterial(prefixText);
+    }
+
+    public static List<string> AutoFillRowMaterial(string prefixText)
+    {
+        using (SqlConnection con = new SqlConnection())
+        {
+            con.ConnectionString = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
+
+            using (SqlCommand com = new SqlCommand())
+            {
+                com.CommandText = "select DISTINCT RowMaterial from tbl_LM_Outwarddata where  " + "RowMaterial like  '%'+ @Search + '%'";
+
+                com.Parameters.AddWithValue("@Search", prefixText);
+                com.Connection = con;
+                con.Open();
+                List<string> countryNames = new List<string>();
+                using (SqlDataReader sdr = com.ExecuteReader())
+                {
+                    while (sdr.Read())
+                    {
+                        countryNames.Add(sdr["RowMaterial"].ToString());
+                    }
+                }
+                con.Close();
+                return countryNames;
+            }
+        }
+    }
+
+
+    protected void txtRowMaterial_TextChanged(object sender, EventArgs e)
+    {
+        GridView();
+    }
 
 }

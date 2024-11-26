@@ -286,7 +286,19 @@
                                 </asp:AutoCompleteExtender>
 
                             </div>
-                        </div>                    
+                        </div>
+                        <div class="col-md-3">
+                            <div style="margin-top: 14px;">
+                                <asp:Label ID="Label1" Font-Bold="true" runat="server" Text="Row Material :"></asp:Label>
+                                <asp:TextBox ID="txtRowMaterial" CssClass="form-control" placeholder="Search Row Material " runat="server" OnTextChanged="txtRowMaterial_TextChanged" Width="100%" AutoPostBack="true"></asp:TextBox>
+                                <asp:AutoCompleteExtender ID="AutoCompleteExtender2" runat="server" CompletionListCssClass="completionList"
+                                    CompletionListHighlightedItemCssClass="itemHighlighted" CompletionListItemCssClass="listItem"
+                                    CompletionInterval="10" MinimumPrefixLength="1" ServiceMethod="GetRowMaterialList"
+                                    TargetControlID="txtRowMaterial">
+                                </asp:AutoCompleteExtender>
+
+                            </div>
+                        </div>
                         <div class="col-md-3">
                             <div style="margin-top: 14px;">
                                 <asp:Label ID="Label2" Font-Bold="true" runat="server" Text="Delivery Number :"></asp:Label>
@@ -298,7 +310,7 @@
                                 </asp:AutoCompleteExtender>
 
                             </div>
-                        </div>                      
+                        </div>
                         <div class="col-md-3">
                             <div style="margin-top: 14px;">
                                 <asp:Label ID="lblfromdate" runat="server" Font-Bold="true" Text="From Date :"></asp:Label>
@@ -358,6 +370,13 @@
                                             <FooterTemplate>
                                             </FooterTemplate>
                                         </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Row Material" HeaderStyle-CssClass="gvhead" ItemStyle-HorizontalAlign="Center">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblRowMaterial" runat="server" Text='<%#Eval("RowMaterial")%>'></asp:Label>
+                                            </ItemTemplate>
+                                            <FooterTemplate>
+                                            </FooterTemplate>
+                                        </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Delevery No." HeaderStyle-CssClass="gvhead" ItemStyle-HorizontalAlign="Center">
                                             <ItemTemplate>
                                                 <asp:Label ID="lblDeleveryNo" runat="server" Text='<%#Eval("DEFDeleveryNo")%>'></asp:Label>
@@ -391,7 +410,7 @@
                                                 <asp:Label ID="lblGradTotal" runat="server" />
                                             </FooterTemplate>
                                         </asp:TemplateField>
-                                                <asp:TemplateField HeaderText="Outward Date" HeaderStyle-CssClass="gvhead">
+                                        <asp:TemplateField HeaderText="Outward Date" HeaderStyle-CssClass="gvhead">
                                             <ItemTemplate>
                                                 <asp:Label ID="lblDEFOutwardDate" runat="server" Text='<%#Eval("OutDate")%>'></asp:Label>
                                             </ItemTemplate>

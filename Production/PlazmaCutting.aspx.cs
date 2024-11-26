@@ -576,6 +576,11 @@ public partial class Production_PlazmaCutting : System.Web.UI.Page
             ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", "alert('Request Deleted Successfully..!!')", true);
 
         }
+
+        if(e.CommandName == "Edit")
+        {
+            Response.Redirect("../Store/ReturnInventory.aspx?ID='" + e.CommandArgument.ToString() + "'");
+        }
     }
 
     protected void GVRequest_RowEditing(object sender, GridViewEditEventArgs e)

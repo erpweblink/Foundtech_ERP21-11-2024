@@ -581,6 +581,7 @@
                                                     <asp:TemplateField HeaderText="Action" ItemStyle-Width="120" HeaderStyle-CssClass="gvhead">
                                                         <ItemTemplate>
                                                             <asp:LinkButton runat="server" ID="ImgbtnDelete" CommandName="RowDelete" ToolTip="Delete" CommandArgument='<%#Eval("ID")%>' Visible='<%# Eval("Status").ToString() == "1" ? true : false %>' OnClientClick="Javascript:return confirm('Are you sure to Delete?')" CausesValidation="false"><i class="fa fa-trash" style="font-size:24px;color:red"></i></asp:LinkButton>
+                                                            <asp:LinkButton runat="server" ID="btnEdit" ToolTip="Extra Quantity Send to Store"  Visible='<%# Eval("Status").ToString() == "2" ? true : false %>'  CausesValidation="false" CommandName="Edit" CommandArgument='<%#Eval("ID")%>'><i class="fas fa-plus-square"  style="font-size: 26px; color:blue; "></i></i></asp:LinkButton>
                                                         </ItemTemplate>
                                                     </asp:TemplateField>
                                                 </Columns>

@@ -247,6 +247,11 @@
                                             <span class="sub-item">Production Request List</span>
                                         </a>
                                     </li>
+                                    <li>
+                                        <a href="../Store/ReturnInventory.aspx">
+                                            <span class="sub-item">Return Inventory List</span>
+                                        </a>
+                                    </li>
                                 </ul>
                             </div>
                         </li>
