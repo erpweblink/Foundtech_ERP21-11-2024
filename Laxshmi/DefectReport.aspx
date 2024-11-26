@@ -409,7 +409,7 @@
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Defect Qty" HeaderStyle-CssClass="gvhead">
                                             <ItemTemplate>
-                                                <asp:Label ID="lbldDefectQty" runat="server" Text='<%#Eval("DEFQty")%>'></asp:Label>
+                                                <asp:Label ID="lbldDefectQty" runat="server" Text='<%#Eval("DefectoutQty")%>'></asp:Label>
                                             </ItemTemplate>
                                             <FooterTemplate>
                                                 <asp:Label ID="lblGrandTtal" runat="server" />

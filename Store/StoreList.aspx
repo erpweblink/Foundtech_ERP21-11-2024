@@ -267,7 +267,7 @@
                                                     <ItemTemplate>
                                                         <asp:Label ID="NeedQty" runat="server" Text='<%#Eval("NeedQty")%>'></asp:Label>
                                                     </ItemTemplate>
-                                                </asp:TemplateField>                                           
+                                                </asp:TemplateField>
                                                 <asp:TemplateField HeaderText="Need Weight">
                                                     <ItemTemplate>
                                                         <asp:Label ID="Weight" runat="server" Text='<%#Eval("Weight")%>'></asp:Label>
@@ -315,7 +315,7 @@
                                             <div class="profilemodel2">
                                                 <div class="headingcls">
                                                     <h4 class="modal-title">Available Details 
-                                    <button type="button" id="Closepophistory" class="btnclose" style="display: inline-block;" data-dismiss="modal">Close</button></h4>
+     <button type="button" id="Closepophistory" class="btnclose" style="display: inline-block;" data-dismiss="modal">Close</button></h4>
                                                 </div>
 
                                                 <br />
@@ -358,10 +358,10 @@
 
                                                             <div class="col-md-12" style="margin-top: 18px; text-align: center">
                                                                 <asp:LinkButton runat="server" ID="btnSendtopro" class="btn btn-success" OnClick="btnSendtopro_Click">
-                                                        <span class="btn-label"  style="text-align:center" >
-                                                            <i class="fa fa-check"></i>
-                                                        </span>
-                                                       Approve
+                         <span class="btn-label"  style="text-align:center" >
+                             <i class="fa fa-check"></i>
+                         </span>
+                        Approve
                                                                 </asp:LinkButton>
                                                             </div>
 
@@ -384,10 +384,9 @@
                 </div>
                 </div>
             </ContentTemplate>
-            <Triggers>
-                <asp:PostBackTrigger ControlID="GVPurchase" />
-            </Triggers>
         </asp:UpdatePanel>
+
+
     </form>
 
 </asp:Content>

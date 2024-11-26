@@ -292,6 +292,11 @@
                                                             <asp:Label ID="Inwardno" runat="server" Text='<%#Eval("InwardNo")%>'></asp:Label>
                                                         </ItemTemplate>
                                                     </asp:TemplateField>
+                                                    <asp:TemplateField HeaderText="Inward Date">
+                                                        <ItemTemplate>
+                                                            <asp:Label ID="DATE" runat="server" Text='<%#Eval("DATE")%>'></asp:Label>
+                                                        </ItemTemplate>
+                                                    </asp:TemplateField>
                                                     <asp:TemplateField HeaderText="Row Material Name">
                                                         <ItemTemplate>
                                                             <asp:Label ID="MaterialName" runat="server" Text='<%#Eval("RowMaterial")%>'></asp:Label>

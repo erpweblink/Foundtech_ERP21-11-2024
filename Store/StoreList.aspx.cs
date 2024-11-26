@@ -75,6 +75,7 @@ public partial class Store_StoreList : System.Web.UI.Page
             string Mode = "DeleteRecord";
             UpdateStatus(Mode);
             GetstoreList();
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", "alert('Delete Record Successfully..!!');window.location='StoreList.aspx';", true);
         }
 
 
@@ -160,32 +161,23 @@ public partial class Store_StoreList : System.Web.UI.Page
     {
         try
         {
+
             Cls_Main.Conn_Open();
             SqlCommand cmd = new SqlCommand("SP_StoreDeatils", Cls_Main.Conn);
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Parameters.AddWithValue("@Createdby", Session["UserCode"].ToString());
-            cmd.Parameters.AddWithValue("@Mode", "UpdateInwardQty");
-           
-            int Avalableqty = string.IsNullOrEmpty(txtavailableQty.Text) ? 0 : Convert.ToInt32(txtavailableQty.Text);
-            int approvedqunatity = string.IsNullOrEmpty(txtApprovQuantity.Text) ? 0 : Convert.ToInt32(txtApprovQuantity.Text);
-            int Pendingquantity = Avalableqty - approvedqunatity;
-            if(Pendingquantity==0)
-            {
-                cmd.Parameters.AddWithValue("@status", 3);
-            }
-            else
-            {
-                cmd.Parameters.AddWithValue("@status", 2);
-            }
-
-            cmd.Parameters.AddWithValue("@InwardQty", Pendingquantity);
-            cmd.Parameters.AddWithValue("@InwardNo", HDnInward.Value);
+            cmd.Parameters.AddWithValue("@Mode", "UpdateInwardQty");          
+            cmd.Parameters.AddWithValue("@Quantity", txtApprovQuantity.Text);
+            cmd.Parameters.AddWithValue("@Thickness", txtThickness.Text);
+            cmd.Parameters.AddWithValue("@Width", txtwidth.Text);
+            cmd.Parameters.AddWithValue("@Length", txtlength.Text);       
+            cmd.Parameters.AddWithValue("@Weight", Txtweight.Text);        
             cmd.Parameters.AddWithValue("@ID", HddnID.Value);
             cmd.ExecuteNonQuery();
             Cls_Main.Conn_Close();
             Cls_Main.Conn_Dispose();
           
-            ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", "alert('Saved Record Successfully..!!');window.location='Inventory.aspx';", true);
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", "alert('Saved Record Successfully..!!');window.location='StoreList.aspx';", true);
         }
         catch (Exception ex)
         {
