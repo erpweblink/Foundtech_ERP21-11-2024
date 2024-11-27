@@ -1,4 +1,5 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" MasterPageFile="~/AdminMaster.master" CodeFile="UserMasterList.aspx.cs" Inherits="Masters_UserMasterList" %>
+
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
     <link href="../Content/css/Griddiv.css" rel="stylesheet" />
@@ -67,6 +68,11 @@
                                         <asp:TemplateField HeaderText="User Name" HeaderStyle-CssClass="gvhead">
                                             <ItemTemplate>
                                                 <asp:Label ID="username" runat="server" Text='<%#Eval("Username")%>'></asp:Label>
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Password" HeaderStyle-CssClass="gvhead">
+                                            <ItemTemplate>
+                                                <asp:Label ID="Password" runat="server" Text='<%#Eval("Password")%>'></asp:Label>
                                             </ItemTemplate>
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Mobile No." HeaderStyle-CssClass="gvhead">
