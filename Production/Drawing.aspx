@@ -2,7 +2,35 @@
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
-
+    <script src="../Content/assets/js/plugin/sweetalert/sweetalert.min.js"></script>
+ <script>     
+     function SuccessResult(msg) {
+         swal("Success", msg, {
+             icon: "success",
+             buttons: {
+                 confirm: {
+                     className: "btn btn-success",
+                     TimeRanges: "5000",
+                 },
+             },
+         }).then(function () {
+             window.location.href = "Drawing.aspx";
+         });
+     };
+     function DeleteResult(msg) {
+         swal("Delete!", msg, {
+             icon: "error",
+             buttons: {
+                 confirm: {
+                     className: "btn btn-danger",
+                     TimeRanges: "5000",
+                 },
+             },
+         }).then(function () {
+             window.location.href = "Drawing.aspx";
+         });
+     };
+ </script> 
     <link href="../Content1/css/styles.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" />
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
@@ -301,7 +329,7 @@
                                                     <ItemTemplate>
                                                         <asp:Label ID="Total_Price" runat="server" Text='<%#Eval("TotalQuantity")%>'></asp:Label>
                                                     </ItemTemplate>
-                                                </asp:TemplateField>                                            
+                                                </asp:TemplateField>
                                                 <asp:TemplateField HeaderText="ACTION" ItemStyle-HorizontalAlign="Center" HeaderStyle-Width="120">
                                                     <ItemTemplate>
                                                         <%--  <asp:LinkButton runat="server" ID="btnpdfview" ToolTip="View Order Acceptance PDF" CommandName="RowView" CommandArgument='<%# Eval("Pono") %>'><i class="fas fa-file-pdf"  style="font-size: 26px; color:red; "></i></i></asp:LinkButton>--%>

@@ -25,7 +25,7 @@ public partial class Store_StoreList : System.Web.UI.Page
         {
             if (!IsPostBack)
             {
-                GetstoreList();          
+                GetstoreList();
             }
         }
 
@@ -45,14 +45,14 @@ public partial class Store_StoreList : System.Web.UI.Page
             string RowMaterial = ((Label)row.FindControl("RowMaterial")).Text;
             string Thickness = ((Label)row.FindControl("Thickness")).Text;
             string Width = ((Label)row.FindControl("Width")).Text;
-            string Length = ((Label)row.FindControl("Length")).Text;  
-            string Weight = ((Label)row.FindControl("Weight")).Text;  
-            string NeedQty = ((Label)row.FindControl("NeedQty")).Text;  
-            GetAvailableDetals(RowMaterial, Thickness, Width, Length, NeedQty, Weight);           
+            string Length = ((Label)row.FindControl("Length")).Text;
+            string Weight = ((Label)row.FindControl("Weight")).Text;
+            string NeedQty = ((Label)row.FindControl("NeedQty")).Text;
+            GetAvailableDetals(RowMaterial, Thickness, Width, Length, NeedQty, Weight);
             HDnInward.Value = Convert.ToString(inwardNo);
             HddnID.Value = Convert.ToString(ID);
             this.ModalPopupHistory.Show();
-         
+            txtRMC.Text = RowMaterial;
         }
 
         if (e.CommandName == "RejectCancel")
@@ -75,7 +75,7 @@ public partial class Store_StoreList : System.Web.UI.Page
             string Mode = "DeleteRecord";
             UpdateStatus(Mode);
             GetstoreList();
-            ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", "alert('Delete Record Successfully..!!');window.location='StoreList.aspx';", true);
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", "SuccessResult('Delete Record Successfully..!!');", true);
         }
 
 
@@ -111,7 +111,7 @@ public partial class Store_StoreList : System.Web.UI.Page
         {
 
             string errorMsg = "An error occurred : " + ex.Message;
-            ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", "alert('" + errorMsg + "') ", true);
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", "DeleteResult('" + errorMsg + "') ", true);
 
         }
 
@@ -139,11 +139,12 @@ public partial class Store_StoreList : System.Web.UI.Page
                 txtlength.Text = Length;
                 txtApprovQuantity.Text = NeedQty;
                 Txtweight.Text = Weight;
+                txtRMC.Text = RowMaterial;
             }
             else
             {
                 txtavailableQty.Text = "Not Available";
-                txtavailableQty.ForeColor = Color.Red;              
+                txtavailableQty.ForeColor = Color.Red;
             }
 
 
@@ -152,7 +153,7 @@ public partial class Store_StoreList : System.Web.UI.Page
         {
 
             string errorMsg = "An error occurred : " + ex.Message;
-            ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", "alert('" + errorMsg + "') ", true);
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", "DeleteResult('" + errorMsg + "') ", true);
 
         }
     }
@@ -166,18 +167,18 @@ public partial class Store_StoreList : System.Web.UI.Page
             SqlCommand cmd = new SqlCommand("SP_StoreDeatils", Cls_Main.Conn);
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Parameters.AddWithValue("@Createdby", Session["UserCode"].ToString());
-            cmd.Parameters.AddWithValue("@Mode", "UpdateInwardQty");          
+            cmd.Parameters.AddWithValue("@Mode", "UpdateInwardQty");
             cmd.Parameters.AddWithValue("@Quantity", txtApprovQuantity.Text);
             cmd.Parameters.AddWithValue("@Thickness", txtThickness.Text);
             cmd.Parameters.AddWithValue("@Width", txtwidth.Text);
-            cmd.Parameters.AddWithValue("@Length", txtlength.Text);       
-            cmd.Parameters.AddWithValue("@Weight", Txtweight.Text);        
+            cmd.Parameters.AddWithValue("@Length", txtlength.Text);
+            cmd.Parameters.AddWithValue("@Weight", Txtweight.Text);
             cmd.Parameters.AddWithValue("@ID", HddnID.Value);
             cmd.ExecuteNonQuery();
             Cls_Main.Conn_Close();
             Cls_Main.Conn_Dispose();
-          
-            ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", "alert('Saved Record Successfully..!!');window.location='StoreList.aspx';", true);
+
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", "SuccessResult('Saved Record Successfully..!!');", true);
         }
         catch (Exception ex)
         {
@@ -200,12 +201,71 @@ public partial class Store_StoreList : System.Web.UI.Page
             Cls_Main.Conn_Close();
             Cls_Main.Conn_Dispose();
 
-            ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", "alert('Reject Request Successfully..!!');window.location='StoreList.aspx';", true);
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", "SuccessResult('Reject Request Successfully..!!');", true);
         }
         catch (Exception ex)
         {
 
             throw;
         }
+    }
+
+    protected void txtThickness_TextChanged(object sender, EventArgs e)
+    {
+        Getdata();
+    }
+
+    protected void txtwidth_TextChanged(object sender, EventArgs e)
+    {
+        Getdata();
+    }
+
+    protected void txtlength_TextChanged(object sender, EventArgs e)
+    {
+        Getdata();
+    }
+
+    protected void txtneedqty_TextChanged(object sender, EventArgs e)
+    {
+        Getdata();
+    }
+
+    public void Getdata()
+    {
+        try
+        {
+            DataTable dtpt = Cls_Main.Read_Table("select SUM(CAST(InwardQty AS FLOAT)) AS Quantity from tbl_InwardData WHERE RowMaterial='" + txtRMC.Text.Trim() + "' AND Thickness='" + txtThickness.Text.Trim() + "' AND Width='" + txtwidth.Text.Trim() + "' AND Length='" + txtlength.Text.Trim() + "' AND IsDeleted=0");
+            if (dtpt.Rows.Count > 0)
+            {
+                txtavailableQty.Text = dtpt.Rows[0]["Quantity"] != DBNull.Value ? dtpt.Rows[0]["Quantity"].ToString() : "0";
+
+            }
+            else
+            {
+
+            }
+            if (txtThickness.Text != "" && txtwidth.Text != "" && txtlength.Text != "")
+            {
+                double thickness = Convert.ToDouble(txtThickness.Text);
+                double width = Convert.ToDouble(txtwidth.Text);
+                double length = Convert.ToDouble(txtlength.Text);
+                double Quantity = string.IsNullOrEmpty(txtApprovQuantity.Text) ? 0 : Convert.ToDouble(txtApprovQuantity.Text);
+
+                // Ensure inputs are non-negative
+                if (thickness <= 0 || width <= 0 || length <= 0)
+                {
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", "DeleteResult('Please enter positive values for thickness, width, and length...!!');", true);
+
+                }
+
+                // Calculate weight in kilograms
+                double weight = length / 1000 * width / 1000 * thickness * 7.85;
+                double totalweight = weight * Quantity;
+                // Display the calculated weight
+                Txtweight.Text = totalweight.ToString();
+            }
+            this.ModalPopupHistory.Show();
+        }
+        catch { }
     }
 }

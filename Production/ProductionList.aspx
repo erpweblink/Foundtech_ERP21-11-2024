@@ -3,28 +3,36 @@
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
 
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.10.1/dist/sweetalert2.all.min.js"></script>
-    <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/sweetalert2@10.10.1/dist/sweetalert2.min.css' />
-    <script>
-        function HideLabelerror(msg) {
-            Swal.fire({
-                icon: 'error',
-                text: msg,
+  <script src="../Content/assets/js/plugin/sweetalert/sweetalert.min.js"></script>
+  <script>
+      function HideLabelerror(msg) {
+          Swal.fire({
+              icon: 'error',
+              text: msg,
 
-            })
-        };
-        function HideLabel(msg) {
-            Swal.fire({
-                icon: 'success',
-                text: msg,
-                timer: 5000,
-                showCancelButton: false,
-                showConfirmButton: false
-            }).then(function () {
-                window.location.href = "ProductMaster.aspx";
-            })
-        };
-    </script>
+          })
+      };
+      function SuccessResult(msg) {
+          swal("Success", msg, {
+              icon: "success",
+              buttons: {
+                  confirm: {
+                      className: "btn btn-success",
+                  },
+              },
+          });
+      };
+      function DeleteResult(msg) {
+          swal("Delete!", msg, {
+              icon: "error",
+              buttons: {
+                  confirm: {
+                      className: "btn btn-danger",
+                  },
+              },
+          });
+      };
+  </script>
     <script src="../JS/jquery.min.js"></script>
     <link href="../Content/css/Griddiv.css" rel="stylesheet" />
     <style>

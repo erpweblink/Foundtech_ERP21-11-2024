@@ -3,31 +3,47 @@
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
 
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.10.1/dist/sweetalert2.all.min.js"></script>
-    <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/sweetalert2@10.10.1/dist/sweetalert2.min.css' />
-    <script>
-        function HideLabelerror(msg) {
-            Swal.fire({
-                icon: 'error',
-                text: msg,
-
-            })
-        };
-        function HideLabel(msg) {
-
-            Swal.fire({
-                icon: 'success',
-                text: msg,
-                timer: 5000,
-                showCancelButton: false,
-                showConfirmButton: false
+    <script src="../Content/assets/js/plugin/sweetalert/sweetalert.min.js"></script>
+    <script>     
+        function SuccessResult(msg) {
+            swal("Success", msg, {
+                icon: "success",
+                buttons: {
+                    confirm: {
+                        className: "btn btn-success",
+                        TimeRanges:"5000",
+                    },
+                },
             }).then(function () {
-                window.location.href = "ProductMaster.aspx";
-            })
+                window.location.href = "PlazmaCutting.aspx";
+            });
         };
-    </script>
-    <script src="../JS/jquery.min.js"></script>
+        function DeleteResult(msg) {
+            swal("error!", msg, {
+                icon: "error",
+                buttons: {
+                    confirm: {
+                        className: "btn btn-danger",
+                        TimeRanges: "5000",
+                    },
+                },
+            }).then(function () {
+                window.location.href = "PlazmaCutting.aspx";
+            });
+        };
+    </script> 
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 
+    <script type="text/javascript">
+        $("[src*=plus]").live("click", function () {
+            $(this).closest("tr").after("<tr><td></td><td colspan = '999'>" + $(this).next().html() + "</td></tr>")
+            $(this).attr("src", "../Content1/img/minus.png");
+        });
+        $("[src*=minus]").live("click", function () {
+            $(this).attr("src", "../Content1/img/plus.png");
+            $(this).closest("tr").next().remove();
+        });
+    </script>
     <style>
         .spncls {
             color: #f20707 !important;
@@ -524,8 +540,55 @@
                                     <br />
                                     <div class="row">
                                         <div class="table-responsive">
-                                            <asp:GridView ID="GVRequest" CssClass="display table table-striped table-hover" AutoGenerateColumns="false" DataKeyNames="ID" OnRowCommand="GVRequest_RowCommand" runat="server" CellPadding="4" ForeColor="#333333" PageSize="30" AllowPaging="true" Width="100%" OnRowEditing="GVRequest_RowEditing">
+                                            <asp:GridView ID="GVRequest" CssClass="display table table-striped table-hover" AutoGenerateColumns="false" DataKeyNames="ID" OnRowCommand="GVRequest_RowCommand" runat="server" CellPadding="4" ForeColor="#333333" PageSize="30" AllowPaging="true" Width="100%" OnRowEditing="GVRequest_RowEditing" OnRowDataBound="GVRequest_RowDataBound">
                                                 <Columns>
+                                                    <asp:TemplateField HeaderStyle-Width="20" HeaderText=" " HeaderStyle-CssClass="gvhead">
+                                                        <ItemTemplate>
+                                                            <img alt="" style="cursor: pointer" src="../Content1/img/plus.png" />
+                                                            <asp:Panel ID="pnlOrders" runat="server" Style="display: none">
+                                                                <asp:GridView ID="gvDetails" runat="server" CssClass="display table table-striped table-hover" AutoGenerateColumns="false">
+                                                                    <Columns>
+                                                                        <asp:TemplateField HeaderText="SR.NO" ItemStyle-Width="20" HeaderStyle-CssClass="gvhead sno">
+                                                                            <ItemTemplate>
+                                                                                <asp:Label ID="lblsrno" runat="server" Text='<%# Container.DataItemIndex+1 %>'></asp:Label>
+                                                                            </ItemTemplate>
+                                                                        </asp:TemplateField>                                                                   
+                                                                        <asp:TemplateField HeaderText="Row Material" ItemStyle-Width="120" HeaderStyle-CssClass="gvhead">
+                                                                            <ItemTemplate>
+                                                                                <asp:Label ID="lblRowmaterial" runat="server" Text='<%# Eval("RowMaterial") %>'></asp:Label>
+                                                                            </ItemTemplate>
+                                                                        </asp:TemplateField>
+                                   
+                                                                        <asp:TemplateField HeaderText="Thickness">
+                                                                            <ItemTemplate>
+                                                                                <asp:Label ID="Thickness" runat="server" Text='<%#Eval("Thickness")%>'></asp:Label>
+                                                                            </ItemTemplate>
+                                                                        </asp:TemplateField>
+                                                                        <asp:TemplateField HeaderText="Width">
+                                                                            <ItemTemplate>
+                                                                                <asp:Label ID="Width" runat="server" Text='<%#Eval("Width")%>'></asp:Label>
+                                                                            </ItemTemplate>
+                                                                        </asp:TemplateField>
+                                                                        <asp:TemplateField HeaderText="Length">
+                                                                            <ItemTemplate>
+                                                                                <asp:Label ID="Length" runat="server" Text='<%#Eval("Length")%>'></asp:Label>
+                                                                            </ItemTemplate>
+                                                                        </asp:TemplateField>
+                                                                        <asp:TemplateField HeaderText="Weight (Kg)">
+                                                                            <ItemTemplate>
+                                                                                <asp:Label ID="Weight" runat="server" Text='<%#Eval("Weight")%>'></asp:Label>
+                                                                            </ItemTemplate>
+                                                                        </asp:TemplateField>
+                                                                        <asp:TemplateField HeaderText="Qantity" ItemStyle-Width="120" HeaderStyle-CssClass="gvhead">
+                                                                            <ItemTemplate>
+                                                                                <asp:Label ID="lblQantity" runat="server" Text='<%# Eval("InwardQty")%>'></asp:Label>
+                                                                            </ItemTemplate>
+                                                                        </asp:TemplateField>                                                                    
+                                                                    </Columns>
+                                                                </asp:GridView>
+                                                            </asp:Panel>
+                                                        </ItemTemplate>
+                                                    </asp:TemplateField>
                                                     <asp:TemplateField HeaderText="SR.NO" ItemStyle-Width="20" HeaderStyle-CssClass="gvhead sno">
                                                         <ItemTemplate>
                                                             <asp:Label ID="lblsrno" runat="server" Text='<%# Container.DataItemIndex+1 %>'></asp:Label>
@@ -581,7 +644,7 @@
                                                     <asp:TemplateField HeaderText="Action" ItemStyle-Width="120" HeaderStyle-CssClass="gvhead">
                                                         <ItemTemplate>
                                                             <asp:LinkButton runat="server" ID="ImgbtnDelete" CommandName="RowDelete" ToolTip="Delete" CommandArgument='<%#Eval("ID")%>' Visible='<%# Eval("Status").ToString() == "1" ? true : false %>' OnClientClick="Javascript:return confirm('Are you sure to Delete?')" CausesValidation="false"><i class="fa fa-trash" style="font-size:24px;color:red"></i></asp:LinkButton>
-                                                            <asp:LinkButton runat="server" ID="btnEdit" ToolTip="Extra Quantity Send to Store"  Visible='<%# Eval("Status").ToString() == "2" ? true : false %>'  CausesValidation="false" CommandName="Edit" CommandArgument='<%#Eval("ID")%>'><i class="fas fa-plus-square"  style="font-size: 26px; color:blue; "></i></i></asp:LinkButton>
+                                                            <asp:LinkButton runat="server" ID="btnEdit" ToolTip="Extra Quantity Send to Store" Visible='<%# Eval("Status").ToString() == "2" ? true : false %>' CausesValidation="false" CommandName="Edit" CommandArgument='<%#Eval("ID")%>'><i class="fas fa-plus-square"  style="font-size: 26px; color:blue; "></i></i></asp:LinkButton>
                                                         </ItemTemplate>
                                                     </asp:TemplateField>
                                                 </Columns>

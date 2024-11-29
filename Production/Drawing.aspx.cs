@@ -38,7 +38,7 @@ public partial class Production_Drawing : System.Web.UI.Page
     private void FillGrid()
     {
 
-        DataTable Dt = Cls_Main.Read_Table("SELECT * FROM tbl_ProductionDTLS AS PD INNER JOIN tbl_ProductionHDR AS PH ON PH.JobNo=PD.JobNo where PD.Stage='Drawing' AND PD.Status<2");
+        DataTable Dt = Cls_Main.Read_Table("SELECT * FROM tbl_ProductionDTLS AS PD INNER JOIN tbl_ProductionHDR AS PH ON PH.JobNo=PD.JobNo where PD.Stage='Drawing' AND PD.Status<=2 ORDER BY  PD.ID DESC");
         GVPurchase.DataSource = Dt;
         GVPurchase.DataBind();
 
@@ -46,53 +46,7 @@ public partial class Production_Drawing : System.Web.UI.Page
 
     protected void GVPurchase_RowCommand(object sender, GridViewCommandEventArgs e)
     {
-        if (e.CommandName == "SendtoNext")
-        {
-            int rowIndex = Convert.ToInt32(e.CommandArgument);
-            GridViewRow row = GVPurchase.Rows[rowIndex];
-            string OutwardQty = ((Label)row.FindControl("OutwardQty")).Text;
-            string InwardQty = ((Label)row.FindControl("InwardQty")).Text;
-            string JobNo = ((Label)row.FindControl("jobno")).Text;
 
-
-            Cls_Main.Conn_Open();
-            SqlCommand Cmd = new SqlCommand("UPDATE [tbl_ProductionDTLS] SET OutwardQTY=@OutwardQTY,OutwardBy=@OutwardBy,OutwardDate=@OutwardDate,Status=@Status WHERE StageNumber=@StageNumber AND JobNo=@JobNo", Cls_Main.Conn);
-            Cmd.Parameters.AddWithValue("@StageNumber", 0);
-            Cmd.Parameters.AddWithValue("@JobNo", JobNo);
-            Cmd.Parameters.AddWithValue("@OutwardQTY", OutwardQty);
-            if (OutwardQty == InwardQty)
-            {
-                Cmd.Parameters.AddWithValue("@Status", 2);
-            }
-            else
-            {
-                Cmd.Parameters.AddWithValue("@Status", 1);
-            }
-
-            Cmd.Parameters.AddWithValue("@OutwardBy", Session["UserCode"].ToString());
-            Cmd.Parameters.AddWithValue("@OutwardDate", DateTime.Now);
-            Cmd.ExecuteNonQuery();
-            Cls_Main.Conn_Close();
-
-            DataTable Dt = Cls_Main.Read_Table("SELECT TOP 1 * FROM tbl_ProductionDTLS AS PD where JobNo='" + JobNo + "'and StageNumber>0 ");
-            if (Dt.Rows.Count > 0)
-            {
-                int StageNumber = Convert.ToInt32(Dt.Rows[0]["StageNumber"].ToString());
-                Cls_Main.Conn_Open();
-                SqlCommand Cmd1 = new SqlCommand("UPDATE [tbl_ProductionDTLS] SET InwardQTY=@InwardQTY,InwardBy=@InwardBy,InwardDate=@InwardDate,Status=@Status WHERE StageNumber=@StageNumber AND JobNo=@JobNo", Cls_Main.Conn);
-                Cmd1.Parameters.AddWithValue("@StageNumber", StageNumber);
-                Cmd1.Parameters.AddWithValue("@JobNo", JobNo);
-                Cmd1.Parameters.AddWithValue("@Status", 1);
-                Cmd1.Parameters.AddWithValue("@InwardQTY", OutwardQty);
-                Cmd1.Parameters.AddWithValue("@InwardBy", Session["UserCode"].ToString());
-                Cmd1.Parameters.AddWithValue("@InwardDate", DateTime.Now);
-                Cmd1.ExecuteNonQuery();
-                Cls_Main.Conn_Close();
-            }
-
-            ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", "alert('Send to Next Successfully..!!')", true);
-            FillGrid();
-        }
         if (e.CommandName == "Rowwarehouse")
         {
             DivWarehouse.Visible = true;
@@ -107,35 +61,18 @@ public partial class Production_Drawing : System.Web.UI.Page
             int rowIndex = Convert.ToInt32(e.CommandArgument);
             GridViewRow row = GVPurchase.Rows[rowIndex];
             string Total_Price = ((Label)row.FindControl("Total_Price")).Text;
-            string Productname = ((Label)row.FindControl("Productname")).Text;
+            string InwardQty = ((Label)row.FindControl("InwardQty")).Text;
+            string OutwardQty = ((Label)row.FindControl("OutwardQty")).Text;
+            string RevertQty = ((Label)row.FindControl("RevertQty")).Text;
             string CustomerName = ((Label)row.FindControl("CustomerName")).Text;
             string JobNo = ((Label)row.FindControl("jobno")).Text;
-
-
+            string Productname = ((Label)row.FindControl("Productname")).Text;
             txtcustomername.Text = CustomerName;
-            txtProductname.Text = Productname;
+            txtProductname.Text = Productname;       
             txttotalqty.Text = Total_Price;
-            txtoutwardqty.Text = Total_Price;
-            //int A, B;
-
-            //// Try to parse inward quantity; default to 0 if parsing fails
-            //if (!int.TryParse(txtinwardqty.Text, out A))
-            //{
-            //    A = 0;
-            //}
-
-            //// Try to parse outward quantity; default to 0 if parsing fails
-            //if (!int.TryParse(txtoutwardqty.Text, out B))
-            //{
-            //    B = 0;
-            //}
-
-            //// Calculate the pending quantity and convert to string for the Text property
-            //txtpending.Text = (A - B).ToString();
-
-
-            //txtpending.Text = (A - B).ToString();
             txtjobno.Text = JobNo;
+            txtoutwardqty.Text = OutwardQty;
+         
             this.ModalPopupHistory.Show();
         }
     }
@@ -310,10 +247,9 @@ public partial class Production_Drawing : System.Web.UI.Page
                 Cmd1.Parameters.AddWithValue("@InwardDate", DateTime.Now);
                 Cmd1.ExecuteNonQuery();
                 Cls_Main.Conn_Close();
-            }
-            ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", "alert('Saved Record Successfully And Send to the Next..!!');window.location='Drawing.aspx';", true);
+            }           
             FillGrid();
-
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", "SuccessResult('Saved Record Successfully And Send to the Next..!!');", true);
         }
         catch
         {
@@ -386,7 +322,6 @@ public partial class Production_Drawing : System.Web.UI.Page
         }
     }
 
-
     protected void btnWarehousedata_Click(object sender, EventArgs e)
     {
         Cls_Main.Conn_Open();
@@ -406,7 +341,7 @@ public partial class Production_Drawing : System.Web.UI.Page
         cmd.ExecuteNonQuery();
         Cls_Main.Conn_Close();
         Cls_Main.Conn_Dispose();
-        ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", "alert('Saved Record Successfully..!!');window.location='Drawing.aspx';", true);
+        ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", "SuccessResult('Saved Record Successfully..!!');window.location='Drawing.aspx';", true);
     }
 
     //Search Size Search methods

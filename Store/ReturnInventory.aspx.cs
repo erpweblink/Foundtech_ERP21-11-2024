@@ -108,7 +108,7 @@ public partial class Store_ReturnInventory : System.Web.UI.Page
         {
 
             string errorMsg = "An error occurred : " + ex.Message;
-            ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", "alert('" + errorMsg + "') ", true);
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", "DeleteResult('" + errorMsg + "') ", true);
 
         }
 
@@ -200,7 +200,7 @@ public partial class Store_ReturnInventory : System.Web.UI.Page
             Cmd.Parameters.AddWithValue("@DeletedOn", DateTime.Now);
             Cmd.ExecuteNonQuery();
             Cls_Main.Conn_Close();
-            ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", "alert('Inward Entry Deleted Successfully..!!')", true);
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", "SuccessResult('Inward Entry Deleted Successfully..!!')", true);
             FillGrid();
         }
     }
@@ -311,7 +311,7 @@ public partial class Store_ReturnInventory : System.Web.UI.Page
         cmd.Parameters.AddWithValue("@Createdby", Session["UserCode"].ToString());
         if (btnsavedata.Text == "Update")
         {
-            cmd.Parameters.AddWithValue("@Mode", "InseartReturnInwarddata");
+            cmd.Parameters.AddWithValue("@Mode", "UpdateReturnInwarddata");
             cmd.Parameters.AddWithValue("@InwardQty", txtinwardqantity.Text);
             cmd.Parameters.AddWithValue("@Thickness", txtThickness.Text);
             cmd.Parameters.AddWithValue("@Width", txtwidth.Text);
@@ -322,7 +322,8 @@ public partial class Store_ReturnInventory : System.Web.UI.Page
         }
         else
         {
-            cmd.Parameters.AddWithValue("@Mode", "UpdateReturnInwarddata");
+            
+            cmd.Parameters.AddWithValue("@Mode", "InseartReturnInwarddata");
             cmd.Parameters.AddWithValue("@InwardQty", txtinwardqantity.Text);
             cmd.Parameters.AddWithValue("@Thickness", txtThickness.Text);
             cmd.Parameters.AddWithValue("@Width", txtwidth.Text);
@@ -337,7 +338,7 @@ public partial class Store_ReturnInventory : System.Web.UI.Page
         cmd.ExecuteNonQuery();
         Cls_Main.Conn_Close();
         Cls_Main.Conn_Dispose();
-        ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", "alert('Saved Record Successfully..!!');window.location='ReturnInventory.aspx';", true);
+        ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", "SuccessResult('Saved Record Successfully..!!');", true);
     }
 
     protected void GVPurchase_RowEditing(object sender, GridViewEditEventArgs e)
@@ -530,7 +531,7 @@ public partial class Store_ReturnInventory : System.Web.UI.Page
                 // Ensure inputs are non-negative
                 if (thickness <= 0 || width <= 0 || length <= 0)
                 {
-                    ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", "alert('Please enter positive values for thickness, width, and length...!!');", true);
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", "DeleteResult('Please enter positive values for thickness, width, and length...!!');", true);
 
                 }
 
@@ -579,7 +580,7 @@ public partial class Store_ReturnInventory : System.Web.UI.Page
             // Ensure inputs are non-negative
             if (thickness <= 0 || width <= 0 || length <= 0)
             {
-                ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", "alert('Please enter positive values for thickness, width, and length...!!');", true);
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", "DeleteResult('Please enter positive values for thickness, width, and length...!!');", true);
 
             }
 

@@ -66,7 +66,7 @@ public partial class Store_Inventory : System.Web.UI.Page
         {
 
             string errorMsg = "An error occurred : " + ex.Message;
-            ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", "alert('" + errorMsg + "') ", true);
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", "DeleteResult('" + errorMsg + "') ", true);
 
         }
 

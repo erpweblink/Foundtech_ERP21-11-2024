@@ -4,27 +4,36 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
 
     <link href="../Content1/css/styles.css" rel="stylesheet" />
-
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-
-    <%--    <style>
-        .completionList {
-            background-color: #f1f1f1;
-            border: 1px solid #ccc;
-            z-index: 10000 !important; /* Ensure it's higher than the modal */
-            position: absolute; /* Ensure the list is positioned correctly */
-        }
-
-        .itemHighlighted {
-            background-color: #007bff;
-            color: white;
-        }
-
-        .listItem {
-            padding: 5px;
-            cursor: pointer;
-        }
-    </style>--%>
+    
+    <script src="../Content/assets/js/plugin/sweetalert/sweetalert.min.js"></script>
+    <script>     
+        function SuccessResult(msg) {
+            swal("Success", msg, {
+                icon: "success",
+                buttons: {
+                    confirm: {
+                        className: "btn btn-success",
+                        TimeRanges: "5000",
+                    },
+                },
+            }).then(function () {
+                window.location.href = "Inventory.aspx";
+            });
+        };
+        function DeleteResult(msg) {
+            swal("error!", msg, {
+                icon: "error",
+                buttons: {
+                    confirm: {
+                        className: "btn btn-danger",
+                        TimeRanges: "5000",
+                    },
+                },
+            }).then(function () {
+                window.location.href = "Inventory.aspx";
+            });
+        };
+    </script> 
     <style>
         .spncls {
             color: #f20707 !important;

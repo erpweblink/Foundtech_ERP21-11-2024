@@ -5,26 +5,35 @@
 
     <link href="../Content1/css/styles.css" rel="stylesheet" />
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-
-    <%--    <style>
-        .completionList {
-            background-color: #f1f1f1;
-            border: 1px solid #ccc;
-            z-index: 10000 !important; /* Ensure it's higher than the modal */
-            position: absolute; /* Ensure the list is positioned correctly */
-        }
-
-        .itemHighlighted {
-            background-color: #007bff;
-            color: white;
-        }
-
-        .listItem {
-            padding: 5px;
-            cursor: pointer;
-        }
-    </style>--%>
+    <script src="../Content/assets/js/plugin/sweetalert/sweetalert.min.js"></script>
+    <script>     
+        function SuccessResult(msg) {
+            swal("Success", msg, {
+                icon: "success",
+                buttons: {
+                    confirm: {
+                        className: "btn btn-success",
+                        TimeRanges: "5000",
+                    },
+                },
+            }).then(function () {
+                window.location.href = "InwardEntry.aspx";
+            });
+        };
+        function DeleteResult(msg) {
+            swal("error!", msg, {
+                icon: "error",
+                buttons: {
+                    confirm: {
+                        className: "btn btn-danger",
+                        TimeRanges: "5000",
+                    },
+                },
+            }).then(function () {
+                window.location.href = "InwardEntry.aspx";
+            });
+        };
+    </script>
     <style>
         .spncls {
             color: #f20707 !important;
@@ -248,6 +257,17 @@
                                 <div class="row">
                                     <div class="col-md-3">
                                         <div style="margin-top: 14px;">
+                                            <asp:Label ID="Label6" runat="server" Font-Bold="true" CssClass="form-label"><span class="spncls">*</span>Customer Name:</asp:Label>
+                                            <asp:TextBox ID="txtcustomersearch" ValidationGroup="1" AutoPostBack="true" OnTextChanged="txtcustomersearch_TextChanged" placeholder="Customer Name" CssClass="form-control" runat="server" Width="100%"></asp:TextBox>
+                                            <asp:AutoCompleteExtender ID="AutoCompleteExtender3" runat="server" CompletionListCssClass="completionList"
+                                                CompletionListHighlightedItemCssClass="itemHighlighted" CompletionListItemCssClass="listItem"
+                                                CompletionInterval="10" MinimumPrefixLength="1" ServiceMethod="GetCompanyList"
+                                                TargetControlID="txtcustomersearch" Enabled="true">
+                                            </asp:AutoCompleteExtender>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div style="margin-top: 14px;">
                                             <asp:Label ID="Label17" Font-Bold="true" runat="server" Text="Row Material :"></asp:Label>
                                             <asp:TextBox ID="txtRowMaterial" CssClass="form-control" placeholder="Search Row Material " runat="server" OnTextChanged="txtRowMaterial_TextChanged" Width="100%" AutoPostBack="true"></asp:TextBox>
                                             <asp:AutoCompleteExtender ID="AutoCompleteExtender4" runat="server" CompletionListCssClass="completionList"
@@ -295,6 +315,11 @@
                                                     <asp:TemplateField HeaderText="Inward Date">
                                                         <ItemTemplate>
                                                             <asp:Label ID="DATE" runat="server" Text='<%#Eval("DATE")%>'></asp:Label>
+                                                        </ItemTemplate>
+                                                    </asp:TemplateField>
+                                                    <asp:TemplateField HeaderText="Customer Name">
+                                                        <ItemTemplate>
+                                                            <asp:Label ID="CustomerName" runat="server" Text='<%#Eval("CompanyName")%>'></asp:Label>
                                                         </ItemTemplate>
                                                     </asp:TemplateField>
                                                     <asp:TemplateField HeaderText="Row Material Name">
@@ -365,6 +390,17 @@
                                             <br />
                                             <div class="body" style="margin-right: 10px; margin-left: 10px; padding-right: 1px; padding-left: 1px;">
                                                 <div class="row">
+                                                    <div class="col-md-6 col-12 mb-3">
+                                                        <asp:Label ID="Label5" runat="server" Font-Bold="true" CssClass="form-label"><span class="spncls">*</span>Customer Name:</asp:Label>
+                                                        <asp:TextBox ID="txtcompanyname" ValidationGroup="1" placeholder="Customer Name" CssClass="form-control" runat="server" Width="100%"></asp:TextBox>
+                                                        <asp:RequiredFieldValidator ID="RequiredFieldValidator5" runat="server" Display="Dynamic" ErrorMessage="Please Enter Company Name"
+                                                            ControlToValidate="txtcompanyname" ValidationGroup="form1" ForeColor="Red" SetFocusOnError="true"></asp:RequiredFieldValidator>
+                                                        <asp:AutoCompleteExtender ID="AutoCompleteExtender1" runat="server" CompletionListCssClass="completionList"
+                                                            CompletionListHighlightedItemCssClass="itemHighlighted" CompletionListItemCssClass="listItem"
+                                                            CompletionInterval="10" MinimumPrefixLength="1" ServiceMethod="GetCompanyList"
+                                                            TargetControlID="txtcompanyname" Enabled="true">
+                                                        </asp:AutoCompleteExtender>
+                                                    </div>
                                                     <div class="col-md-6 col-12 mb-3">
                                                         <asp:Label ID="Label1" runat="server" Font-Bold="true" CssClass="form-label"><span class="spncls">*</span>Row Material:</asp:Label>
                                                         <asp:TextBox ID="txtrowmetarial" CssClass="form-control" placeholder="Search Row Material" AutoPostBack="true" OnTextChanged="txtrowmetarial_TextChanged" runat="server"></asp:TextBox>

@@ -41,7 +41,7 @@ public partial class Production_ProductionList : System.Web.UI.Page
         DataTable Dt = Cls_Main.Read_Table("SELECT * FROM tbl_ProductionHDR order by ID desc");
         GVPurchase.DataSource = Dt;
         GVPurchase.DataBind();
-
+       
     }
 
     private static DataTable GetData(string query)
@@ -449,7 +449,7 @@ public partial class Production_ProductionList : System.Web.UI.Page
         cmd.ExecuteNonQuery();
         Cls_Main.Conn_Close();
         Cls_Main.Conn_Dispose();
-        ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", "alert('Production Plan Saved Successfully..!!');window.location='ProductionList.aspx'; ", true);
+        ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", "SuccessResult('Production Plan Saved Successfully..!!');window.location='ProductionList.aspx'; ", true);
     }
 
     public void InseartData(string Stage,int num)

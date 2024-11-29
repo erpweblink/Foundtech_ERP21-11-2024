@@ -9,6 +9,8 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Web;
+using System.Web.Script.Services;
+using System.Web.Services;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -46,6 +48,14 @@ public partial class Store_InwardEntry : System.Web.UI.Page
             SqlCommand cmd = new SqlCommand("SP_InventoryDetails", con);
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Parameters.AddWithValue("@Mode", "GetInwardlist");
+            if (txtcustomersearch.Text == null || txtcustomersearch.Text == "")
+            {
+                cmd.Parameters.AddWithValue("@CustomerName", DBNull.Value);
+            }
+            else
+            {
+                cmd.Parameters.AddWithValue("@CustomerName", txtcustomersearch.Text);
+            }
             if (txtRowMaterial.Text == null || txtRowMaterial.Text == "")
             {
                 cmd.Parameters.AddWithValue("@RowMaterial", DBNull.Value);
@@ -78,7 +88,7 @@ public partial class Store_InwardEntry : System.Web.UI.Page
         {
 
             string errorMsg = "An error occurred : " + ex.Message;
-            ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", "alert('" + errorMsg + "') ", true);
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", "DeleteResult('" + errorMsg + "') ", true);
 
         }
 
@@ -116,7 +126,7 @@ public partial class Store_InwardEntry : System.Web.UI.Page
             Cmd.Parameters.AddWithValue("@DeletedOn", DateTime.Now);
             Cmd.ExecuteNonQuery();
             Cls_Main.Conn_Close();
-            ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", "alert('Inward Entry Deleted Successfully..!!')", true);
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", "SuccessResult('Inward Entry Deleted Successfully..!!')", true);
             FillGrid();
         }
     }
@@ -232,7 +242,7 @@ public partial class Store_InwardEntry : System.Web.UI.Page
             cmd.Parameters.AddWithValue("@InwardNo", hdnid.Value);
             cmd.Parameters.AddWithValue("@InwardQty", txtinwardqantity.Text);        
             cmd.Parameters.AddWithValue("@Length", txtlength.Text);
-            cmd.Parameters.AddWithValue("@Weight", txtWeight.Text);
+            cmd.Parameters.AddWithValue("@Weight", txtWeight.Text);           
         }
         else
         {
@@ -243,6 +253,7 @@ public partial class Store_InwardEntry : System.Web.UI.Page
             cmd.Parameters.AddWithValue("@Width", txtwidth.Text);
             cmd.Parameters.AddWithValue("@Length", txtlength.Text);
             cmd.Parameters.AddWithValue("@RowMaterial", txtrowmetarial.Text);
+            cmd.Parameters.AddWithValue("@CustomerName", txtcompanyname.Text);
             cmd.Parameters.AddWithValue("@InwardNo", DBNull.Value);
             cmd.Parameters.AddWithValue("@Weight", txtWeight.Text);
         }
@@ -250,7 +261,7 @@ public partial class Store_InwardEntry : System.Web.UI.Page
         cmd.ExecuteNonQuery();
         Cls_Main.Conn_Close();
         Cls_Main.Conn_Dispose();
-        ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", "alert('Saved Record Successfully..!!');window.location='InwardEntry.aspx';", true);
+        ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", "SuccessResult('Saved Record Successfully..!!');", true);
     }
 
     protected void GVPurchase_RowEditing(object sender, GridViewEditEventArgs e)
@@ -443,7 +454,7 @@ public partial class Store_InwardEntry : System.Web.UI.Page
                 // Ensure inputs are non-negative
                 if (thickness <= 0 || width <= 0 || length <= 0)
                 {
-                    ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", "alert('Please enter positive values for thickness, width, and length...!!');", true);
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", "DeleteResult('Please enter positive values for thickness, width, and length...!!');", true);
                     
                 }
 
@@ -492,7 +503,7 @@ public partial class Store_InwardEntry : System.Web.UI.Page
             // Ensure inputs are non-negative
             if (thickness <= 0 || width <= 0 || length <= 0)
             {
-                ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", "alert('Please enter positive values for thickness, width, and length...!!');", true);
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", "DeleteResult('Please enter positive values for thickness, width, and length...!!');", true);
 
             }
 
@@ -502,6 +513,47 @@ public partial class Store_InwardEntry : System.Web.UI.Page
             // Display the calculated weight
             txtWeight.Text = totalweight.ToString();
         }
+    }
+
+
+    [ScriptMethod()]
+    [WebMethod]
+    public static List<string> GetCompanyList(string prefixText, int count)
+    {
+        return AutoFillCompanyName(prefixText);
+    }
+
+    public static List<string> AutoFillCompanyName(string prefixText)
+    {
+        using (SqlConnection con = new SqlConnection())
+        {
+            con.ConnectionString = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
+
+            using (SqlCommand com = new SqlCommand())
+            {
+                com.CommandText = "Select DISTINCT [Companyname] from [tbl_CompanyMaster] where " + "Companyname like @Search + '%' and IsDeleted=0";
+
+                com.Parameters.AddWithValue("@Search", prefixText);
+                com.Connection = con;
+                con.Open();
+                List<string> countryNames = new List<string>();
+                using (SqlDataReader sdr = com.ExecuteReader())
+                {
+                    while (sdr.Read())
+                    {
+                        countryNames.Add(sdr["Companyname"].ToString());
+                    }
+                }
+                con.Close();
+                return countryNames;
+            }
+        }
+    }
+
+    protected void txtcustomersearch_TextChanged(object sender, EventArgs e)
+    {
+        FillGrid();
+
     }
 }
 

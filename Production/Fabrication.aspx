@@ -2,31 +2,35 @@
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
-
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.10.1/dist/sweetalert2.all.min.js"></script>
-    <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/sweetalert2@10.10.1/dist/sweetalert2.min.css' />
-    <script>
-        function HideLabelerror(msg) {
-            Swal.fire({
-                icon: 'error',
-                text: msg,
-
-            })
-        };
-        function HideLabel(msg) {
-
-            Swal.fire({
-                icon: 'success',
-                text: msg,
-                timer: 5000,
-                showCancelButton: false,
-                showConfirmButton: false
-            }).then(function () {
-                window.location.href = "ProductMaster.aspx";
-            })
-        };
-    </script>
-    <script src="../JS/jquery.min.js"></script>
+     <script src="../Content/assets/js/plugin/sweetalert/sweetalert.min.js"></script>
+ <script>     
+     function SuccessResult(msg) {
+         swal("Success", msg, {
+             icon: "success",
+             buttons: {
+                 confirm: {
+                     className: "btn btn-success",
+                     TimeRanges: "5000",
+                 },
+             },
+         }).then(function () {
+             window.location.href = "Fabrication.aspx";
+         });
+     };
+     function DeleteResult(msg) {
+         swal("Delete!", msg, {
+             icon: "error",
+             buttons: {
+                 confirm: {
+                     className: "btn btn-danger",
+                     TimeRanges: "5000",
+                 },
+             },
+         }).then(function () {
+             window.location.href = "Fabrication.aspx";
+         });
+     };
+ </script> 
 
     <style>
         .spancls {
@@ -339,12 +343,12 @@
 
                                             <div class="col-md-6 col-12 mb-3">
                                                 <asp:Label ID="Label12" runat="server" Font-Bold="true" CssClass="form-label">Pending QTY:</asp:Label>
-                                                <asp:TextBox ID="txtpending" CssClass="form-control" placeholder="Enter Pending QTY" TextMode="Number" runat="server"></asp:TextBox>
+                                                <asp:TextBox ID="txtpending" CssClass="form-control" placeholder="Enter Pending QTY" TextMode="Number" ReadOnly="true" runat="server"></asp:TextBox>
                                             </div>
 
                                             <div class="col-md-6 col-12 mb-3">
                                                 <asp:Label ID="Label2" runat="server" Font-Bold="true" CssClass="form-label">Outward QTY:</asp:Label>
-                                                <asp:TextBox ID="txtoutwardqty" CssClass="form-control" placeholder="Enter Outward QTY" TextMode="Number" runat="server"></asp:TextBox>
+                                                <asp:TextBox ID="txtoutwardqty" CssClass="form-control" placeholder="Enter Outward QTY"  TextMode="Number" runat="server"></asp:TextBox>
                                             </div>
                                             <div class="col-md-6 col-12 mb-3">
                                                 <asp:Label ID="Label3" runat="server" Font-Bold="true" CssClass="form-label">Remarks:</asp:Label>

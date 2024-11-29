@@ -47,53 +47,7 @@ public partial class Production_Fabrication : System.Web.UI.Page
 
     protected void GVPurchase_RowCommand(object sender, GridViewCommandEventArgs e)
     {
-        if (e.CommandName == "SendtoNext")
-        {
-            int rowIndex = Convert.ToInt32(e.CommandArgument);
-            GridViewRow row = GVPurchase.Rows[rowIndex];
-            string OutwardQty = ((Label)row.FindControl("OutwardQty")).Text;
-            string InwardQty = ((Label)row.FindControl("InwardQty")).Text;
-            string JobNo = ((Label)row.FindControl("jobno")).Text;
 
-
-            Cls_Main.Conn_Open();
-            SqlCommand Cmd = new SqlCommand("UPDATE [tbl_ProductionDTLS] SET OutwardQTY=@OutwardQTY,OutwardBy=@OutwardBy,OutwardDate=@OutwardDate,Status=@Status WHERE StageNumber=@StageNumber AND JobNo=@JobNo", Cls_Main.Conn);
-            Cmd.Parameters.AddWithValue("@StageNumber", 2);
-            Cmd.Parameters.AddWithValue("@JobNo", JobNo);
-            Cmd.Parameters.AddWithValue("@OutwardQTY", OutwardQty);
-            if (OutwardQty == InwardQty)
-            {
-                Cmd.Parameters.AddWithValue("@Status", 2);
-            }
-            else
-            {
-                Cmd.Parameters.AddWithValue("@Status", 1);
-            }
-
-            Cmd.Parameters.AddWithValue("@OutwardBy", Session["UserCode"].ToString());
-            Cmd.Parameters.AddWithValue("@OutwardDate", DateTime.Now);
-            Cmd.ExecuteNonQuery();
-            Cls_Main.Conn_Close();
-
-            DataTable Dt = Cls_Main.Read_Table("SELECT TOP 1 * FROM tbl_ProductionDTLS AS PD where JobNo='" + JobNo + "'and StageNumber>2 ");
-            if (Dt.Rows.Count > 0)
-            {
-                int StageNumber = Convert.ToInt32(Dt.Rows[0]["StageNumber"].ToString());
-                Cls_Main.Conn_Open();
-                SqlCommand Cmd1 = new SqlCommand("UPDATE [tbl_ProductionDTLS] SET InwardQTY=@InwardQTY,InwardBy=@InwardBy,InwardDate=@InwardDate,Status=@Status WHERE StageNumber=@StageNumber AND JobNo=@JobNo", Cls_Main.Conn);
-                Cmd1.Parameters.AddWithValue("@StageNumber", StageNumber);
-                Cmd1.Parameters.AddWithValue("@JobNo", JobNo);
-                Cmd1.Parameters.AddWithValue("@Status", 1);
-                Cmd1.Parameters.AddWithValue("@InwardQTY", OutwardQty);
-                Cmd1.Parameters.AddWithValue("@InwardBy", Session["UserCode"].ToString());
-                Cmd1.Parameters.AddWithValue("@InwardDate", DateTime.Now);
-                Cmd1.ExecuteNonQuery();
-                Cls_Main.Conn_Close();
-            }
-
-            ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", "alert('Send to Next Successfully..!!')", true);
-            FillGrid();
-        }
         if (e.CommandName == "Rowwarehouse")
         {
             //this.ModalPopupExtender1.Show();
@@ -110,46 +64,33 @@ public partial class Production_Fabrication : System.Web.UI.Page
             GridViewRow row = GVPurchase.Rows[rowIndex];
             string Total_Price = ((Label)row.FindControl("Total_Price")).Text;
             string InwardQty = ((Label)row.FindControl("InwardQty")).Text;
+            string OutwardQty = ((Label)row.FindControl("OutwardQty")).Text;
+            string RevertQty = ((Label)row.FindControl("RevertQty")).Text;
             string CustomerName = ((Label)row.FindControl("CustomerName")).Text;
             string JobNo = ((Label)row.FindControl("jobno")).Text;
+
             txtcustomername.Text = CustomerName;
             txtinwardqty.Text = InwardQty;
             txttotalqty.Text = Total_Price;
             txtjobno.Text = JobNo;
+            txtoutwardqty.Text = OutwardQty;
             GetRemarks();
             int A, B;
+
             if (!int.TryParse(txtinwardqty.Text, out A))
             {
                 A = 0;
             }
-      
+
             if (!int.TryParse(txtoutwardqty.Text, out B))
             {
                 B = 0;
             }
+
+            txtoutwardqty.Text = txtoutwardqty.Text;
             txtpending.Text = (A - B).ToString();
             this.ModalPopupHistory.Show();
         }
-        if (e.CommandName == "SendtoBack")
-        {
-            GridViewRow row = (sender as LinkButton).NamingContainer as GridViewRow;
-            string OutwardQty = ((TextBox)row.FindControl("txtOutwardQty")).Text;
-            string Remark = ((TextBox)row.FindControl("txtRemark")).Text;
-            Cls_Main.Conn_Open();
-            SqlCommand Cmd = new SqlCommand("UPDATE [tbl_ProductionDTLS] SET OutwardQTY=@OutwardQTY,OutwardBy=@OutwardBy,OutwardDate=@OutwardDate,Remark=@Remark,Status=@Status WHERE ID=@ID", Cls_Main.Conn);
-            Cmd.Parameters.AddWithValue("@ID", Convert.ToInt32(e.CommandArgument.ToString()));
-            //  Cmd.Parameters.AddWithValue("@InwardQTY", );
-            Cmd.Parameters.AddWithValue("@OutwardQTY", OutwardQty);
-            Cmd.Parameters.AddWithValue("@Remark", Remark);
-            Cmd.Parameters.AddWithValue("@Status", 1);
-            Cmd.Parameters.AddWithValue("@OutwardBy", Session["UserCode"].ToString());
-            Cmd.Parameters.AddWithValue("@OutwardDate", DateTime.Now);
-            Cmd.ExecuteNonQuery();
-            Cls_Main.Conn_Close();
-            ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", "alert('Send to back Successfully..!!')", true);
-            FillGrid();
-        }
-
         if (e.CommandName == "DrawingFiles")
         {
             int rowIndex = Convert.ToInt32(e.CommandArgument);
@@ -164,7 +105,7 @@ public partial class Production_Fabrication : System.Web.UI.Page
             }
             else
             {
-                ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", "alert('Data not found..!!')", true);
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", "DeleteResult('Data not found..!!')", true);
             }
 
         }
@@ -259,116 +200,41 @@ public partial class Production_Fabrication : System.Web.UI.Page
         }
     }
 
+    //Send  Next step production
     protected void btnsave_Click(object sender, EventArgs e)
     {
         try
         {
-            if (txtoutwardqty.Text != null && txtoutwardqty.Text != "")
+            if (txtoutwardqty.Text != null && txtoutwardqty.Text != "" && txtpending.Text != "")
             {
-                if (Convert.ToDouble(txtinwardqty.Text) + 1 > Convert.ToDouble(txtoutwardqty.Text))
+                if (Convert.ToDouble(txtpending.Text) + 1 > Convert.ToDouble(txtoutwardqty.Text))
                 {
-                    //Recvied From First Stage start//////////////
                     Cls_Main.Conn_Open();
-                    SqlCommand cmdselect1 = new SqlCommand("select InwardQTY from  tbl_ProductionDTLS  WHERE StageNumber=@StageNumber AND JobNo=@JobNo", Cls_Main.Conn);
-                    cmdselect1.Parameters.AddWithValue("@StageNumber", "3");
-                    cmdselect1.Parameters.AddWithValue("@JobNo", txtjobno.Text);
-                    Object Onwardqty = cmdselect1.ExecuteScalar();
+                    SqlCommand cmd = new SqlCommand("DB_Foundtech.ManageProductionDetails", Cls_Main.Conn);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@Mode", "UpdateSendToNext");
+                    cmd.Parameters.AddWithValue("@JobNo", txtjobno.Text);
+                    cmd.Parameters.AddWithValue("@StageNumber", 2);
+                    cmd.Parameters.AddWithValue("@InwardQty", Convert.ToDouble(txtinwardqty.Text));
+                    cmd.Parameters.AddWithValue("@OutwardQty", Convert.ToDouble(txtoutwardqty.Text));
+                    cmd.Parameters.AddWithValue("@PendingQty", Convert.ToDouble(txtpending.Text));
+                    cmd.Parameters.AddWithValue("@Remark", txtRemarks.Text);
+                    cmd.Parameters.AddWithValue("@UserCode", Session["UserCode"].ToString());           
+                    cmd.ExecuteNonQuery();
                     Cls_Main.Conn_Close();
-                    ////END /////////
+                    Cls_Main.Conn_Dispose();
 
-
-                    Cls_Main.Conn_Open();
-                    SqlCommand Cmd = new SqlCommand("UPDATE [tbl_ProductionDTLS] SET OutwardQTY=@OutwardQTY,OutwardBy=@OutwardBy,OutwardDate=@OutwardDate,Remark=@Remark,InwardQTY=@InwardQTY,Status=@Status WHERE StageNumber=@StageNumber AND JobNo=@JobNo", Cls_Main.Conn);
-                    Cmd.Parameters.AddWithValue("@StageNumber", 2);
-                    Cmd.Parameters.AddWithValue("@JobNo", txtjobno.Text);
-                    if (txtinwardqty.Text == txtoutwardqty.Text)
-                    {
-                        Cmd.Parameters.AddWithValue("@Status", 2);
-                    }
-                    else
-                    {
-                        Cmd.Parameters.AddWithValue("@Status", 1);
-                    }
-                    /////Add Quantity Start //////////
-                    int E = Convert.ToInt32(Onwardqty);
-                    int D;
-                    if (!int.TryParse(txtoutwardqty.Text, out D))
-                    {
-                        D = 0;
-                    }
-
-                    var F = D + E;
-                    /////Add Quantity END //////////
-
-                    Cmd.Parameters.AddWithValue("@InwardQTY", txtinwardqty.Text);
-                    //Cmd.Parameters.AddWithValue("@OutwardQTY", txtoutwardqty.Text);
-                    Cmd.Parameters.AddWithValue("@OutwardQTY", F);
-                    Cmd.Parameters.AddWithValue("@Remark", txtRemarks.Text);
-                    Cmd.Parameters.AddWithValue("@OutwardBy", Session["UserCode"].ToString());
-                    Cmd.Parameters.AddWithValue("@OutwardDate", DateTime.Now);
-                    Cmd.ExecuteNonQuery();
-                    Cls_Main.Conn_Close();
-
-                    DataTable Dt = Cls_Main.Read_Table("SELECT TOP 1 * FROM tbl_ProductionDTLS AS PD where JobNo='" + txtjobno.Text + "'and StageNumber>2 ");
-                    if (Dt.Rows.Count > 0)
-                    {
-                        int StageNumber = Convert.ToInt32(Dt.Rows[0]["StageNumber"].ToString());
-                        ////////Inward From first Stage//////////////////////
-                        Cls_Main.Conn_Open();
-                        SqlCommand cmdselect = new SqlCommand("select InwardQTY from  tbl_ProductionDTLS  WHERE StageNumber=@StageNumber AND JobNo=@JobNo", Cls_Main.Conn);
-                        cmdselect.Parameters.AddWithValue("@StageNumber", StageNumber);
-                        cmdselect.Parameters.AddWithValue("@JobNo", txtjobno.Text);
-                        Object Inwardqty = cmdselect.ExecuteScalar();
-                        Cls_Main.Conn_Close();
-                        ////////////END//////////////////
-                        //////// adding Both Quntity/////////
-                        int A = Convert.ToInt32(Inwardqty);
-                        int B;
-                        if (!int.TryParse(txtoutwardqty.Text, out B))
-                        {
-                            B = 0;
-                        }
-
-                       
-                        var C = A + B;
-                        /////////////////END/////////////
-
-                        Cls_Main.Conn_Open();
-                        SqlCommand Cmd1 = new SqlCommand("UPDATE [tbl_ProductionDTLS] SET InwardQTY=@InwardQTY,InwardBy=@InwardBy,InwardDate=@InwardDate,Status=@Status WHERE StageNumber=@StageNumber AND JobNo=@JobNo", Cls_Main.Conn);
-                        Cmd1.Parameters.AddWithValue("@StageNumber", StageNumber);
-                        Cmd1.Parameters.AddWithValue("@JobNo", txtjobno.Text);
-                        Cmd1.Parameters.AddWithValue("@Status", 1);
-                        Cmd1.Parameters.AddWithValue("@InwardQTY", C);
-                        //Cmd1.Parameters.AddWithValue("@InwardQTY", txtoutwardqty.Text);
-                        Cmd1.Parameters.AddWithValue("@InwardBy", Session["UserCode"].ToString());
-                        Cmd1.Parameters.AddWithValue("@InwardDate", DateTime.Now);
-                        Cmd1.ExecuteNonQuery();
-                        Cls_Main.Conn_Close();
-                    }
-                    ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", "alert('Saved Record Successfully And Send to the Next..!!');window.location='Fabrication.aspx';", true);
                     FillGrid();
-                    if (txtpending.Text == txtoutwardqty.Text)
-                    {
-                        //////////////////////////////
-                        Cls_Main.Conn_Open();
-                        SqlCommand Cmd2 = new SqlCommand("UPDATE [tbl_ProductionDTLS] SET  RevertQty= @RevertQty WHERE StageNumber=@StageNumber AND JobNo=@JobNo", Cls_Main.Conn);
-                        Cmd2.Parameters.AddWithValue("@StageNumber", 2);
-                        Cmd2.Parameters.AddWithValue("@JobNo", txtjobno.Text);
-                        Cmd2.Parameters.AddWithValue("@RevertQty", 0);
-                        Cmd2.ExecuteNonQuery();
-                        Cls_Main.Conn_Close();
-                        //////////////////////////////
-                    }
-
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", "SuccessResult('Saved Record Successfully And Send to the Next..!!');", true);
                 }
                 else
                 {
-                    ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", "alert('Please check Outward Quantity is Greater then Inward Quantity..!!');", true);
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", "DeleteResult('Please check Outward Quantity is Greater then Inward Quantity..!!');", true);
                 }
             }
             else
             {
-                ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", "alert('Please fill data...........!!');", true);
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", "DeleteResult('Please fill data...........!!');", true);
             }
         }
         catch
@@ -377,77 +243,51 @@ public partial class Production_Fabrication : System.Web.UI.Page
         }
     }
 
+    //Send  back step production
+    protected void btnsendtoback_Click(object sender, EventArgs e)
+    {
+        try
+        {
+            if (txtoutwardqty.Text != null && txtoutwardqty.Text != "" && txtpending.Text != "")
+            {
+                if (Convert.ToDouble(txtpending.Text) + 1 > Convert.ToDouble(txtoutwardqty.Text))
+                {
+                    Cls_Main.Conn_Open();
+                    SqlCommand cmd = new SqlCommand("DB_Foundtech.ManageProductionDetails", Cls_Main.Conn);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@Mode", "UpdateSendToBack");
+                    cmd.Parameters.AddWithValue("@JobNo", txtjobno.Text);
+                    cmd.Parameters.AddWithValue("@StageNumber", 2);
+                    cmd.Parameters.AddWithValue("@InwardQty", Convert.ToDouble(txtinwardqty.Text));
+                    cmd.Parameters.AddWithValue("@OutwardQty", Convert.ToDouble(txtoutwardqty.Text));
+                    cmd.Parameters.AddWithValue("@PendingQty", Convert.ToDouble(txtpending.Text));
+                    cmd.Parameters.AddWithValue("@Remark", txtRemarks.Text);
+                    cmd.Parameters.AddWithValue("@UserCode", Session["UserCode"].ToString());
+                    cmd.ExecuteNonQuery();
+                    Cls_Main.Conn_Close();
+                    Cls_Main.Conn_Dispose();
+
+                    FillGrid();
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", "SuccessResult('Saved Record Successfully And Send Back..!!');", true);
+                }
+
+            }
+            else
+            {
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", "DeleteResult('Please fill data...........!!');", true);
+            }
+        }
+        catch
+        {
+
+        }
+    }
     protected void GVPurchase_RowEditing(object sender, GridViewEditEventArgs e)
     {
 
     }
 
-    protected void btnsendtoback_Click(object sender, EventArgs e)
-    {
-        try
-        {
-            if (txtoutwardqty.Text != null && txtoutwardqty.Text != "")
-            {
-                Cls_Main.Conn_Open();
-                SqlCommand Cmd2 = new SqlCommand("UPDATE [tbl_ProductionDTLS] SET  RevertQty= @RevertQty WHERE StageNumber=@StageNumber AND JobNo=@JobNo", Cls_Main.Conn);
-                Cmd2.Parameters.AddWithValue("@StageNumber", 1);
-                Cmd2.Parameters.AddWithValue("@JobNo", txtjobno.Text);
-                Cmd2.Parameters.AddWithValue("@RevertQty", txtoutwardqty.Text);
-                Cmd2.ExecuteNonQuery();
-                Cls_Main.Conn_Close();
-
-                Double qty = Convert.ToDouble(txtinwardqty.Text) - Convert.ToDouble(txtoutwardqty.Text);
-                Cls_Main.Conn_Open();
-                SqlCommand Cmd = new SqlCommand("UPDATE [tbl_ProductionDTLS] SET OutwardQTY=@OutwardQTY,OutwardBy=@OutwardBy,OutwardDate=@OutwardDate,Remark=@Remark,InwardQTY=@InwardQTY,Status=@Status WHERE StageNumber=@StageNumber AND JobNo=@JobNo", Cls_Main.Conn);
-                Cmd.Parameters.AddWithValue("@StageNumber", 2);
-                Cmd.Parameters.AddWithValue("@JobNo", txtjobno.Text);
-                if (qty == 0)
-                {
-                    Cmd.Parameters.AddWithValue("@Status", 0);
-                }
-                else
-                {
-                    Cmd.Parameters.AddWithValue("@Status", 1);
-                }
-
-                Cmd.Parameters.AddWithValue("@InwardQTY", qty);
-                Cmd.Parameters.AddWithValue("@OutwardQTY", "0");
-                Cmd.Parameters.AddWithValue("@Remark", txtRemarks.Text);
-                Cmd.Parameters.AddWithValue("@OutwardBy", Session["UserCode"].ToString());
-                Cmd.Parameters.AddWithValue("@OutwardDate", DateTime.Now);
-                Cmd.ExecuteNonQuery();
-                Cls_Main.Conn_Close();
-
-                DataTable Dt = Cls_Main.Read_Table("SELECT TOP 1 * FROM tbl_ProductionDTLS AS PD where JobNo='" + txtjobno.Text + "'and StageNumber<2 order by StageNumber desc");
-                if (Dt.Rows.Count > 0)
-                {
-                    int StageNumber = Convert.ToInt32(Dt.Rows[0]["StageNumber"].ToString());
-                    Cls_Main.Conn_Open();
-                    SqlCommand Cmd1 = new SqlCommand("UPDATE [tbl_ProductionDTLS] SET OutwardQTY=@OutwardQTY,OutwardBy=@OutwardBy,OutwardDate=@OutwardDate,Remark=@Remark,Status=@Status WHERE StageNumber=@StageNumber AND JobNo=@JobNo", Cls_Main.Conn);
-                    Cmd1.Parameters.AddWithValue("@StageNumber", StageNumber);
-                    Cmd1.Parameters.AddWithValue("@JobNo", txtjobno.Text);
-                    Cmd1.Parameters.AddWithValue("@Status", 1);
-                    Cmd1.Parameters.AddWithValue("@OutwardQTY", qty);
-                    Cmd1.Parameters.AddWithValue("@Remark", txtRemarks.Text);
-                    Cmd1.Parameters.AddWithValue("@OutwardBy", Session["UserCode"].ToString());
-                    Cmd1.Parameters.AddWithValue("@OutwardDate", DateTime.Now);
-                    Cmd1.ExecuteNonQuery();
-                    Cls_Main.Conn_Close();
-                }
-                ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", "alert('Saved Record Successfully And Send Back..!!');window.location='Fabrication.aspx';", true);
-                FillGrid();
-
-            }
-            else
-            {
-                ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", "alert('Please fill data...........!!');", true);
-            }
-        }
-        catch
-        {
-
-        }
-    }
+  
 
     public void GetRemarks()
     {
@@ -457,7 +297,7 @@ public partial class Production_Fabrication : System.Web.UI.Page
         cmdselect.Parameters.AddWithValue("@JobNo", txtjobno.Text);
         Object Remarks = cmdselect.ExecuteScalar();
         Cls_Main.Conn_Close();
-        if (Remarks != null)   
+        if (Remarks != null)
         {
             txtRemarks.Text = Remarks.ToString();
         }
@@ -536,7 +376,7 @@ public partial class Production_Fabrication : System.Web.UI.Page
         cmd.ExecuteNonQuery();
         Cls_Main.Conn_Close();
         Cls_Main.Conn_Dispose();
-        ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", "alert('Saved Record Successfully..!!');window.location='Drawing.aspx';", true);
+        ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", "SuccessResult('Saved Record Successfully..!!');window.location='Drawing.aspx';", true);
     }
 
     protected void btncancle_Click(object sender, EventArgs e)
@@ -558,7 +398,7 @@ public partial class Production_Fabrication : System.Web.UI.Page
             Cmd.Parameters.AddWithValue("@DeletedOn", DateTime.Now);
             Cmd.ExecuteNonQuery();
             Cls_Main.Conn_Close();
-            ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", "alert('Request Deleted Successfully..!!')", true);
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", "SuccessResult('Request Deleted Successfully..!!')", true);
 
         }
     }
@@ -616,6 +456,7 @@ public partial class Production_Fabrication : System.Web.UI.Page
             }
         }
     }
+
 }
 
 
