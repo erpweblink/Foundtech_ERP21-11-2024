@@ -61,9 +61,9 @@ public partial class Production_Drawing : System.Web.UI.Page
             int rowIndex = Convert.ToInt32(e.CommandArgument);
             GridViewRow row = GVPurchase.Rows[rowIndex];
             string Total_Price = ((Label)row.FindControl("Total_Price")).Text;
-            string InwardQty = ((Label)row.FindControl("InwardQty")).Text;
-            string OutwardQty = ((Label)row.FindControl("OutwardQty")).Text;
-            string RevertQty = ((Label)row.FindControl("RevertQty")).Text;
+           // string InwardQty = ((Label)row.FindControl("InwardQty")).Text;
+           // string OutwardQty = ((Label)row.FindControl("OutwardQty")).Text;
+           // string RevertQty = ((Label)row.FindControl("RevertQty")).Text;
             string CustomerName = ((Label)row.FindControl("CustomerName")).Text;
             string JobNo = ((Label)row.FindControl("jobno")).Text;
             string Productname = ((Label)row.FindControl("Productname")).Text;
@@ -71,7 +71,7 @@ public partial class Production_Drawing : System.Web.UI.Page
             txtProductname.Text = Productname;       
             txttotalqty.Text = Total_Price;
             txtjobno.Text = JobNo;
-            txtoutwardqty.Text = OutwardQty;
+           // txtoutwardqty.Text = OutwardQty;
          
             this.ModalPopupHistory.Show();
         }
