@@ -103,6 +103,7 @@ public partial class Store_InwardEntry : System.Web.UI.Page
             txtrowmetarial.Enabled = false;
             int rowIndex = Convert.ToInt32(e.CommandArgument);
             GridViewRow row = GVPurchase.Rows[rowIndex];
+            txtcompanyname.Text = ((Label)row.FindControl("CustomerName")).Text;
             txtrowmetarial.Text = ((Label)row.FindControl("MaterialName")).Text;
             txtThickness.Text = ((Label)row.FindControl("Thickness")).Text;
             txtwidth.Text = ((Label)row.FindControl("Width")).Text;
