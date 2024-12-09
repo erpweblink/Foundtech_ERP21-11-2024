@@ -561,27 +561,27 @@
                                    
                                                                         <asp:TemplateField HeaderText="Thickness">
                                                                             <ItemTemplate>
-                                                                                <asp:Label ID="Thickness" runat="server" Text='<%#Eval("Thickness")%>'></asp:Label>
+                                                                                <asp:Label ID="Thickness" runat="server" Text='<%#Eval("APPThickness")%>'></asp:Label>
                                                                             </ItemTemplate>
                                                                         </asp:TemplateField>
                                                                         <asp:TemplateField HeaderText="Width">
                                                                             <ItemTemplate>
-                                                                                <asp:Label ID="Width" runat="server" Text='<%#Eval("Width")%>'></asp:Label>
+                                                                                <asp:Label ID="Width" runat="server" Text='<%#Eval("APPWidth")%>'></asp:Label>
                                                                             </ItemTemplate>
                                                                         </asp:TemplateField>
                                                                         <asp:TemplateField HeaderText="Length">
                                                                             <ItemTemplate>
-                                                                                <asp:Label ID="Length" runat="server" Text='<%#Eval("Length")%>'></asp:Label>
+                                                                                <asp:Label ID="Length" runat="server" Text='<%#Eval("APPLength")%>'></asp:Label>
                                                                             </ItemTemplate>
                                                                         </asp:TemplateField>
                                                                         <asp:TemplateField HeaderText="Weight (Kg)">
                                                                             <ItemTemplate>
-                                                                                <asp:Label ID="Weight" runat="server" Text='<%#Eval("Weight")%>'></asp:Label>
+                                                                                <asp:Label ID="Weight" runat="server" Text='<%#Eval("approvedWeight")%>'></asp:Label>
                                                                             </ItemTemplate>
                                                                         </asp:TemplateField>
                                                                         <asp:TemplateField HeaderText="Qantity" ItemStyle-Width="120" HeaderStyle-CssClass="gvhead">
                                                                             <ItemTemplate>
-                                                                                <asp:Label ID="lblQantity" runat="server" Text='<%# Eval("InwardQty")%>'></asp:Label>
+                                                                                <asp:Label ID="lblQantity" runat="server" Text='<%# Eval("APPQuantity")%>'></asp:Label>
                                                                             </ItemTemplate>
                                                                         </asp:TemplateField>                                                                    
                                                                     </Columns>

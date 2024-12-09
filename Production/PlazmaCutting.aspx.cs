@@ -562,7 +562,7 @@ public partial class Production_PlazmaCutting : System.Web.UI.Page
         {
             GridView gvDetails = e.Row.FindControl("gvDetails") as GridView;
             Label lblRequestNo = e.Row.FindControl("lblRequestNo") as Label;
-            DataTable dtpt = Cls_Main.Read_Table("select * from tbl_inwarddata where IsReturn=1 AND ReturnNo='" + lblRequestNo.Text + "'");
+            DataTable dtpt = Cls_Main.Read_Table("select * from tbl_InventoryRequest where Status=2 AND RequestNo='" + lblRequestNo.Text + "'");
             if (dtpt.Rows.Count > 0)
             {
                 gvDetails.DataSource = dtpt;
