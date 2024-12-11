@@ -91,7 +91,7 @@ public partial class Store_Inventory : System.Web.UI.Page
 
             using (SqlCommand com = new SqlCommand())
             {
-                com.CommandText = "select RowMaterial from tbl_InwardData where IsDeleted=0 and " + "RowMaterial like '%'+ @Search + '%' ";
+                com.CommandText = "select DISTINCT RowMaterial from tbl_InwardData where IsDeleted=0 and " + "RowMaterial like '%'+ @Search + '%' ";
 
                 com.Parameters.AddWithValue("@Search", prefixText);
                 com.Connection = con;

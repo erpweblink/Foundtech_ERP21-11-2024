@@ -139,7 +139,7 @@ public partial class SalesMarketing_OAList : System.Web.UI.Page
 
             using (SqlCommand com = new SqlCommand())
             {
-                com.CommandText = "SELECT DISTINCT [ID],[Companyname] FROM [tbl_CompanyMaster] where " + "Companyname like @Search + '%' and IsDeleted=0";
+                com.CommandText = "SELECT DISTINCT CustomerName FROM [tbl_OrderAcceptanceHdr] where " + "CustomerName like @Search + '%' and IsDeleted=0";
 
                 com.Parameters.AddWithValue("@Search", prefixText);
                 com.Connection = con;
@@ -149,7 +149,7 @@ public partial class SalesMarketing_OAList : System.Web.UI.Page
                 {
                     while (sdr.Read())
                     {
-                        countryNames.Add(sdr["Companyname"].ToString());
+                        countryNames.Add(sdr["CustomerName"].ToString());
                     }
                 }
                 con.Close();

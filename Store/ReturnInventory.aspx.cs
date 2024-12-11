@@ -264,7 +264,7 @@ public partial class Store_ReturnInventory : System.Web.UI.Page
 
             using (SqlCommand com = new SqlCommand())
             {
-                com.CommandText = "select RowMaterial from tbl_InwardData where IsDeleted=0 and " + "RowMaterial like '%'+ @Search + '%' AND IsReturn=1";
+                com.CommandText = "select DISTINCT RowMaterial from tbl_InwardData where IsDeleted=0 and " + "RowMaterial like '%'+ @Search + '%' AND IsReturn=1";
 
                 com.Parameters.AddWithValue("@Search", prefixText);
                 com.Connection = con;
