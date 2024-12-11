@@ -191,7 +191,7 @@ public partial class Store_InwardEntry : System.Web.UI.Page
 
             using (SqlCommand com = new SqlCommand())
             {
-                com.CommandText = "select ComponentName from tbl_ComponentMaster where IsDeleted=0 and " + "ComponentName like '%'+ @Search + '%' AND Status=1";
+                com.CommandText = "select DISTINCT RowMaterial from tbl_InwardData where IsDeleted=0 and " + "RowMaterial like '%'+ @Search + '%' AND Status=1";
 
                 com.Parameters.AddWithValue("@Search", prefixText);
                 com.Connection = con;
@@ -201,7 +201,7 @@ public partial class Store_InwardEntry : System.Web.UI.Page
                 {
                     while (sdr.Read())
                     {
-                        countryNames.Add(sdr["ComponentName"].ToString());
+                        countryNames.Add(sdr["RowMaterial"].ToString());
                     }
                 }
                 con.Close();
@@ -367,7 +367,7 @@ public partial class Store_InwardEntry : System.Web.UI.Page
 
             using (SqlCommand com = new SqlCommand())
             {
-                com.CommandText = "select DISTINCT InwardNo from tbl_InwardData where  " + "InwardNo like '%' + @Search + '%' and IsDeleted=0";
+                com.CommandText = "select DISTINCT InwardNo from tbl_InwardData where  " + "InwardNo like '%' + @Search + '%' and IsDeleted=0 AND IsReturn=0";
 
                 com.Parameters.AddWithValue("@Search", prefixText);
                 com.Connection = con;
