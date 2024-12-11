@@ -287,7 +287,7 @@
                                                         <td>Product</td>
                                                         <td>Description</td>
                                                         <td>HSN / SAC</td>
-                                                        <td>Quantity</td>
+                                                        <td>Quantity/Kg</td>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -302,7 +302,7 @@
                                                             <asp:TextBox ID="txthsnsac" Width="190px" CssClass="form-control" Text="NULL" runat="server"></asp:TextBox>
                                                         </td>
                                                         <td>
-                                                            <asp:TextBox ID="txtquantity" Width="190px" CssClass="form-control" Text="0" OnTextChanged="txtquantity_TextChanged" AutoPostBack="true" runat="server"></asp:TextBox>
+                                                            <asp:TextBox ID="txtquantity" Width="190px" TextMode="Number" CssClass="form-control" Text="0" OnTextChanged="txtquantity_TextChanged" AutoPostBack="true" runat="server"></asp:TextBox>
                                                         </td>
 
 
@@ -319,13 +319,13 @@
                                                 <tbody>
                                                     <tr>
                                                         <td>
-                                                            <asp:TextBox ID="txtrate" Width="190px" AutoPostBack="true" Text="0" OnTextChanged="txtrate_TextChanged" CssClass="form-control" runat="server"></asp:TextBox>
+                                                            <asp:TextBox ID="txtrate" Width="190px" AutoPostBack="true" TextMode="Number"  Text="0" OnTextChanged="txtrate_TextChanged" CssClass="form-control" runat="server"></asp:TextBox>
                                                         </td>
                                                         <td>
-                                                            <asp:TextBox ID="txtCGST" placeholder="%" Width="100px" Text="0" OnTextChanged="txtCGST_TextChanged" AutoPostBack="true" CssClass="form-control" runat="server"></asp:TextBox>
+                                                            <asp:TextBox ID="txtCGST" placeholder="%" Width="100px" TextMode="Number"  Text="0" OnTextChanged="txtCGST_TextChanged" AutoPostBack="true" CssClass="form-control" runat="server"></asp:TextBox>
                                                         </td>
                                                         <td>
-                                                            <asp:TextBox ID="txtCGSTamt" Width="100px" ReadOnly="true" Text="0" CssClass="form-control" runat="server"></asp:TextBox>
+                                                            <asp:TextBox ID="txtCGSTamt" Width="100px" ReadOnly="true" TextMode="Number"  Text="0" CssClass="form-control" runat="server"></asp:TextBox>
                                                         </td>
 
                                                         <td>
@@ -343,16 +343,16 @@
                                                 <tbody>
                                                     <tr>
                                                         <td>
-                                                            <asp:TextBox ID="txtSGST" placeholder="%" Width="100px" Text="0" OnTextChanged="txtSGST_TextChanged" AutoPostBack="true" CssClass="form-control" runat="server"></asp:TextBox>
+                                                            <asp:TextBox ID="txtSGST" placeholder="%" Width="100px" TextMode="Number"  Text="0" OnTextChanged="txtSGST_TextChanged" AutoPostBack="true" CssClass="form-control" runat="server"></asp:TextBox>
                                                         </td>
                                                         <td>
-                                                            <asp:TextBox ID="txtSGSTamt" Width="100px" ReadOnly="true" Text="0" CssClass="form-control" runat="server"></asp:TextBox>
+                                                            <asp:TextBox ID="txtSGSTamt" Width="100px" ReadOnly="true" TextMode="Number"  Text="0" CssClass="form-control" runat="server"></asp:TextBox>
                                                         </td>
                                                         <td>
-                                                            <asp:TextBox ID="txtIGST" OnTextChanged="txtIGST_TextChanged" Text="0" AutoPostBack="true" placeholder="%" Width="100px" CssClass="form-control" runat="server"></asp:TextBox>
+                                                            <asp:TextBox ID="txtIGST" OnTextChanged="txtIGST_TextChanged" TextMode="Number"  Text="0" AutoPostBack="true" placeholder="%" Width="100px" CssClass="form-control" runat="server"></asp:TextBox>
                                                         </td>
                                                         <td>
-                                                            <asp:TextBox ID="txtIGSTamt" Width="100px" Text="0" CssClass="form-control" runat="server"></asp:TextBox>
+                                                            <asp:TextBox ID="txtIGSTamt" Width="100px" Text="0" TextMode="Number"  CssClass="form-control" runat="server"></asp:TextBox>
                                                         </td>
 
                                                     </tr>
@@ -371,17 +371,17 @@
 
 
                                                         <td>
-                                                            <asp:TextBox ID="txttotal" Width="100" CssClass="form-control" Text="0" runat="server"></asp:TextBox>
+                                                            <asp:TextBox ID="txttotal" Width="100" TextMode="Number"  CssClass="form-control" Text="0" runat="server"></asp:TextBox>
                                                         </td>
                                                         <td>
-                                                            <asp:TextBox ID="txtdiscount" OnTextChanged="txtdiscount_TextChanged" Text="0" Width="80px" AutoPostBack="true" CssClass="form-control" runat="server"></asp:TextBox>
-                                                            <asp:TextBox ID="txtdiscountamt" Visible="false" Width="80px" Text="0" AutoPostBack="true" CssClass="form-control" runat="server"></asp:TextBox>
+                                                            <asp:TextBox ID="txtdiscount" OnTextChanged="txtdiscount_TextChanged" TextMode="Number"  Text="0" Width="80px" AutoPostBack="true" CssClass="form-control" runat="server"></asp:TextBox>
+                                                            <asp:TextBox ID="txtdiscountamt" Visible="false" Width="80px" Text="0" TextMode="Number"  AutoPostBack="true" CssClass="form-control" runat="server"></asp:TextBox>
                                                         </td>
                                                         <td>
-                                                            <asp:TextBox ID="txtgrandtotal" Width="150px" Text="0" CssClass="form-control" runat="server"></asp:TextBox>
+                                                            <asp:TextBox ID="txtgrandtotal" Width="150px" Text="0" TextMode="Number"  CssClass="form-control" runat="server"></asp:TextBox>
                                                         </td>
                                                         <td>
-                                                            <asp:TextBox ID="txtweight" Width="100" CssClass="form-control" Text="0" runat="server"></asp:TextBox>
+                                                            <asp:TextBox ID="txtweight" Width="100" CssClass="form-control" TextMode="Number"  Text="0" runat="server"></asp:TextBox>
                                                         </td>
 
                                                     </tr>
