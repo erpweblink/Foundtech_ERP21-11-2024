@@ -16,11 +16,18 @@ public partial class Laxshmi_LaxshmiDashboard : System.Web.UI.Page
     {
         if (!IsPostBack)
         {
-            CustomerCount();
-            MaterialCount();
-            InwardCount();
-            OutwardCount();
-            InventoryCount();
+            if (Session["UserCode"] == null)
+            {
+                Response.Redirect("../Login.aspx");
+            }
+            else
+            {
+                CustomerCount();
+                MaterialCount();
+                InwardCount();
+                OutwardCount();
+                InventoryCount();
+            }
         }
     }
 
@@ -76,7 +83,7 @@ public partial class Laxshmi_LaxshmiDashboard : System.Web.UI.Page
         {
             SqlCommand cmd = new SqlCommand("SP_Laxshmidetails", con);
             cmd.CommandType = CommandType.StoredProcedure;
-            if(ddlType.SelectedItem.Text== "ToDay")
+            if (ddlType.SelectedItem.Text == "ToDay")
             {
                 cmd.Parameters.AddWithValue("@Mode", "GetToDayList");
             }
@@ -89,7 +96,7 @@ public partial class Laxshmi_LaxshmiDashboard : System.Web.UI.Page
             {
                 cmd.Parameters.AddWithValue("@Mode", "GetYearList");
             }
-           
+
 
             SqlDataAdapter sda = new SqlDataAdapter(cmd);
             DataTable dt = new DataTable();
@@ -114,5 +121,42 @@ public partial class Laxshmi_LaxshmiDashboard : System.Web.UI.Page
     protected void ddlType_SelectedIndexChanged(object sender, EventArgs e)
     {
         InventoryCount();
+    }
+
+    protected void GVCustomerList_RowCommand(object sender, GridViewCommandEventArgs e)
+    {
+        if (e.CommandName == "RowOutwardList")
+        {
+            Response.Redirect("../Laxshmi/OutwardReport.aspx");
+        }
+    }
+
+    protected void ddlMonth_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        try
+        {
+            SqlCommand cmd = new SqlCommand("SP_Laxshmidetails", con);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@Mode", "GetMonthList");
+            cmd.Parameters.AddWithValue("@Month", ddlMonth.SelectedValue);
+
+            SqlDataAdapter sda = new SqlDataAdapter(cmd);
+            DataTable dt = new DataTable();
+            sda.Fill(dt);
+            if (dt.Columns.Count > 0)
+            {
+                GVCustomerList.DataSource = dt;
+                GVCustomerList.DataBind();
+            }
+
+
+        }
+        catch (Exception ex)
+        {
+
+            string errorMsg = "An error occurred : " + ex.Message;
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", "alert('" + errorMsg + "') ", true);
+
+        }
     }
 }

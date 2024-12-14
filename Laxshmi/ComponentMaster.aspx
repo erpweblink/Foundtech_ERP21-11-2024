@@ -68,12 +68,12 @@
                                 </div>
                                 <div class="col-md-6 col-12 mb-3">
                                     <label for="lblUnit" class="form-label LblStyle">Unit  : </label>
-                                    <%--  <asp:TextBox ID="txtUnit" CssClass="form-control" placeholder="Unit" runat="server"></asp:TextBox>--%>
-                                    <asp:DropDownList ID="ddlUnit" CssClass="form-control" runat="server">
+                                      <asp:TextBox ID="txtUnit" CssClass="form-control" placeholder="Unit" runat="server"></asp:TextBox>
+<%--                                    <asp:DropDownList ID="ddlUnit" CssClass="form-control" runat="server">
                                         <asp:ListItem Value="-- Select Unit --" Text="-- Select Unit --"></asp:ListItem>
                                         <asp:ListItem Value="Kg" Text="Kg"></asp:ListItem>
                                         <asp:ListItem Value="Ton" Text="Ton"></asp:ListItem>
-                                    </asp:DropDownList>
+                                    </asp:DropDownList>--%>
                                 </div>
                                 <div class="col-md-6 col-12 mb-3" id="divprice" runat="server" visible="false">
                                     <label for="lblPrice" class="form-label LblStyle"><span class="spncls">*</span>Price : </label>

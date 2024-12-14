@@ -53,7 +53,7 @@ public partial class Laxshmi_ComponentMaster : System.Web.UI.Page
                 txtComponentname.Text = Dt.Rows[0]["ComponentName"].ToString();
                 txtComponentcode.Text = Dt.Rows[0]["ComponentCode"].ToString();
                 txtHSN.Text = Dt.Rows[0]["HSN"].ToString();
-                ddlUnit.SelectedValue = Dt.Rows[0]["Unit"].ToString();
+                txtUnit.Text = Dt.Rows[0]["Unit"].ToString();
                 txtQtylimit.Text = Dt.Rows[0]["LessQtyLimit"].ToString();
 
                 if (Dt.Rows[0]["Status"].ToString() == "False")
@@ -115,7 +115,7 @@ public partial class Laxshmi_ComponentMaster : System.Web.UI.Page
                     Cmd.CommandType = CommandType.StoredProcedure;
                     Cmd.Parameters.AddWithValue("@Action", "Update");
                     Cmd.Parameters.AddWithValue("@ID", hhd.Value);
-                    Cmd.Parameters.AddWithValue("@Unit", ddlUnit.SelectedValue);
+                    Cmd.Parameters.AddWithValue("@Unit", txtUnit.Text);
                     //Cmd.Parameters.AddWithValue("@Price", txtPrice.Text.Trim());                 
                     Cmd.Parameters.AddWithValue("@LessQtyLimit", txtQtylimit.Text.Trim());
                     // Cmd.Parameters.AddWithValue("@Description", txtDescription.Text.Trim());
@@ -152,7 +152,7 @@ public partial class Laxshmi_ComponentMaster : System.Web.UI.Page
                         SqlCommand Cmd = new SqlCommand("[SP_LM_ComponentMaster]", Cls_Main.Conn);
                         Cmd.CommandType = CommandType.StoredProcedure;
                         Cmd.Parameters.AddWithValue("@Action", "Save");
-                        Cmd.Parameters.AddWithValue("@Unit", ddlUnit.SelectedValue);
+                        Cmd.Parameters.AddWithValue("@Unit", txtUnit.Text);
                         Cmd.Parameters.AddWithValue("@LessQtyLimit", txtQtylimit.Text.Trim());
                         //Cmd.Parameters.AddWithValue("@Price", txtPrice.Text.Trim());
                         //Cmd.Parameters.AddWithValue("@Tax", txtTax.Text.Trim());

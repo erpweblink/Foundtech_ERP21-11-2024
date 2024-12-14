@@ -2,7 +2,7 @@
 
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
-      <%--  <script src="../Content/assets/js/plugin/sweetalert/sweetalert.min.js"></script>
+    <%--  <script src="../Content/assets/js/plugin/sweetalert/sweetalert.min.js"></script>
     <script>
         jQuery(document).ready(function () {
             SweetAlert2Demo.init();
@@ -121,21 +121,39 @@
             </div>
         </div>
         <div class="row form-control">
-            <div class="col-md-11">
-                <asp:DropDownList ID="ddlType" Width="120px" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlType_SelectedIndexChanged" Font-Bold="true" CssClass="form-select form-control-lg">
-                    <asp:ListItem Text="ToDay" Value="1"></asp:ListItem>
-                    <asp:ListItem Text="Month" Value="2"></asp:ListItem>
-                    <asp:ListItem Text="Year" Value="3"></asp:ListItem>
-                </asp:DropDownList>
+            <div class="row">
+                <div class="col-md-2">
+                    <asp:DropDownList ID="ddlType" Width="120px" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlType_SelectedIndexChanged" Font-Bold="true" CssClass="form-select form-control-lg">
+                        <asp:ListItem Text="ToDay" Value="1"></asp:ListItem>
+                        <asp:ListItem Text="Year" Value="3"></asp:ListItem>
+                    </asp:DropDownList>
+                </div>
+                <div class="col-md-2">
+                    <asp:DropDownList ID="ddlMonth" Width="120px" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlMonth_SelectedIndexChanged" Font-Bold="true" CssClass="form-select form-control-lg">
+                        <asp:ListItem Text="Months" Value="0"></asp:ListItem>
+                        <asp:ListItem Text="January" Value="1"></asp:ListItem>
+                        <asp:ListItem Text="February" Value="2"></asp:ListItem>
+                        <asp:ListItem Text="March" Value="3"></asp:ListItem>
+                        <asp:ListItem Text="April" Value="4"></asp:ListItem>
+                        <asp:ListItem Text="May" Value="5"></asp:ListItem>
+                        <asp:ListItem Text="June" Value="6"></asp:ListItem>
+                        <asp:ListItem Text="July" Value="7"></asp:ListItem>
+                        <asp:ListItem Text="August" Value="8"></asp:ListItem>
+                        <asp:ListItem Text="September" Value="9"></asp:ListItem>
+                        <asp:ListItem Text="October" Value="10"></asp:ListItem>
+                        <asp:ListItem Text="November" Value="11"></asp:ListItem>
+                        <asp:ListItem Text="December" Value="12"></asp:ListItem>
+                    </asp:DropDownList>
+                </div>
             </div>
-<%--       <asp:Button ID="alert_demo_3_3" runat="server" text="save" />--%>
+            <%--       <asp:Button ID="alert_demo_3_3" runat="server" text="save" />--%>
         </div>
 
         <div class="row">
             <div class="col-md-12">
                 <div class="card card-stats card-round form-control">
                     <div class="card-body">
-                        <asp:GridView ID="GVCustomerList" runat="server" CellPadding="4" Width="100%"
+                        <asp:GridView ID="GVCustomerList" runat="server" CellPadding="4" Width="100%" OnRowCommand="GVCustomerList_RowCommand"
                             CssClass="table table-head-bg-primary mt-4" AutoGenerateColumns="false">
                             <Columns>
                                 <asp:TemplateField HeaderText="Sr No." HeaderStyle-CssClass="gvhead">
@@ -161,7 +179,13 @@
 
                                 <asp:TemplateField HeaderText="Outward Qty" HeaderStyle-CssClass="gvhead">
                                     <ItemTemplate>
-                                        <asp:Label ID="OutwardQty" runat="server" Text='<%#Eval("TotalOutwardQty")%>'></asp:Label>
+                                        <asp:LinkButton ID="lnkOutward" runat="server" ToolTip="Outward List" CausesValidation="false" CommandName="RowOutwardList" Text='<%#Eval("TotalOutwardQty")%>'></asp:LinkButton>
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+
+                                <asp:TemplateField HeaderText="Balance Qty" HeaderStyle-CssClass="gvhead">
+                                    <ItemTemplate>
+                                        <asp:Label ID="BalanceQty" runat="server" Text='<%#Eval("BalanceQuantity")%>'></asp:Label>
                                     </ItemTemplate>
                                 </asp:TemplateField>
                             </Columns>

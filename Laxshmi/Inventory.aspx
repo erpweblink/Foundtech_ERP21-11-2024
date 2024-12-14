@@ -449,16 +449,13 @@
                                                     ControlToValidate="txtDeliverynotedate" ValidationGroup="1" ForeColor="Red" SetFocusOnError="true"></asp:RequiredFieldValidator>
                                             </div>
                                             <div class="col-md-6 col-12 mb-3">
-                                                <asp:Label ID="Label28" runat="server" Font-Bold="true" CssClass="form-label"><span class="spncls">*</span>Reference No.:</asp:Label>
+                                                <asp:Label ID="Label28" runat="server" Font-Bold="true" CssClass="form-label">Reference No.:</asp:Label>
                                                 <asp:TextBox ID="txtrefrenceno" CssClass="form-control" placeholder="Enter Reference No." runat="server"></asp:TextBox>
-                                                <asp:RequiredFieldValidator ID="RequiredFieldValidator14" runat="server" Display="Dynamic" ErrorMessage="Please Enter Reference No."
-                                                    ControlToValidate="txtrefrenceno" ValidationGroup="1" ForeColor="Red" SetFocusOnError="true"></asp:RequiredFieldValidator>
-                                            </div>
+                                           </div>
                                             <div class="col-md-6 col-12 mb-3">
-                                                <asp:Label ID="Label29" runat="server" Font-Bold="true" CssClass="form-label"><span class="spncls">*</span>Reference Date:</asp:Label>
+                                                <asp:Label ID="Label29" runat="server" Font-Bold="true" CssClass="form-label">Reference Date:</asp:Label>
                                                 <asp:TextBox ID="txtReferenceDate" CssClass="form-control" placeholder="Enter Delivery Date" TextMode="date" runat="server"></asp:TextBox>
-                                                <asp:RequiredFieldValidator ID="RequiredFieldValidator15" runat="server" Display="Dynamic" ErrorMessage="Please Enter Reference Date"
-                                                    ControlToValidate="txtReferenceDate" ValidationGroup="1" ForeColor="Red" SetFocusOnError="true"></asp:RequiredFieldValidator>
+
                                             </div>
                                             <div class="col-md-6 col-12 mb-3">
                                                 <asp:Label ID="Label3" runat="server" Font-Bold="true" CssClass="form-label">Description:</asp:Label>
