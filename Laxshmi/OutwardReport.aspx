@@ -254,7 +254,7 @@
                         <div id="DivRoot1" align="left" runat="server">
                             <div style="overflow: hidden;" id="DivHeaderRow1">
                             </div>
-                            <div style="overflow: scroll;" class="dt-responsive table-responsive" onscroll="OnScrollDiv(this)" id="DivMainContent1">
+                            <div style="overflow-x: auto; max-height: 400px; overflow-y: auto; border: 1px solid #ccc;">
                                 <asp:GridView ID="GVfollowup" runat="server" CellPadding="4" Font-Names="Verdana" ShowFooter="true"
                                     Font-Size="10pt" Width="100%"
                                     GridLines="Both" CssClass="display table table-striped table-hover dataTable" AutoGenerateColumns="false"
